@@ -32,14 +32,12 @@ export default function HiraganaPage() {
 }
 
 function getJapanese(matchText: [string[], string[]], inputText: string, matchLength: number) {
-    console.log(`getJapanese(${matchText}, ${inputText}, ${matchLength})`)
     if (inputText.length === 0) {
         return [matchText, ""];
     }
     let processText = inputText.slice();
     if (matchLength === 3) {
         if (processText.length >= matchLength) {
-            console.log(`tryParse(${processText}, 3)`);
             const [rest, translation] = tryParse(processText, 3);
             const [hiraganaSyllabary, katakanaSyllabary] = translation;
             if (hiraganaSyllabary && katakanaSyllabary) {
@@ -55,7 +53,6 @@ function getJapanese(matchText: [string[], string[]], inputText: string, matchLe
         return getJapanese(matchText, inputText, 2);
     } else if (matchLength === 2) {
         if (processText.length >= matchLength) {
-            console.log(`tryParse(${processText}, 2)`);
             const [rest, translation] = tryParse(processText, 2);
             const [hiraganaSyllabary, katakanaSyllabary] = translation;
             if (hiraganaSyllabary && katakanaSyllabary) {
@@ -71,10 +68,8 @@ function getJapanese(matchText: [string[], string[]], inputText: string, matchLe
         return getJapanese(matchText, inputText, 1);
     } else if (matchLength === 1) {
         if (processText.length >= matchLength) {
-            console.log(`tryParse(${processText}, 1)`);
             const [rest, translation] = tryParse(processText, 1);
             const [hiraganaSyllabary, katakanaSyllabary] = translation;
-            console.log(hiraganaSyllabary, katakanaSyllabary, rest);
             if (hiraganaSyllabary !== "" && katakanaSyllabary !== "") {
                 matchText[0].push(hiraganaSyllabary);
                 matchText[1].push(katakanaSyllabary);
@@ -89,11 +84,9 @@ function getJapanese(matchText: [string[], string[]], inputText: string, matchLe
 
 function tryParse(inputText: string, length: number): [string, [string, string]] {
     let partialText = inputText.slice(0, length);
-    console.log(partialText);
     const matchText = japaneseRecord[partialText];
     if (matchText) {
         const rest = inputText.slice(length);
-        console.log(rest, matchText);
         return [rest, matchText];
     }
     return [inputText, ["", ""]];
