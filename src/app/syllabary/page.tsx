@@ -1,9 +1,9 @@
 "use client"
 
-import {japaneseRecord} from './JapaneseRecord';
 import React, {useState} from "react";
+import {syllabaryRecord} from "@/app/lib/syllabaryRecord";
 
-export default function HiraganaPage() {
+export default function SyllabaryPage() {
     const [text, setText] = useState<string>('');
     const [hiragana, setHiragana] = useState<string>('');
     const [katakana, setKatakana] = useState<string>('');
@@ -17,16 +17,18 @@ export default function HiraganaPage() {
     };
 
     return (
-        <div>
-            <input
-                className={"text-black"}
-                type="text"
-                value={text}
-                onChange={handleChange} // Listen to input changes
-                placeholder="Type something..."
-            />
-            <p>hiragana: {hiragana}</p>
-            <p>katakana: {katakana}</p>
+        <div className="App">
+            <div className="container">
+                <input
+                    className={"text-black"}
+                    type="text"
+                    value={text}
+                    onChange={handleChange} // Listen to input changes
+                    placeholder="Type something..."
+                />
+                <p>hiragana: {hiragana}</p>
+                <p>katakana: {katakana}</p>
+            </div>
         </div>
     );
 }
@@ -84,33 +86,13 @@ function getJapanese(matchText: [string[], string[]], inputText: string, matchLe
 
 function tryParse(inputText: string, length: number): [string, [string, string]] {
     let partialText = inputText.slice(0, length);
-    const matchText = japaneseRecord[partialText];
+    const matchText = syllabaryRecord[partialText];
     if (matchText) {
         const rest = inputText.slice(length);
         return [rest, matchText];
     }
     return [inputText, ["", ""]];
 }
-
-// function getJapanese(inputText: string) {
-//     let hiraganaArray: string[] = [];
-//     let katakanaArray: string[] = [];
-//     let partialText = ""
-//     for (let i = 0; i < inputText.length; i++) {
-//         partialText += inputText[i].toLowerCase();
-//         if (isNotAlphabetic(partialText)) {
-//             hiraganaArray.push(partialText);
-//             katakanaArray.push(partialText);
-//             partialText = "";
-//         }
-//         if (japaneseRecord[partialText]) {
-//             hiraganaArray.push(japaneseRecord[partialText][0]);
-//             katakanaArray.push(japaneseRecord[partialText][1]);
-//             partialText = "";
-//         }
-//     }
-//     return [hiraganaArray.join(""), katakanaArray.join("")];
-// }
 
 function isNotAlphabetic(value: string): boolean {
     return !/^[A-Za-z]+$/.test(value);

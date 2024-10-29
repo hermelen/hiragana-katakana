@@ -1,4 +1,4 @@
-export const japaneseRecord: Record<string, [string, string]> = {
+export const syllabaryRecord: Record<string, [string, string]> = {
     a: ["あ", "ア"],
     ka: ["か", "カ"],
     sa: ["さ", "サ"],

@@ -24,10 +24,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="fr">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <nav>
+          <ul className={"flex gap-5"}>
+            <li><a href={"/"}>HOME</a></li>
+            <li><a href={"/syllabary"}>SYLLABARY</a></li>
+            <li><a href={"/syllabary"}>THEME</a></li>
+            <li><a href={"/syllabary"}>TRANSLATE</a></li>
+            <li><a href={"/syllabary"}>VOCABULARY</a></li>
+            <li><a href={"/syllabary"}>DICTIONARY</a></li>
+          </ul>
+        </nav>
         {children}
       </body>
     </html>
