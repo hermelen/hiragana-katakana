@@ -29,7 +29,8 @@ export default function RootLayout({
         <nav>
           <ul className={"flex gap-5"}>
             <li><a href={"/"}>HOME</a></li>
-            <li><a href={"/syllabary"}>SYLLABARY</a></li>
+            <li><a href={"/hiragana-table"}>hiragana table</a></li>
+            <li><a href={"/roman-to-japanese"}>roman to japanese</a></li>
             <li><a href={"/syllabary"}>THEME</a></li>
             <li><a href={"/syllabary"}>TRANSLATE</a></li>
             <li><a href={"/syllabary"}>VOCABULARY</a></li>

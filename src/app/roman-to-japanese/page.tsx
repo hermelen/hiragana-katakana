@@ -3,7 +3,7 @@
 import React, {useState} from "react";
 import {syllabaryRecord} from "@/app/lib/syllabaryRecord";
 
-export default function SyllabaryPage() {
+export default function RomanToJapanesePage() {
     const [text, setText] = useState<string>('');
     const [hiragana, setHiragana] = useState<string>('');
     const [katakana, setKatakana] = useState<string>('');
@@ -17,18 +17,16 @@ export default function SyllabaryPage() {
     };
 
     return (
-        <div className="App">
-            <div className="container">
-                <input
-                    className={"text-black"}
-                    type="text"
-                    value={text}
-                    onChange={handleChange} // Listen to input changes
-                    placeholder="Type something..."
-                />
-                <p>hiragana: {hiragana}</p>
-                <p>katakana: {katakana}</p>
-            </div>
+        <div className="container">
+            <input
+                className={"text-black"}
+                type="text"
+                value={text}
+                onChange={handleChange} // Listen to input changes
+                placeholder="Type something..."
+            />
+            <p>hiragana: {hiragana}</p>
+            <p>katakana: {katakana}</p>
         </div>
     );
 }
