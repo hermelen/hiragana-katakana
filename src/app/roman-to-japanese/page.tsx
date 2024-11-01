@@ -22,7 +22,7 @@ export default function RomanToJapanesePage() {
                 className={"text-black"}
                 type="text"
                 value={text}
-                onChange={handleChange} // Listen to input changes
+                onChange={handleChange}
                 placeholder="Type something..."
             />
             <p>hiragana: {hiragana}</p>

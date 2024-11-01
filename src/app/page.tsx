@@ -1,4 +1,4 @@
-export default function App() {
+export default function Page() {
   return (
       <div className="App">
         <div className="container">
