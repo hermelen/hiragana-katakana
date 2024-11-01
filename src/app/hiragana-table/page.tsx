@@ -1,12 +1,14 @@
 "use client"
 
-import {syllabaryRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
+import {noChar, space, syllabaryRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 import React, {useState} from "react";
+import {Radio} from "@/app/components/Radio";
 
 export default function HiraganaTablePage() {
     type Result = Record<string, [string, string]>[];
     const [local, setLocal] = useState<boolean>(true);
-    
+    const noChar = "";
+
     function splitRecordByValueLength(syllabaryRecord: SyllabaryRecord): Result[] {
         const result: Result[] = [];
         let currentArray: Result = [];
@@ -22,6 +24,15 @@ export default function HiraganaTablePage() {
                 currentArray.push(currentItem);
             } else {
                 currentArray.push(currentItem);
+                if (key === "mi") {
+                    currentArray.push({"yi": [noChar, noChar]});
+                }
+                if (key === "me") {
+                    currentArray.push({"ye": [noChar, noChar]});
+                }
+                if (key === "ru") {
+                    currentArray.push({"wu": [noChar, noChar]});
+                }
             }
         }
 
@@ -33,12 +44,7 @@ export default function HiraganaTablePage() {
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.value === 'true') {
-            setLocal(true);
-        }
-        if (event.target.value === 'false') {
-            setLocal(false);
-        }
+        setLocal(event.target.value === 'true');
     };
 
     const result = splitRecordByValueLength(syllabaryRecord);
@@ -46,43 +52,52 @@ export default function HiraganaTablePage() {
 
     return (
         <div>
-            <div className={"pt-4 pb-4 flex justify-around"}>
-                <label>
-                    <span className={"mr-2"}>hiragana</span>
-                    <input type="radio" name="myRadio" value="true" checked={local} onChange={handleChange}/>
-                </label>
-                <label>
-                    <input type="radio" name="myRadio" value="false" onChange={handleChange}/>
-                    <span className={"ml-2"}>katakana</span>
-                </label>
+            <div className="pt-4 pb-4 flex justify-around">
+                <Radio
+                    position="right"
+                    label="hiragana"
+                    name="syllabary"
+                    value="true"
+                    checked={local}
+                    onChange={handleChange}
+                />
+                <Radio
+                    position="left"
+                    label="katakana"
+                    name="syllabary"
+                    value="false"
+                    checked={!local}
+                    onChange={handleChange}
+                />
             </div>
             <div className={"flex gap-4"}>
                 {result.map((ul, ulIndex) => (
                     <ul key={ulIndex} className="flex flex-col gap-4">
-                        {ul.map((li, liIndex) => (
-                            <li key={liIndex} 
-                                className={
-                                    `
-                                    flex
-                                    items-center
-                                    justify-center
-                                    w-20 
-                                    h-20 
-                                    rounded-lg 
-                                    bg-gradient-to-b 
-                                    from-fuchsia-500
-                                    shadow-lg 
-                                    `
-                                }
-                            >
-                                {Object.entries(li).map(([key, value]) => (
+                        {ul.map((li, liIndex) => {
+                            const key = Object.keys(li)[0];
+                            const value = Object.values(li)[0];
+                            return (
+                                <li key={liIndex}
+                                    className={
+                                        `flex
+                                        items-center
+                                        justify-center
+                                        w-20 
+                                        h-20 
+                                        rounded-lg 
+                                        bg-gradient-to-b 
+                                        from-fuchsia-500
+                                        shadow-lg 
+                                        ${value[0] === noChar && "invisible"}`
+                                    }
+                                >
                                     <div key={key}>
                                         <div className={"text-4xl text-center"}>{local ? value[0] : value[1]}</div>
                                         <div className={"text-l text-center"}>{key}</div>
                                     </div>
-                                ))}
-                            </li>
-                        ))}
+                                </li>
+                            )
+                        })}
                     </ul>
                 ))}
             </div>

@@ -33,7 +33,6 @@ export const syllabaryRecord: SyllabaryRecord = {
     ni: ["に", "ニ"],
     hi: ["ひ", "ヒ"],
     mi: ["み", "ミ"],
-    yi: ["*", "*"],
     ri: ["り", "リ"],
     wi: ["ゐ", "ヰ"],
     gi: ["ぎ", "ギ"],
@@ -50,7 +49,6 @@ export const syllabaryRecord: SyllabaryRecord = {
     mu: ["む", "ム"],
     yu: ["ゆ", "ユ"],
     ru: ["る", "ル"],
-    wu: ["*", "*"],
     gu: ["ぐ", "グ"],
     zu: ["ず", "ズ"],
     dzu: ["づ", "ヅ"],
@@ -74,7 +72,6 @@ export const syllabaryRecord: SyllabaryRecord = {
     ne: ["ね", "ネ"],
     he: ["へ", "ヘ"],
     me: ["め", "メ"],
-    ye: ["*", "*"],
     re: ["れ", "レ"],
     we: ["ゑ", "ヱ"],
     ge: ["げ", "ゲ"],
@@ -108,5 +105,5 @@ export const syllabaryRecord: SyllabaryRecord = {
     jo: ["じょ", "ジョ"],
     byo: ["びょ", "ビョ"],
     pyo: ["ぴょ", "ピョ"],
-    n: ["ん", "ン"],
+    n: ["ん", "ン"]
 };
