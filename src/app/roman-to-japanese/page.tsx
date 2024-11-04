@@ -3,21 +3,30 @@
 import React, {useState} from "react";
 import {syllabaryRecord} from "@/app/lib/syllabaryRecord";
 import {Radio} from "@/app/components/Radio";
+import {replaceWithExistingCharacter} from "@/app/lib/replaceWithExistingCharacter";
+import {
+    LeftRightDialogHeader
+} from "next/dist/client/components/react-dev-overlay/internal/components/LeftRightDialogHeader";
 
 export default function RomanToJapanesePage() {
     const [text, setText] = useState<string>('');
     const [phonetic, setPhonetic] = useState<string>('');
+    const [roman, setRoman] = useState<string>('');
     const [hiragana, setHiragana] = useState<string>('');
     const [katakana, setKatakana] = useState<string>('');
     const [local, setLocal] = useState<boolean>(true);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value);
-        setPhonetic(getPhonetic(event.target.value));
+        const textToTranslate = getPhonetic(event.target.value)
+        setPhonetic(textToTranslate);
         let matchText: [string[], string[]] = [[], []];
-        const [translation, _] = getJapanese(matchText, event.target.value, 3);
+        const [translation, _] = getJapanese(matchText, textToTranslate, 3);
         setHiragana(translation[0].join(""));
         setKatakana(translation[1].join(""));
+        const resultToRoman = getRoman(translation[0]);
+        console.log(resultToRoman);
+        setRoman(resultToRoman);
     };
 
     const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,9 +73,9 @@ export default function RomanToJapanesePage() {
                        placeholder="Type something..."
                 />
             </div>
-            {/*<div>*/}
-            {/*    {phonetic}*/}
-            {/*</div>*/}
+            <div>
+                {roman}
+            </div>
             <div className={
                 `flex
                 items-center
@@ -83,12 +92,33 @@ export default function RomanToJapanesePage() {
                 {!local && katakana}
             </div>
         </div>
-    )
-        ;
+    );
 }
 
 function getPhonetic(value: string) {
-    return value.replace(/au/g, "o");
+    for (const key in replaceWithExistingCharacter) {
+        if (replaceWithExistingCharacter.hasOwnProperty(key)) {
+            const replacement = replaceWithExistingCharacter[key];
+            value = value.replace(new RegExp(key, "g"), replacement);
+        }
+    }
+    return value;
+}
+
+function getRoman(hiraganaArray: string[]) {
+    const firstJapaneseAsKey: Record<string, string> = {};
+
+    for (const [roman, japaneseArray] of Object.entries(syllabaryRecord)) {
+        const firstJapaneseChar = japaneseArray[0];
+        firstJapaneseAsKey[firstJapaneseChar] = roman;
+    }
+    
+    const romanArray: string[] = []
+    for (const hiragana of hiraganaArray) {
+        romanArray.push(firstJapaneseAsKey[hiragana])
+    }
+    
+    return romanArray.join("");
 }
 
 function getJapanese(matchText: [string[], string[]], inputText: string, matchLength: number) {
@@ -104,7 +134,8 @@ function getJapanese(matchText: [string[], string[]], inputText: string, matchLe
                 matchText[0].push(hiraganaSyllabary);
                 matchText[1].push(katakanaSyllabary);
                 if (rest !== "") {
-                    return getJapanese(matchText, rest, 3);
+                    const length = rest.length < 4 ? rest.length : 3;
+                    return getJapanese(matchText, rest, length);
                 } else {
                     return [matchText, rest];
                 }
@@ -119,7 +150,8 @@ function getJapanese(matchText: [string[], string[]], inputText: string, matchLe
                 matchText[0].push(hiraganaSyllabary);
                 matchText[1].push(katakanaSyllabary);
                 if (rest !== "") {
-                    return getJapanese(matchText, rest, 3);
+                    const length = rest.length < 4 ? rest.length : 3;
+                    return getJapanese(matchText, rest, length);
                 } else {
                     return [matchText, rest];
                 }
@@ -134,8 +166,13 @@ function getJapanese(matchText: [string[], string[]], inputText: string, matchLe
                 matchText[0].push(hiraganaSyllabary);
                 matchText[1].push(katakanaSyllabary);
                 if (rest !== "") {
-                    return getJapanese(matchText, rest, 3);
+                    const length = rest.length < 4 ? rest.length : 3;
+                    return getJapanese(matchText, rest, length);
                 }
+            } else {
+                matchText[0].push(`${inputText}u`);
+                matchText[1].push(`${inputText}u`);
+                return [matchText, ""];
             }
         }
     }
@@ -144,7 +181,22 @@ function getJapanese(matchText: [string[], string[]], inputText: string, matchLe
 
 function tryParse(inputText: string, length: number): [string, [string, string]] {
     const partialText = inputText.slice(0, length);
-    const syllabaryRecordEnriched = { ...syllabaryRecord, " ": [" ", " "] };
+    const syllabaryRecordEnriched = {
+        ...syllabaryRecord,
+        " ": [" ", " "],
+        k: ["く", "ク"],
+        s: ["す", "ス"],
+        t: ["つ", "ツ"],
+        f: ["ふ", "フ"],
+        m: ["む", "ム"],
+        y: ["い", "イ"],
+        r: ["る", "ル"],
+        g: ["ぐ", "グ"],
+        z: ["ず", "ズ"],
+        d: ["づ", "ヅ"],
+        b: ["ぶ", "ブ"],
+        p: ["ぷ", "プ"],
+    };
     const matchText = syllabaryRecordEnriched[partialText];
     if (matchText) {
         const rest = inputText.slice(length);
