@@ -1,5 +1,6 @@
 export const replaceWithExistingCharacter: Record<string, string> = {
     l: "r",
+    c: "k",
     au: "o",
     yi: "ii",
     kyi: "kii",

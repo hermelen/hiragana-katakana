@@ -169,10 +169,6 @@ function getJapanese(matchText: [string[], string[]], inputText: string, matchLe
                     const length = rest.length < 4 ? rest.length : 3;
                     return getJapanese(matchText, rest, length);
                 }
-            } else {
-                matchText[0].push(`${inputText}u`);
-                matchText[1].push(`${inputText}u`);
-                return [matchText, ""];
             }
         }
     }
