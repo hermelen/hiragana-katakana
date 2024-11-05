@@ -1,12 +1,13 @@
 "use client"
 
 import React, {useState} from "react";
-import {syllabaryRecord} from "@/app/lib/syllabaryRecord";
+import {SyllabaryRecord, syllabaryRecord} from "@/app/lib/syllabaryRecord";
 import {Radio} from "@/app/components/Radio";
 import {replaceWithExistingCharacter} from "@/app/lib/replaceWithExistingCharacter";
 import {
     LeftRightDialogHeader
 } from "next/dist/client/components/react-dev-overlay/internal/components/LeftRightDialogHeader";
+import {additionalSyllabaryRecord} from "@/app/lib/additionalSyllabaryRecords";
 
 export default function RomanToJapanesePage() {
     const [text, setText] = useState<string>('');
@@ -25,7 +26,6 @@ export default function RomanToJapanesePage() {
         setHiragana(translation[0].join(""));
         setKatakana(translation[1].join(""));
         const resultToRoman = getRoman(translation[0]);
-        console.log(resultToRoman);
         setRoman(resultToRoman);
     };
 
@@ -74,7 +74,10 @@ export default function RomanToJapanesePage() {
                 />
             </div>
             <div>
-                {roman}
+                Phonetic: {phonetic}
+            </div>
+            <div>
+                Roman: {roman}
             </div>
             <div className={
                 `flex
@@ -118,10 +121,10 @@ function getRoman(hiraganaArray: string[]) {
         romanArray.push(firstJapaneseAsKey[hiragana])
     }
     
-    return romanArray.join("");
+    return romanArray.join("").replace(/u/g, "ou").replace(/e/g, "é");
 }
 
-function getJapanese(matchText: [string[], string[]], inputText: string, matchLength: number) {
+function getJapanese(matchText: [string[], string[]], inputText: string, matchLength: number) : [[string[], string[]], string] {
     if (inputText.length === 0) {
         return [matchText, ""];
     }
@@ -177,21 +180,10 @@ function getJapanese(matchText: [string[], string[]], inputText: string, matchLe
 
 function tryParse(inputText: string, length: number): [string, [string, string]] {
     const partialText = inputText.slice(0, length);
-    const syllabaryRecordEnriched = {
+    const syllabaryRecordEnriched: SyllabaryRecord = {
         ...syllabaryRecord,
-        " ": [" ", " "],
-        k: ["く", "ク"],
-        s: ["す", "ス"],
-        t: ["つ", "ツ"],
-        f: ["ふ", "フ"],
-        m: ["む", "ム"],
-        y: ["い", "イ"],
-        r: ["る", "ル"],
-        g: ["ぐ", "グ"],
-        z: ["ず", "ズ"],
-        d: ["づ", "ヅ"],
-        b: ["ぶ", "ブ"],
-        p: ["ぷ", "プ"],
+        ...additionalSyllabaryRecord
+
     };
     const matchText = syllabaryRecordEnriched[partialText];
     if (matchText) {
