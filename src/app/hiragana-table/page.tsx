@@ -1,6 +1,6 @@
 "use client"
 
-import {noChar, space, syllabaryRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
+import {syllabaryRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 import React, {useState} from "react";
 import {Radio} from "@/app/components/Radio";
 
