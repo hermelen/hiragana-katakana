@@ -26,5 +26,19 @@ export const replaceWithExistingCharacter: Record<string, string> = {
     bye: "bie",
     pye: "pie",
     
-    wu: "fu"
+    wu: "fu",
+    chr: "kr",
+    ph: "f",
+    cc: "k",
+    ff: "f",
+    gg: "g",
+    ll: "l",
+    ill: "ii",
+    mm: "m",
+    nn: "n",
+    pp: "p",
+    rr: "r",
+    ss: "s",
+    tt: "t"
+    
 };
