@@ -46,8 +46,9 @@ export const replaceWithExistingCharacter: Record<string, string> = {
     rr: "r",
     ss: "s",
     tt: "t",
+    wh: "w",
     
     l: "r",
-    c: "k",
+    c: "k"
     
 };
