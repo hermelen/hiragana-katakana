@@ -28,13 +28,14 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-700`}>
         <nav>
           <ul className={"flex gap-5"}>
-            <li><a href={"/"}>HOME</a></li>
-            <li><a href={"/hiragana-table"}>hiragana table</a></li>
+            <li><a href={"/"}>home</a></li>
+            <li><a href={"/syllabary-table"}>syllabary table</a></li>
             <li><a href={"/roman-to-japanese"}>roman to japanese</a></li>
-            <li><a href={"/syllabary"}>THEME</a></li>
-            <li><a href={"/syllabary"}>TRANSLATE</a></li>
-            <li><a href={"/syllabary"}>VOCABULARY</a></li>
-            <li><a href={"/syllabary"}>DICTIONARY</a></li>
+            <li><a href={"/hiragana-traps"}>hiragana traps</a></li>
+            <li><a href={"/syllabary"}>-theme-</a></li>
+            <li><a href={"/syllabary"}>-translate-</a></li>
+            <li><a href={"/syllabary"}>-vocabulary-</a></li>
+            <li><a href={"/syllabary"}>-dictionary-</a></li>
           </ul>
         </nav>
         {children}

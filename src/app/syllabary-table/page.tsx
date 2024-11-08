@@ -4,21 +4,21 @@ import {syllabaryRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 import React, {useState} from "react";
 import {Radio} from "@/app/components/Radio";
 
-export default function HiraganaTablePage() {
-    type Result = Record<string, [string, string]>[];
+export default function SyllabaryTablePage() {
+    type TableData = Record<string, [string, string]>[];
     const [local, setLocal] = useState<boolean>(true);
     const noChar = "";
 
-    function splitRecordByValueLength(syllabaryRecord: SyllabaryRecord): Result[] {
-        const result: Result[] = [];
-        let currentArray: Result = [];
+    function splitRecordByValueLength(syllabaryRecord: SyllabaryRecord): TableData[] {
+        const tableData: TableData[] = [];
+        let currentArray: TableData = [];
 
         for (const [key, [hiragana, katakana]] of Object.entries(syllabaryRecord)) {
             const currentItem: Record<string, [string, string]> = {[key]: [hiragana, katakana]};
 
             if (key.length === 1) {
                 if (currentArray.length > 0) {
-                    result.push(currentArray);
+                    tableData.push(currentArray);
                     currentArray = [];
                 }
                 currentArray.push(currentItem);
@@ -37,17 +37,17 @@ export default function HiraganaTablePage() {
         }
 
         if (currentArray.length > 0) {
-            result.push(currentArray);
+            tableData.push(currentArray);
         }
 
-        return result;
+        return tableData;
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setLocal(event.target.value === 'true');
     };
 
-    const result = splitRecordByValueLength(syllabaryRecord);
+    const tableData = splitRecordByValueLength(syllabaryRecord);
 
 
     return (
@@ -71,7 +71,7 @@ export default function HiraganaTablePage() {
                 />
             </div>
             <div className={"flex gap-4"}>
-                {result.map((ul, ulIndex) => (
+                {tableData.map((ul, ulIndex) => (
                     <ul key={ulIndex} className="flex flex-col gap-4">
                         {ul.map((li, liIndex) => {
                             const key = Object.keys(li)[0];
