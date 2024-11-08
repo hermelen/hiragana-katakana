@@ -1,5 +1,5 @@
-export type HiraganaTrapList = string[string[]];
-export const HiraganaTraps: HiraganaTrapList = [
+export type SyllabaryTrapList = string[string[]];
+export const HiraganaTraps: SyllabaryTrapList = [
     ["u", "tsu", "dzu"],
     ["sa", "za", "chi", "ra", "dji"],
     ["ta", "na"],
@@ -11,4 +11,12 @@ export const HiraganaTraps: HiraganaTrapList = [
     ["ne", "re", "wa"],
     ["nu", "no", "me"],
     ["se", "ze"]
+]
+
+export const KatakanaTraps: SyllabaryTrapList = [
+    ["ha", "ba", "pa"],
+    ["ha", "ba", "pa"],
+    ["ho", "bo", "po"],
+    ["he", "be", "pe"],
+    ["shi", "ji", "tsu", "dzu"]
 ]
