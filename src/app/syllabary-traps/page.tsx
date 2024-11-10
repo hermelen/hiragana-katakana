@@ -80,16 +80,14 @@ export default function SyllabaryTrapsPage() {
                        name="syllabary"
                        value="true"
                        checked={local}
-                       onChange={handleLocalChange}
-                />
+                       onChange={handleLocalChange}/>
                 <Radio className={"flex-1"}
                        position="left"
                        label="katakana"
                        name="syllabary"
                        value="false"
                        checked={!local}
-                       onChange={handleLocalChange}
-                />
+                       onChange={handleLocalChange}/>
             </div>
             <div className={"flex gap-4"}>
                 <ul className="flex flex-col gap-4 justify-center size-full">
@@ -120,13 +118,11 @@ export default function SyllabaryTrapsPage() {
                                     type="text"
                                     value={textList[index]}
                                     onChange={(event) => handleInputChange(event, index)}
-                                    placeholder="Type something..."
-                                />
+                                    placeholder="Type something..."/>
                             </li>
                         )
                     })}
-                    <li className={`flex items-center gap-5`}
-                    >
+                    <li className={`flex items-center gap-5`}>
                         <div className={`w-20 h-10`}></div>
                         <button className={
                             `h-10 

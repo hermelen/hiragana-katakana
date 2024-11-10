@@ -62,8 +62,7 @@ export default function VocabularyTranslatePage() {
                             bg-gradient-to-b 
                             shadow-lg
                             ${text !== translateData[0] ? "from-red-500" : "from-fuchsia-500"}`}
-                            title={translateData[0]}
-                        >
+                            title={translateData[0]}>
                             {translateData[1]}
                         </div>
                         <input
@@ -71,8 +70,7 @@ export default function VocabularyTranslatePage() {
                             type="text"
                             value={text}
                             onChange={handleInputChange}
-                            placeholder="Type something..."
-                        />
+                            placeholder="Type something..."/>
                     </li>
                     <li className={`flex items-center gap-5 size-full`}>
                         <div className={`w-80 h-10`}></div>
@@ -89,8 +87,7 @@ export default function VocabularyTranslatePage() {
                             shadow-lg                                        
                             ${!success ? "from-red-500 disabled:opacity-75" : "from-fuchsia-500"}`}
                             onClick={reloadTranslate}
-                            disabled={!success}
-                        >
+                            disabled={!success}>
                             Other Try
                         </button>
                     </li>

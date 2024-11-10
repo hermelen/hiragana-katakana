@@ -59,16 +59,14 @@ export default function SyllabaryTablePage() {
                     name="syllabary"
                     value="true"
                     checked={local}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange}/>
                 <Radio className={"flex-1"}
                     position="left"
                     label="katakana"
                     name="syllabary"
                     value="false"
                     checked={!local}
-                    onChange={handleChange}
-                />
+                    onChange={handleChange}/>
             </div>
             <div className={"flex gap-4"}>
                 {tableData.map((ul, ulIndex) => (
@@ -89,8 +87,7 @@ export default function SyllabaryTablePage() {
                                         from-fuchsia-500
                                         shadow-lg 
                                         ${value[0] === noChar && "invisible"}`
-                                    }
-                                >
+                                    }>
                                     <div key={key}>
                                         <div className={"text-4xl text-center"}>{local ? value[0] : value[1]}</div>
                                         <div className={"text-l text-center"}>{key}</div>

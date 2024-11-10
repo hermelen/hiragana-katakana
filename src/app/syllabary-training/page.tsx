@@ -88,16 +88,14 @@ export default function SyllabaryTrainingPage() {
                     name="hiragana"
                     value="true"
                     checked={local}
-                    onChange={handleLocalChange}
-                />
+                    onChange={handleLocalChange}/>
                 <Radio className={"flex-1"}
                     position="left"
                     label="katakana"
                     name="katakana"
                     value="false"
                     checked={!local}
-                    onChange={handleLocalChange}
-                />
+                    onChange={handleLocalChange}/>
             </div>
             <div className="pt-4 pb-4 flex gap-10">
                 <Radio className={"flex-1"}
@@ -106,27 +104,23 @@ export default function SyllabaryTrainingPage() {
                     name="basic"
                     value="true"
                     checked={basic}
-                    onChange={handleBasicChange}
-                />
+                    onChange={handleBasicChange}/>
                 <Radio className={"flex-1"}
                     position="left"
                     label="advanced"
                     name="advanced"
                     value="false"
                     checked={!basic}
-                    onChange={handleBasicChange}
-                />
+                    onChange={handleBasicChange}/>
             </div>
             <div className={"flex gap-4"}>
                 <ul className="flex flex-col gap-4 justify-center size-full">
                     {Object.entries(trainingData).map((li, index) => {
-                        // console.log(li);
                         const key = li[0];
                         const value = Object.values(li)[1];
                         const match = textList[index] === key;
                         return (
-                            <li key={key}
-                                className={`flex items-center gap-5`}>
+                            <li className={`flex items-center gap-5`}>
                                 <div>
                                     <div className={
                                         `text-4xl 
@@ -140,21 +134,20 @@ export default function SyllabaryTrainingPage() {
                                         bg-gradient-to-b 
                                         shadow-lg
                                         ${!match && "from-red-500"}
-                                        ${match && "from-fuchsia-500"}`
-                                    } title={key}>{local ? value[0] : value[1]}</div>
+                                        ${match && "from-fuchsia-500"}`}>
+                                        {value[1]}
+                                    </div>
                                 </div>
                                 <input
                                     className={`h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl`}
                                     type="text"
                                     value={textList[index]}
                                     onChange={(event) => handleInputChange(event, index)}
-                                    placeholder="Type something..."
-                                />
+                                    placeholder="Type something..."/>
                             </li>
                         )
                     })}
-                    <li className={`flex items-center gap-5`}
-                    >
+                    <li className={`flex items-center gap-5`}>
                         <div className={`w-20 h-10`}></div>
                         <button className={
                             `h-10 
@@ -178,7 +171,6 @@ export default function SyllabaryTrainingPage() {
                     </li>
                 </ul>
             </div>
-
         </div>
     )
 }

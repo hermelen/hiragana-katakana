@@ -21,7 +21,7 @@ export default function VocabularyThemePage() {
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value);
         let matchText: [string[], string[]] = [[], []];
-        const [translation, _] = getJapanese(matchText, event.target.value, 3);
+        const [translation, _] = getJapanese(matchText, event.target.value, 3, false);
         setHiragana(translation[0].join(""));
         setKatakana(translation[1].join(""));
     };
@@ -56,7 +56,7 @@ export default function VocabularyThemePage() {
             <div className={"flex gap-4"}>
                 <ul className="flex flex-col gap-4 justify-center size-full">
                     <li className={`flex items-center gap-5 size-full`}>
-                        <div
+                        <div title={themeData[1]}
                             className={`text-4xl 
                             text-center
                             flex
@@ -67,9 +67,7 @@ export default function VocabularyThemePage() {
                             rounded-lg 
                             bg-gradient-to-b 
                             shadow-lg
-                            ${text !== themeData[1] ? "from-red-500" : "from-fuchsia-500"}`}
-                            title={themeData[1]}
-                        >
+                            ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-red-500" : "from-fuchsia-500"}`}>
                             {themeData[0]}
                         </div>
                         <input
@@ -77,8 +75,7 @@ export default function VocabularyThemePage() {
                             type="text"
                             value={text}
                             onChange={handleInputChange}
-                            placeholder="Type something..."
-                        />
+                            placeholder="Type something..."/>
                     </li>
                     <li className={`flex items-center gap-5 size-full`}>
                         <div
@@ -92,7 +89,7 @@ export default function VocabularyThemePage() {
                             rounded-lg 
                             shadow-lg
                             bg-gradient-to-b 
-                            ${hiragana === themeData[1] ? "from-fuschia-500" : "from-red-500"}`} >
+                            ${hiragana === themeData[1] ? "from-fuchsia-500" : "from-red-500"}`}>
                             hiragana
                         </div>
                         <div
@@ -112,7 +109,7 @@ export default function VocabularyThemePage() {
                             rounded-lg 
                             shadow-lg
                             bg-gradient-to-b 
-                            ${katakana === themeData[1] ? "from-fuschia-500" : "from-red-500"}`} >
+                            ${katakana === themeData[1] ? "from-fuchsia-500" : "from-red-500"}`} >
                             katakana
                         </div>
                         <div
@@ -133,10 +130,9 @@ export default function VocabularyThemePage() {
                             rounded-lg 
                             shadow-lg                                        
                             bg-gradient-to-b 
-                            ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-red-500 disabled:opacity-75" : "from-fuschia-500"}`}
+                            ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-red-500 disabled:opacity-75" : "from-fuchsia-500"}`}
                             onClick={reloadTheme}
-                            disabled={hiragana !== themeData[1] && katakana !== themeData[1]}
-                        >
+                            disabled={hiragana !== themeData[1] && katakana !== themeData[1]}>
                             Other Try
                         </button>
                     </li>

@@ -2,53 +2,53 @@ import {syllabaryRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 import {additionalSyllabaryRecord} from "@/app/lib/additionalSyllabaryRecords";
 import {replaceCharacterRecord} from "@/app/lib/replaceCharacterRecord";
 
-export function getJapanese(matchText: [string[], string[]], inputText: string, matchLength: number) : [[string[], string[]], string] {
+export function getJapanese(matchText: [string[], string[]], inputText: string, matchLength: number, force: boolean) : [[string[], string[]], string] {
     if (inputText.length === 0) {
         return [matchText, ""];
     }
     let processText = inputText.slice();
     if (matchLength === 3) {
         if (processText.length >= matchLength) {
-            const [rest, translation] = tryParse(processText, 3);
+            const [rest, translation] = tryParse(processText, 3, force);
             const [hiraganaSyllabary, katakanaSyllabary] = translation;
             if (hiraganaSyllabary && katakanaSyllabary) {
                 matchText[0].push(hiraganaSyllabary);
                 matchText[1].push(katakanaSyllabary);
                 if (rest !== "") {
                     const length = rest.length < 4 ? rest.length : 3;
-                    return getJapanese(matchText, rest, length);
+                    return getJapanese(matchText, rest, length, force);
                 } else {
                     return [matchText, rest];
                 }
             }
         }
-        return getJapanese(matchText, inputText, 2);
+        return getJapanese(matchText, inputText, 2, force);
     } else if (matchLength === 2) {
         if (processText.length >= matchLength) {
-            const [rest, translation] = tryParse(processText, 2);
+            const [rest, translation] = tryParse(processText, 2, force);
             const [hiraganaSyllabary, katakanaSyllabary] = translation;
             if (hiraganaSyllabary && katakanaSyllabary) {
                 matchText[0].push(hiraganaSyllabary);
                 matchText[1].push(katakanaSyllabary);
                 if (rest !== "") {
                     const length = rest.length < 4 ? rest.length : 3;
-                    return getJapanese(matchText, rest, length);
+                    return getJapanese(matchText, rest, length, force);
                 } else {
                     return [matchText, rest];
                 }
             }
         }
-        return getJapanese(matchText, inputText, 1);
+        return getJapanese(matchText, inputText, 1, force);
     } else if (matchLength === 1) {
         if (processText.length >= matchLength) {
-            const [rest, translation] = tryParse(processText, 1);
+            const [rest, translation] = tryParse(processText, 1, force);
             const [hiraganaSyllabary, katakanaSyllabary] = translation;
             if (hiraganaSyllabary !== "" && katakanaSyllabary !== "") {
                 matchText[0].push(hiraganaSyllabary);
                 matchText[1].push(katakanaSyllabary);
                 if (rest !== "") {
                     const length = rest.length < 4 ? rest.length : 3;
-                    return getJapanese(matchText, rest, length);
+                    return getJapanese(matchText, rest, length, force);
                 }
             }
         }
@@ -56,11 +56,12 @@ export function getJapanese(matchText: [string[], string[]], inputText: string, 
     return [matchText, ""];
 }
 
-function tryParse(inputText: string, length: number): [string, [string, string]] {
+function tryParse(inputText: string, length: number, force: boolean): [string, [string, string]] {
     const partialText = inputText.slice(0, length);
+    const additionalSyllabary = force ? additionalSyllabaryRecord : {};
     const syllabaryRecordEnriched: SyllabaryRecord = {
         ...syllabaryRecord,
-        ...additionalSyllabaryRecord
+        ...additionalSyllabary
 
     };
     const matchText = syllabaryRecordEnriched[partialText];

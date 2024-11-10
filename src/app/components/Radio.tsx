@@ -24,8 +24,7 @@ export function Radio({ label, name, value, checked, onChange, position = "right
                 value={value}
                 checked={checked}
                 onChange={onChange}
-                className="mr-2"
-            />
+                className="mr-2"/>
             { position === "left" && <span className="mr-2">{label}</span> }
         </label>
     );
