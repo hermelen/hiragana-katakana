@@ -2,9 +2,7 @@
 
 import {syllabaryRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 import React, {useEffect, useState} from "react";
-import {SyllabaryTrapList} from "@/app/lib/syllabaryTrapsList";
 import {Radio} from "@/app/components/Radio";
-import {vocabularyRecord} from "@/app/lib/vocabularyRecord";
 
 export default function SyllabaryTrainingPage() {
     const [trainingData, setTrainingData] = useState<SyllabaryRecord>({});
@@ -32,30 +30,28 @@ export default function SyllabaryTrainingPage() {
 
     function getTrainingData(): SyllabaryRecord {
         const trainingCharacters = getRandomVocabularyTraining();
-        const sourceRecord = syllabaryRecord;
         let trainingData: SyllabaryRecord = {};
         const initialTextListState: string[] = [];
         for (let i = 0; i < trainingCharacters.length; i++) {
             if (initialTextListState.length < 10) {
-                const basicData = basic && sourceRecord[trainingCharacters[i]][0].length === 1;
-                const advancedData = !basic && sourceRecord[trainingCharacters[i]][0].length === 2;
+                const basicData = basic && trainingCharacters[i][1][0].length === 1;
+                const advancedData = !basic && trainingCharacters[i][1][0].length === 2;
                 if (basicData) {
-                    console.log(basicData);
                     initialTextListState.push("");
-                    trainingData[trainingCharacters[i]] = sourceRecord[trainingCharacters[i]];
+                    trainingData[trainingCharacters[i][0]] = trainingCharacters[i][1];
                 }
                 if (advancedData) {
-                    console.log(advancedData);
                     initialTextListState.push("");
-                    trainingData[trainingCharacters[i]] = sourceRecord[trainingCharacters[i]];
+                    trainingData[trainingCharacters[i][0]] = trainingCharacters[i][1];
                 }
             }
         }
         setTextList(initialTextListState);
+        console.log(trainingData);
         return trainingData;
     }
 
-    function shuffleArray(array: string[][]) {
+    function shuffleArray(array: [string, [string, string]][]) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
@@ -64,8 +60,8 @@ export default function SyllabaryTrainingPage() {
     }
 
     function getRandomVocabularyTraining() {
-        const trainingList: string[][] = Object.entries(vocabularyRecord).map((val => [val[0], val[1]]));
-        return shuffleArray(trainingList)[0];
+        const trainingList: [string, [string, string]][] = Object.entries(syllabaryRecord);
+        return shuffleArray(trainingList);
     }
 
     function reloadTraining() {
@@ -125,13 +121,14 @@ export default function SyllabaryTrainingPage() {
             <div className={"flex gap-4"}>
                 <ul className="flex flex-col gap-4 justify-center size-full">
                     {Object.entries(trainingData).map((li, index) => {
+                        // console.log(li);
                         const key = li[0];
                         const value = Object.values(li)[1];
                         const match = textList[index] === key;
                         return (
-                            <li key={li[0]}
+                            <li key={key}
                                 className={`flex items-center gap-5`}>
-                                <div key={key}>
+                                <div>
                                     <div className={
                                         `text-4xl 
                                         text-center
