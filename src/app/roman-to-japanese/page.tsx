@@ -3,7 +3,7 @@
 import React, {useState} from "react";
 import {SyllabaryRecord, syllabaryRecord} from "@/app/lib/syllabaryRecord";
 import {Radio} from "@/app/components/Radio";
-import {replaceWithExistingCharacter} from "@/app/lib/replaceWithExistingCharacter";
+import {replaceCharacterRecord} from "@/app/lib/replaceCharacterRecord";
 import {
     LeftRightDialogHeader
 } from "next/dist/client/components/react-dev-overlay/internal/components/LeftRightDialogHeader";
@@ -99,9 +99,9 @@ export default function RomanToJapanesePage() {
 }
 
 function getPhonetic(value: string) {
-    for (const key in replaceWithExistingCharacter) {
-        if (replaceWithExistingCharacter.hasOwnProperty(key)) {
-            const replacement = replaceWithExistingCharacter[key];
+    for (const key in replaceCharacterRecord) {
+        if (replaceCharacterRecord.hasOwnProperty(key)) {
+            const replacement = replaceCharacterRecord[key];
             value = value.replace(new RegExp(key, "g"), replacement);
         }
     }

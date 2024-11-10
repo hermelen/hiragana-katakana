@@ -1,4 +1,4 @@
-export const replaceWithExistingCharacter: Record<string, string> = {
+export const replaceCharacterRecord: Record<string, string> = {
     she: "shie",
     che: "chie",
     

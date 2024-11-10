@@ -2,7 +2,7 @@
 
 import {syllabaryRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 import React, {useEffect, useState} from "react";
-import {SyllabaryTrapList, HiraganaTraps, KatakanaTraps} from "@/app/lib/syllabaryTraps";
+import {SyllabaryTrapList, HiraganaTraps, KatakanaTraps} from "@/app/lib/syllabaryTrapsList";
 import {Radio} from "@/app/components/Radio";
 
 export default function SyllabaryTrapsPage() {
@@ -75,20 +75,20 @@ export default function SyllabaryTrapsPage() {
         <div className={"md:w-4/12 size-full"}>
             <div className="pt-4 pb-4 flex gap-10">
                 <Radio className={"flex-1"}
-                    position="right"
-                    label="hiragana"
-                    name="syllabary"
-                    value="true"
-                    checked={local}
-                    onChange={handleLocalChange}
+                       position="right"
+                       label="hiragana"
+                       name="syllabary"
+                       value="true"
+                       checked={local}
+                       onChange={handleLocalChange}
                 />
                 <Radio className={"flex-1"}
-                    position="left"
-                    label="katakana"
-                    name="syllabary"
-                    value="false"
-                    checked={!local}
-                    onChange={handleLocalChange}
+                       position="left"
+                       label="katakana"
+                       name="syllabary"
+                       value="false"
+                       checked={!local}
+                       onChange={handleLocalChange}
                 />
             </div>
             <div className={"flex gap-4"}>
@@ -100,21 +100,20 @@ export default function SyllabaryTrapsPage() {
                         return (
                             <li key={li[0]}
                                 className={`flex items-center gap-5`}>
-                                <div key={key}>
-                                    <div className={
-                                        `text-4xl 
-                                        text-center
-                                        flex
-                                        items-center
-                                        justify-center
-                                        w-20 
-                                        h-10 
-                                        rounded-lg 
-                                        bg-gradient-to-b 
-                                        shadow-lg
-                                        ${!match && "from-red-500"}
-                                        ${match && "from-fuchsia-500"}`
-                                    } title={key}>{local ? value[0] : value[1]}</div>
+                                <div key={key} className={
+                                    `text-4xl 
+                                    text-center
+                                    flex
+                                    items-center
+                                    justify-center
+                                    w-20 
+                                    h-10 
+                                    rounded-lg 
+                                    bg-gradient-to-b 
+                                    shadow-lg
+                                    ${!match && "from-red-500"}
+                                    ${match && "from-fuchsia-500"}`
+                                } title={key}>{local ? value[0] : value[1]}
                                 </div>
                                 <input
                                     className={`h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl`}
@@ -137,8 +136,6 @@ export default function SyllabaryTrapsPage() {
                             flex
                             items-center
                             justify-center
-                            w-20 
-                            h-10 
                             rounded-lg 
                             bg-gradient-to-b 
                             shadow-lg                                        

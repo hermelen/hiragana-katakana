@@ -2,8 +2,9 @@
 
 import {syllabaryRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 import React, {useEffect, useState} from "react";
-import {SyllabaryTrapList, HiraganaTraps, KatakanaTraps} from "@/app/lib/syllabaryTraps";
+import {SyllabaryTrapList} from "@/app/lib/syllabaryTrapsList";
 import {Radio} from "@/app/components/Radio";
+import {vocabularyRecord} from "@/app/lib/vocabularyRecord";
 
 export default function SyllabaryTrainingPage() {
     const [trainingData, setTrainingData] = useState<SyllabaryRecord>({});
@@ -30,7 +31,7 @@ export default function SyllabaryTrainingPage() {
     }
 
     function getTrainingData(): SyllabaryRecord {
-        const trainingCharacters = getRandomSyllabaryTraining();
+        const trainingCharacters = getRandomVocabularyTraining();
         const sourceRecord = syllabaryRecord;
         let trainingData: SyllabaryRecord = {};
         const initialTextListState: string[] = [];
@@ -54,7 +55,7 @@ export default function SyllabaryTrainingPage() {
         return trainingData;
     }
 
-    function shuffleArray(array: string[]) {
+    function shuffleArray(array: string[][]) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
@@ -62,9 +63,9 @@ export default function SyllabaryTrainingPage() {
         return array;
     }
 
-    function getRandomSyllabaryTraining() {
-        const trainingList: SyllabaryTrapList = Object.entries(syllabaryRecord).map((val => val[0]));
-        return shuffleArray(trainingList);
+    function getRandomVocabularyTraining() {
+        const trainingList: string[][] = Object.entries(vocabularyRecord).map((val => [val[0], val[1]]));
+        return shuffleArray(trainingList)[0];
     }
 
     function reloadTraining() {
