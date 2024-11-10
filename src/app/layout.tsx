@@ -33,9 +33,8 @@ export default function RootLayout({
             <li><a href={"/roman-to-japanese"}>roman to japanese</a></li>
             <li><a href={"/syllabary-traps"}>syllabary traps</a></li>
             <li><a href={"/syllabary-training"}>syllabary training</a></li>
-            <li><a href={"/vocabulary-training"}>vocabulary training</a></li>
-            <li><a href={"/syllabary"}>-translate-</a></li>
-            <li><a href={"/syllabary"}>-vocabulary-</a></li>
+            <li><a href={"/vocabulary-translate"}>vocabulary translate</a></li>
+            <li><a href={"/vocabulary-theme"}>vocabulary theme</a></li>
             <li><a href={"/syllabary"}>-dictionary-</a></li>
           </ul>
         </nav>

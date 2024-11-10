@@ -1,13 +1,8 @@
 "use client"
 
 import React, {useState} from "react";
-import {SyllabaryRecord, syllabaryRecord} from "@/app/lib/syllabaryRecord";
 import {Radio} from "@/app/components/Radio";
-import {replaceCharacterRecord} from "@/app/lib/replaceCharacterRecord";
-import {
-    LeftRightDialogHeader
-} from "next/dist/client/components/react-dev-overlay/internal/components/LeftRightDialogHeader";
-import {additionalSyllabaryRecord} from "@/app/lib/additionalSyllabaryRecords";
+import {getJapanese, getPhonetic, getRoman} from "@/app/services/theme";
 
 export default function RomanToJapanesePage() {
     const [text, setText] = useState<string>('');
@@ -96,103 +91,4 @@ export default function RomanToJapanesePage() {
             </div>
         </div>
     );
-}
-
-function getPhonetic(value: string) {
-    for (const key in replaceCharacterRecord) {
-        if (replaceCharacterRecord.hasOwnProperty(key)) {
-            const replacement = replaceCharacterRecord[key];
-            value = value.replace(new RegExp(key, "g"), replacement);
-        }
-    }
-    return value;
-}
-
-function getRoman(hiraganaArray: string[]) {
-    const firstJapaneseAsKey: Record<string, string> = {};
-
-    for (const [roman, japaneseArray] of Object.entries(syllabaryRecord)) {
-        const firstJapaneseChar = japaneseArray[0];
-        firstJapaneseAsKey[firstJapaneseChar] = roman;
-    }
-    
-    const romanArray: string[] = []
-    for (const hiragana of hiraganaArray) {
-        romanArray.push(firstJapaneseAsKey[hiragana])
-    }
-    
-    return romanArray.join("").replace(/u/g, "ou").replace(/e/g, "é");
-}
-
-function getJapanese(matchText: [string[], string[]], inputText: string, matchLength: number) : [[string[], string[]], string] {
-    if (inputText.length === 0) {
-        return [matchText, ""];
-    }
-    let processText = inputText.slice();
-    if (matchLength === 3) {
-        if (processText.length >= matchLength) {
-            const [rest, translation] = tryParse(processText, 3);
-            const [hiraganaSyllabary, katakanaSyllabary] = translation;
-            if (hiraganaSyllabary && katakanaSyllabary) {
-                matchText[0].push(hiraganaSyllabary);
-                matchText[1].push(katakanaSyllabary);
-                if (rest !== "") {
-                    const length = rest.length < 4 ? rest.length : 3;
-                    return getJapanese(matchText, rest, length);
-                } else {
-                    return [matchText, rest];
-                }
-            }
-        }
-        return getJapanese(matchText, inputText, 2);
-    } else if (matchLength === 2) {
-        if (processText.length >= matchLength) {
-            const [rest, translation] = tryParse(processText, 2);
-            const [hiraganaSyllabary, katakanaSyllabary] = translation;
-            if (hiraganaSyllabary && katakanaSyllabary) {
-                matchText[0].push(hiraganaSyllabary);
-                matchText[1].push(katakanaSyllabary);
-                if (rest !== "") {
-                    const length = rest.length < 4 ? rest.length : 3;
-                    return getJapanese(matchText, rest, length);
-                } else {
-                    return [matchText, rest];
-                }
-            }
-        }
-        return getJapanese(matchText, inputText, 1);
-    } else if (matchLength === 1) {
-        if (processText.length >= matchLength) {
-            const [rest, translation] = tryParse(processText, 1);
-            const [hiraganaSyllabary, katakanaSyllabary] = translation;
-            if (hiraganaSyllabary !== "" && katakanaSyllabary !== "") {
-                matchText[0].push(hiraganaSyllabary);
-                matchText[1].push(katakanaSyllabary);
-                if (rest !== "") {
-                    const length = rest.length < 4 ? rest.length : 3;
-                    return getJapanese(matchText, rest, length);
-                }
-            }
-        }
-    }
-    return [matchText, ""];
-}
-
-function tryParse(inputText: string, length: number): [string, [string, string]] {
-    const partialText = inputText.slice(0, length);
-    const syllabaryRecordEnriched: SyllabaryRecord = {
-        ...syllabaryRecord,
-        ...additionalSyllabaryRecord
-
-    };
-    const matchText = syllabaryRecordEnriched[partialText];
-    if (matchText) {
-        const rest = inputText.slice(length);
-        return [rest, matchText];
-    }
-    return [inputText, ["", ""]];
-}
-
-function isNotAlphabetic(value: string): boolean {
-    return !/^[A-Za-z]+$/.test(value);
 }

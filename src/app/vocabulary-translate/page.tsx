@@ -6,20 +6,19 @@ import { SyllabaryTrapList } from "@/app/lib/syllabaryTrapsList";
 import { Radio } from "@/app/components/Radio";
 import { vocabularyRecord } from "@/app/lib/vocabularyRecord";
 
-export default function VocabularyTrainingPage() {
-    const [trainingData, setTrainingData] = useState<[string, string] | null>(null);
+export default function VocabularyTranslatePage() {
+    const [translateData, setTranslateData] = useState<[string, string] | null>(null);
     const [success, setSuccess] = useState<boolean>(false);
     const [text, setText] = useState<string>("");
 
     useEffect(() => {
-        // Initialize trainingData on client-side only
-        setTrainingData(getRandomVocabularyTraining());
+        setTranslateData(getRandomVocabularyTranslate());
     }, []);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value);
-        if (trainingData) {
-            setSuccess(event.target.value === trainingData[0]);
+        if (translateData) {
+            setSuccess(event.target.value === translateData[0]);
         }
     };
 
@@ -31,19 +30,18 @@ export default function VocabularyTrainingPage() {
         return array[0];
     }
 
-    function getRandomVocabularyTraining(): [string, string] {
-        const trainingList: [string, string][] = Object.entries(vocabularyRecord);
-        return shuffleArray(trainingList);
+    function getRandomVocabularyTranslate(): [string, string] {
+        const translateList: [string, string][] = Object.entries(vocabularyRecord);
+        return shuffleArray(translateList);
     }
 
-    function reloadTraining() {
-        setTrainingData(getRandomVocabularyTraining());
+    function reloadTranslate() {
+        setTranslateData(getRandomVocabularyTranslate());
         setText("");
         setSuccess(false);
     }
 
-    if (!trainingData) {
-        // Render a loading state while trainingData is being set on the client
+    if (!translateData) {
         return <div>Loading...</div>;
     }
 
@@ -63,10 +61,10 @@ export default function VocabularyTrainingPage() {
                             rounded-lg 
                             bg-gradient-to-b 
                             shadow-lg
-                            ${text !== trainingData[0] ? "from-red-500" : "from-fuchsia-500"}`}
-                            title={trainingData[0]}
+                            ${text !== translateData[0] ? "from-red-500" : "from-fuchsia-500"}`}
+                            title={translateData[0]}
                         >
-                            {trainingData[1]}
+                            {translateData[1]}
                         </div>
                         <input
                             className={`h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl`}
@@ -90,7 +88,7 @@ export default function VocabularyTrainingPage() {
                             bg-gradient-to-b 
                             shadow-lg                                        
                             ${!success ? "from-red-500 disabled:opacity-75" : "from-fuchsia-500"}`}
-                            onClick={reloadTraining}
+                            onClick={reloadTranslate}
                             disabled={!success}
                         >
                             Other Try

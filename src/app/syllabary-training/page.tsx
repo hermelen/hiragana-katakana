@@ -47,7 +47,6 @@ export default function SyllabaryTrainingPage() {
             }
         }
         setTextList(initialTextListState);
-        console.log(trainingData);
         return trainingData;
     }
 
