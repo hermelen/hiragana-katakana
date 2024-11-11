@@ -1,6 +1,7 @@
 import {syllabaryRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 import {additionalSyllabaryRecord} from "@/app/lib/additionalSyllabaryRecords";
 import {replaceCharacterRecord} from "@/app/lib/replaceCharacterRecord";
+import {finalSyllabaryRecord} from "@/app/lib/finalSyllabaryRecords";
 
 export function getJapanese(matchText: [string[], string[]], inputText: string, matchLength: number, force: boolean) : [[string[], string[]], string] {
     if (inputText.length === 0) {
@@ -58,10 +59,11 @@ export function getJapanese(matchText: [string[], string[]], inputText: string, 
 
 function tryParse(inputText: string, length: number, force: boolean): [string, [string, string]] {
     const partialText = inputText.slice(0, length);
-    const additionalSyllabary = force ? additionalSyllabaryRecord : {};
+    const finalSyllabary = force ? finalSyllabaryRecord : {};
     const syllabaryRecordEnriched: SyllabaryRecord = {
         ...syllabaryRecord,
-        ...additionalSyllabary
+        ...additionalSyllabaryRecord,
+        ...finalSyllabary
 
     };
     const matchText = syllabaryRecordEnriched[partialText];

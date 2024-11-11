@@ -53,4 +53,7 @@ export const vocabularyRecord: Record<string, string> = {
     "two": "に",
     "three": "さん",
     "four": "よん",
+    "cute": "やさい",
+    "yes": "はい",
+    "no": "いいえ",
 }
