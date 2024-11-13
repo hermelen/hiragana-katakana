@@ -1,7 +1,8 @@
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
-use tokio_postgres::tls::NoTlsStream;
-use tokio_postgres::{Client, Connection, Error, NoTls, Row, Socket};
+use tokio;
+use tokio::main;
+use tokio_postgres::{NoTls, Row};
 use uuid::Uuid;
 
 #[macro_use]
@@ -29,27 +30,30 @@ trait FromRow {
     fn from_row(row: Row) -> Self;
 }
 
-//DATABASE URL
-// const DB_URL: &str = "postgresql://<username>:<password>@<hostname>:<port>/<database>"
-const DB_URL: &str = "postgresql://hiragana:hiragana@localhost:6000/postgres";
+// DATABASE URL
+const DB_URL: &str = "postgresql://postgres:postgres@localhost:6000/postgres";
 
 const OK_RESPONSE: &str = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Allow-Methods: GET, POST, PUT, DELETE\r\nAccess-Control-Allow-Headers: Content-Type\r\n\r\n";
 const NOT_FOUND: &str = "HTTP/1.1 404 NOT FOUND\r\n\r\n";
 const INTERNAL_ERROR: &str = "HTTP/1.1 500 INTERNAL ERROR\r\n\r\n";
 
-fn main() {
-    if let Err(_) = set_database() {
-        println!("Error setting database");
+#[main]
+async fn main() {
+    // Set up the database asynchronously
+    if let Err(e) = set_database().await {
+        println!("Error setting database: {}", e);
         return;
     }
 
-    let listener = TcpListener::bind(format!("0.0.0.0:8000")).unwrap();
+    // Start TCP listener
+    let listener = TcpListener::bind("0.0.0.0:8000").unwrap();
     println!("Server listening on port 8000");
 
     for stream in listener.incoming() {
         match stream {
             Ok(stream) => {
-                handle_client(stream);
+                // Handle the client connection
+                handle_client(stream).await;
             }
             Err(e) => {
                 println!("Unable to connect: {}", e);
@@ -339,7 +343,7 @@ async fn handle_put_syllables_request(request: &str) -> (String, String) {
 
 async fn handle_delete_words_request(request: &str) -> (String, String) {
     match (get_id(&request).parse::<Uuid>(), tokio_postgres::connect(DB_URL, NoTls).await) {
-        (Ok(id), Ok((mut client, connection))) => {
+        (Ok(id), Ok((client, connection))) => {
             tokio::spawn(async move {
                 if let Err(e) = connection.await {
                     eprintln!("Connection error: {}", e);
@@ -369,7 +373,7 @@ async fn handle_delete_words_request(request: &str) -> (String, String) {
 
 async fn handle_delete_syllables_request(request: &str) -> (String, String) {
     match (get_id(&request).parse::<Uuid>(), tokio_postgres::connect(DB_URL, NoTls).await) {
-        (Ok(id), Ok((mut client, connection))) => {
+        (Ok(id), Ok((client, connection))) => {
             tokio::spawn(async move {
                 if let Err(e) = connection.await {
                     eprintln!("Connection error: {}", e);

@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - '6000:6000'
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    command: -p 6000
+    expose:
+      - 6000
+volumes:
+  data: {}
