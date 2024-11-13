@@ -1,11 +1,10 @@
 .idea/
 
-back/target/*
-back/Cargo.lock
-back/.idea/
+api/target/*
+api/Cargo.lock
+api/.idea/
 
-front/node_modules/
-front/package-lock.json
-front/.idea/
-front/.next/
-front/next-env.d.ts
+web/node_modules/
+web/.idea/
+web/.next/
+web/next-env.d.ts

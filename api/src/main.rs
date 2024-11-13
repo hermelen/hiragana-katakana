@@ -21,8 +21,8 @@ struct Syllable {
 struct Word {
     id: Option<Uuid>,
     roman: String,
-    hiragana: String,
-    katakana: String,
+    hiragana: Option<String>,
+    katakana: Option<String>,
     kanji: Option<String>,
 }
 
@@ -72,16 +72,16 @@ async fn handle_client(mut stream: TcpStream) {
 
             let (status_line, content) = match &*request {
                 r if r.starts_with("OPTIONS") => (OK_RESPONSE.to_string(), "".to_string()),
-                r if r.starts_with("POST /api/rust/words") => handle_post_words_request(r).await,
-                r if r.starts_with("POST /api/rust/syllables") => handle_post_syllables_request(r).await,
-                r if r.starts_with("GET /api/rust/words/") => handle_get_words_request(r).await,
-                r if r.starts_with("GET /api/rust/syllables/") => handle_get_syllables_request(r).await,
-                r if r.starts_with("GET /api/rust/words") => handle_get_all_words_request(r).await,
-                r if r.starts_with("GET /api/rust/syllables") => {handle_get_all_syllables_request(r).await}
-                r if r.starts_with("PUT /api/rust/words/") => handle_put_words_request(r).await,
-                r if r.starts_with("PUT /api/rust/syllables/") => handle_put_syllables_request(r).await,
-                r if r.starts_with("DELETE /api/rust/words/") => handle_delete_words_request(r).await,
-                r if r.starts_with("DELETE /api/rust/syllables/") => {handle_delete_syllables_request(r).await}
+                r if r.starts_with("POST /api/rust/word") => handle_post_words_request(r).await,
+                r if r.starts_with("POST /api/rust/syllable") => handle_post_syllables_request(r).await,
+                r if r.starts_with("GET /api/rust/word/") => handle_get_words_request(r).await,
+                r if r.starts_with("GET /api/rust/syllable/") => handle_get_syllables_request(r).await,
+                r if r.starts_with("GET /api/rust/word") => handle_get_all_words_request(r).await,
+                r if r.starts_with("GET /api/rust/syllable") => {handle_get_all_syllables_request(r).await}
+                r if r.starts_with("PUT /api/rust/word/") => handle_put_words_request(r).await,
+                r if r.starts_with("PUT /api/rust/syllable/") => handle_put_syllables_request(r).await,
+                r if r.starts_with("DELETE /api/rust/word/") => handle_delete_words_request(r).await,
+                r if r.starts_with("DELETE /api/rust/syllable/") => {handle_delete_syllables_request(r).await}
                 _ => (NOT_FOUND.to_string(), "404 not found".to_string()),
             };
 
@@ -107,7 +107,7 @@ async fn handle_post_words_request(request: &str) -> (String, String) {
 
             match client
                 .query_one(
-                    "INSERT INTO words (roman, hiragana, katakana, kanji) VALUES ($1, $2, $3, $4) RETURNING id",
+                    "INSERT INTO word (roman, hiragana, katakana, kanji) VALUES ($1, $2, $3, $4) RETURNING id",
                     &[&word.roman, &word.hiragana, &word.katakana, &word.kanji],
                 )
                 .await
@@ -115,7 +115,7 @@ async fn handle_post_words_request(request: &str) -> (String, String) {
                 Ok(row) => {
                     let id: Uuid = row.get(0);
                     match client
-                        .query_one("SELECT * FROM words WHERE id = $1", &[&id])
+                        .query_one("SELECT * FROM word WHERE id = $1", &[&id])
                         .await
                     {
                         Ok(row) => {
@@ -152,7 +152,7 @@ async fn handle_post_syllables_request(request: &str) -> (String, String) {
 
             match client
                 .query_one(
-                    "INSERT INTO words (roman, hiragana, katakana, kanji) VALUES ($1, $2, $3, $4) RETURNING id",
+                    "INSERT INTO word (roman, hiragana, katakana, kanji) VALUES ($1, $2, $3, $4) RETURNING id",
                     &[&syllable.roman, &syllable.hiragana, &syllable.katakana, &syllable.kanji],
                 )
                 .await
@@ -160,7 +160,7 @@ async fn handle_post_syllables_request(request: &str) -> (String, String) {
                 Ok(row) => {
                     let id: Uuid = row.get(0);
                     match client
-                        .query_one("SELECT * FROM words WHERE id = $1", &[&id])
+                        .query_one("SELECT * FROM word WHERE id = $1", &[&id])
                         .await
                     {
                         Ok(row) => {
@@ -195,7 +195,7 @@ async fn handle_get_words_request(request: &str) -> (String, String) {
                 }
             });
             match client
-                .query_one("SELECT * FROM words WHERE id = $1", &[&id])
+                .query_one("SELECT * FROM word WHERE id = $1", &[&id])
                 .await
             {
                 Ok(row) => {
@@ -224,7 +224,7 @@ async fn handle_get_syllables_request(request: &str) -> (String, String) {
                 }
             });
             match client
-                .query_one("SELECT * FROM syllables WHERE id = $1", &[&id])
+                .query_one("SELECT * FROM syllable WHERE id = $1", &[&id])
                 .await
             {
                 Ok(row) => {
@@ -234,7 +234,7 @@ async fn handle_get_syllables_request(request: &str) -> (String, String) {
                         serde_json::to_string(&syllable).unwrap(),
                     )
                 }
-                _ => (NOT_FOUND.to_string(), "syllables not found".to_string()),
+                _ => (NOT_FOUND.to_string(), "syllable not found".to_string()),
             }
         }
         _ => (INTERNAL_ERROR.to_string(), "Internal error".to_string()),
@@ -250,7 +250,7 @@ async fn handle_get_all_words_request(_request: &str) -> (String, String) {
                 }
             });
             let mut words = Vec::new();
-            for row in client.query("SELECT * FROM words", &[]).await.unwrap() {
+            for row in client.query("SELECT * FROM word", &[]).await.unwrap() {
                 let word: Word = new_from_row(row).await;
                 words.push(word);
             }
@@ -273,7 +273,7 @@ async fn handle_get_all_syllables_request(_request: &str) -> (String, String) {
             });
             let mut syllables = Vec::new();
 
-            for row in client.query("SELECT * FROM syllables", &[]).await.unwrap() {
+            for row in client.query("SELECT * FROM syllable", &[]).await.unwrap() {
                 let syllable: Syllable = new_from_row(row).await;
                 syllables.push(syllable);
             }
@@ -298,7 +298,7 @@ async fn handle_put_words_request(request: &str) -> (String, String) {
 
             match client
                 .execute(
-                    "UPDATE words SET roman = $1, hiragana = $2, katakana = $3, kanji = $4 WHERE id = $5",
+                    "UPDATE word SET roman = $1, hiragana = $2, katakana = $3, kanji = $4 WHERE id = $5",
                     &[&word.roman, &word.hiragana, &word.katakana, &word.kanji, &id],
                 )
                 .await
@@ -326,7 +326,7 @@ async fn handle_put_syllables_request(request: &str) -> (String, String) {
             });
 
             match client
-                .execute("UPDATE syllables SET roman = $1, hiragana = $2, katakana = $3, kanji = $4 WHERE id = $5",
+                .execute("UPDATE syllable SET roman = $1, hiragana = $2, katakana = $3, kanji = $4 WHERE id = $5",
                     &[&syllable.roman, &syllable.hiragana, &syllable.katakana, &syllable.kanji, &id],)
                 .await
             {
@@ -351,7 +351,7 @@ async fn handle_delete_words_request(request: &str) -> (String, String) {
             });
 
             match client
-                .execute("DELETE FROM words WHERE id = $1", &[&id])
+                .execute("DELETE FROM word WHERE id = $1", &[&id])
                 .await
             {
                 Ok(rows_affected) => {
@@ -381,7 +381,7 @@ async fn handle_delete_syllables_request(request: &str) -> (String, String) {
             });
 
             match client
-                .execute("DELETE FROM syllables WHERE id = $1", &[&id])
+                .execute("DELETE FROM syllable WHERE id = $1", &[&id])
                 .await
             {
                 Ok(rows_affected) => {
@@ -412,18 +412,18 @@ async fn set_database() -> Result<(), Box<dyn std::error::Error>> {
 
     client.batch_execute(
         "
-        CREATE TABLE IF NOT EXISTS syllables (
+        CREATE TABLE IF NOT EXISTS syllable (
             id uuid DEFAULT gen_random_uuid(),
             roman VARCHAR NOT NULL,
             hiragana VARCHAR NOT NULL,
             katakana VARCHAR NOT NULL,
             kanji VARCHAR NULL
         );
-        CREATE TABLE IF NOT EXISTS words (
+        CREATE TABLE IF NOT EXISTS word (
             id uuid DEFAULT gen_random_uuid(),
             roman VARCHAR NOT NULL,
-            hiragana VARCHAR NOT NULL,
-            katakana VARCHAR NOT NULL,
+            hiragana VARCHAR NULL,
+            katakana VARCHAR NULL,
             kanji VARCHAR NULL
         );
         "
@@ -455,9 +455,9 @@ impl FromRow for Word {
         Word {
             id: Some(row.get(0)),
             roman: row.get(1),
-            hiragana: row.get(2),
-            katakana: row.get(3),
-            kanji: Some(row.get(4)),
+            hiragana: row.get::<_, Option<String>>(2),
+            katakana: row.get::<_, Option<String>>(3),
+            kanji: row.get::<_, Option<String>>(4),
         }
     }
 }
@@ -469,7 +469,7 @@ impl FromRow for Syllable {
             roman: row.get(1),
             hiragana: row.get(2),
             katakana: row.get(3),
-            kanji: Some(row.get(4)),
+            kanji: row.get::<_, Option<String>>(4),
         }
     }
 }
