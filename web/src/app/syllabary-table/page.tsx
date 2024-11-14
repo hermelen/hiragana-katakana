@@ -1,13 +1,14 @@
 "use client";
 
-import { syllabaryRecord, SyllabaryRecord } from "@/app/lib/syllabaryRecord";
+import React, {useEffect, useState} from "react";
+import {Radio} from "@/app/components/Radio";
+import {UUID} from "node:crypto";
+import {getSyllableList} from "@/api/http";
+import {SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 
-import React, { useEffect, useState } from "react";
-import { Radio } from "@/app/components/Radio";
-import { UUID } from "node:crypto";
-
-interface Syllable {
+export interface Syllable {
   id: UUID;
+  roman: string;
   hiragana: string;
   katakana: string;
   kanji?: string;
@@ -17,69 +18,62 @@ export default function SyllabaryTablePage() {
   type TableData = Record<string, [string, string]>[];
   const [local, setLocal] = useState<boolean>(true);
   const [syllableList, setSyllableList] = useState<Syllable[]>([]);
+  const [syllabaryRecordList, setSyllabaryRecordList] = useState<TableData[]>([]);
   const noChar = "";
   const backendName = "rust";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchData = async () => {
-      fetch(`${apiUrl}/api/${backendName}/syllable`)
-        .then((response) => response.json())
-        .then((response) => {
-          setSyllableList(response);
-          console.log(response);
-        })
-        .catch((err) => {
-          console.error("Error getting data:", err);
-        });
+      const response = await getSyllableList(apiUrl, backendName);
+      setSyllableList(response);
     };
-
     fetchData();
   }, [backendName, apiUrl]);
 
-  function splitRecordByValueLength(
-    syllabaryRecord: SyllabaryRecord,
-  ): TableData[] {
-    const tableData: TableData[] = [];
-    let currentArray: TableData = [];
-
-    for (const [key, [hiragana, katakana]] of Object.entries(syllabaryRecord)) {
-      const currentItem: Record<string, [string, string]> = {
-        [key]: [hiragana, katakana],
-      };
-
-      if (key.length === 1) {
-        if (currentArray.length > 0) {
-          tableData.push(currentArray);
-          currentArray = [];
-        }
-        currentArray.push(currentItem);
-      } else {
-        currentArray.push(currentItem);
-        if (key === "mi") {
-          currentArray.push({ yi: [noChar, noChar] });
-        }
-        if (key === "me") {
-          currentArray.push({ ye: [noChar, noChar] });
-        }
-        if (key === "ru") {
-          currentArray.push({ wu: [noChar, noChar] });
+  useEffect(() => {
+    const formatSyllabaryRecordList = () => {
+      const tableData: TableData[] = [];
+      let currentArray: TableData = [];
+      if (syllableList.length === 0) {
+        return;
+      }
+      for (let syllable: Syllable of syllableList) {
+        const currentItem: Record<string, [string, string]> = { [syllable.roman]: [syllable.hiragana, syllable.katakana] };
+        if (syllable.roman.length === 1) {
+          if (currentArray.length > 0) {
+            tableData.push(currentArray);
+            currentArray = [];
+          }
+          currentArray.push(currentItem);
+        } else {
+          currentArray.push(currentItem);
+          if (syllable.roman === "mi") {
+            currentArray.push({ yi: [noChar, noChar] });
+          }
+          if (syllable.roman === "me") {
+            currentArray.push({ ye: [noChar, noChar] });
+          }
+          if (syllable.roman === "ru") {
+            currentArray.push({ wu: [noChar, noChar] });
+          }
         }
       }
-    }
+  
+      if (currentArray.length > 0) {
+        tableData.push(currentArray);
+      }
+      
+      setSyllabaryRecordList(tableData);
+    };
+    formatSyllabaryRecordList();
+  }, [syllableList]);
 
-    if (currentArray.length > 0) {
-      tableData.push(currentArray);
-    }
 
-    return tableData;
-  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLocal(event.target.value === "true");
   };
-
-  const tableData = splitRecordByValueLength(syllabaryRecord);
 
   return (
     <div>
@@ -104,7 +98,7 @@ export default function SyllabaryTablePage() {
         />
       </div>
       <div className="flex gap-4">
-        {tableData.map((ul, ulIndex) => (
+        {syllabaryRecordList.map((ul, ulIndex) => (
           <ul key={ulIndex} className="flex flex-col gap-4">
             {ul.map((li, liIndex) => {
               const key = Object.keys(li)[0];

@@ -1,8 +1,10 @@
 "use client"
 
-import {syllabaryRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
+import {getSyllableListToRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 import React, {useEffect, useState} from "react";
 import {Radio} from "@/app/components/Radio";
+import {Syllable} from "@/app/syllabary-table/page";
+import {getSyllableList} from "@/api/http";
 
 export default function SyllabaryTrainingPage() {
     const [trainingData, setTrainingData] = useState<SyllabaryRecord>({});
@@ -10,6 +12,17 @@ export default function SyllabaryTrainingPage() {
     const [basic, setBasic] = useState<boolean>(true);
     const [success, setSuccess] = useState<boolean>(false);
     const [textList, setTextList] = useState<string[]>([]);
+    const [syllableList, setSyllableList] = useState<Syllable[]>([]);
+    const backendName = "rust";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await getSyllableList(apiUrl, backendName);
+            setSyllableList(response);
+        };
+        fetchData();
+    }, [backendName, apiUrl]);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const newTextList = [...textList];
@@ -59,7 +72,7 @@ export default function SyllabaryTrainingPage() {
     }
 
     function getRandomVocabularyTraining() {
-        const trainingList: [string, [string, string]][] = Object.entries(syllabaryRecord);
+        const trainingList: [string, [string, string]][] = Object.entries(getSyllableListToRecord(syllableList));
         return shuffleArray(trainingList);
     }
 

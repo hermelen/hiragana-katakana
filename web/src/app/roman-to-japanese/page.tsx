@@ -1,26 +1,46 @@
 "use client"
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Radio} from "@/app/components/Radio";
 import {getJapanese, getPhonetic, getRoman} from "@/app/services/theme";
+import {getSyllableList} from "@/api/http";
+import {Syllable} from "@/app/syllabary-table/page";
+import {getSyllableListToRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 
 export default function RomanToJapanesePage() {
     const [text, setText] = useState<string>('');
-    const [phonetic, setPhonetic] = useState<string>('');
     const [roman, setRoman] = useState<string>('');
     const [hiragana, setHiragana] = useState<string>('');
     const [katakana, setKatakana] = useState<string>('');
     const [local, setLocal] = useState<boolean>(true);
+    const [syllableList, setSyllableList] = useState<Syllable[]>([]);
+    const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});
+    const backendName = "rust";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await getSyllableList(apiUrl, backendName);
+            setSyllableList(response);
+        };
+        fetchData();
+    }, [backendName, apiUrl]);
+
+    useEffect(() => {
+        const syllableListToRecord = () => {
+            setSyllabaryRecord(getSyllableListToRecord(syllableList));
+        };
+        syllableListToRecord();
+    }, [syllableList]);
+    
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value);
         const textToTranslate = getPhonetic(event.target.value)
-        setPhonetic(textToTranslate);
         let matchText: [string[], string[]] = [[], []];
-        const [translation, _] = getJapanese(matchText, textToTranslate, 3, true);
+        const [translation, _] = getJapanese(syllabaryRecord, matchText, textToTranslate, 3, true);
         setHiragana(translation[0].join(""));
         setKatakana(translation[1].join(""));
-        const resultToRoman = getRoman(translation[0]);
+        const resultToRoman = getRoman(syllabaryRecord, translation[0]);
         setRoman(resultToRoman);
     };
 
