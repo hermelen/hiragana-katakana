@@ -1,7 +1,7 @@
 "use client"
 
 import {getSyllableListToRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Radio} from "@/app/components/Radio";
 import {Syllable} from "@/app/syllabary-table/page";
 import {getSyllableList} from "@/api/http";
@@ -9,9 +9,11 @@ import {getSyllableList} from "@/api/http";
 export default function SyllabaryTrainingPage() {
     const [trainingData, setTrainingData] = useState<SyllabaryRecord>({});
     const [local, setLocal] = useState<boolean>(true);
+    const [retry, setRetry] = useState<number>(0);
     const [basic, setBasic] = useState<boolean>(true);
     const [success, setSuccess] = useState<boolean>(false);
     const [textList, setTextList] = useState<string[]>([]);
+    const [score, setScore] = useState<number[]>([0, 10]);
     const [syllableList, setSyllableList] = useState<Syllable[]>([]);
     const backendName = "rust";
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -24,43 +26,29 @@ export default function SyllabaryTrainingPage() {
         fetchData();
     }, [backendName, apiUrl]);
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const newTextList = [...textList];
         newTextList[index] = event.target.value;
         setTextList(newTextList);
         setSuccess(computeSuccess(newTextList));
-    };
+    }, [textList]);
+    
 
     function computeSuccess(sourceList: string[]) {
         const targetList = Object.entries(trainingData).map((val => val[0]));
+        let tryScore = 0;
         for (let i = 0; i < targetList.length; i++) {
-            if (sourceList[i] !== targetList[i]) {
-                return false;
+            if (sourceList[i] === targetList[i]) {
+                tryScore++
             }
         }
-        return true;
-    }
-
-    function getTrainingData(): SyllabaryRecord {
-        const trainingCharacters = getRandomVocabularyTraining();
-        let trainingData: SyllabaryRecord = {};
-        const initialTextListState: string[] = [];
-        for (let i = 0; i < trainingCharacters.length; i++) {
-            if (initialTextListState.length < 10) {
-                const basicData = basic && trainingCharacters[i][1][0].length === 1;
-                const advancedData = !basic && trainingCharacters[i][1][0].length === 2;
-                if (basicData) {
-                    initialTextListState.push("");
-                    trainingData[trainingCharacters[i][0]] = trainingCharacters[i][1];
-                }
-                if (advancedData) {
-                    initialTextListState.push("");
-                    trainingData[trainingCharacters[i][0]] = trainingCharacters[i][1];
-                }
-            }
+        const success = tryScore/sourceList.length === 1;
+        if (success) {
+            setScore([score[0] + tryScore, score[1] + targetList.length])
+        } else {
+            setScore([score[0] + tryScore, score[1]])
         }
-        setTextList(initialTextListState);
-        return trainingData;
+        return success
     }
 
     function shuffleArray(array: [string, [string, string]][]) {
@@ -71,29 +59,53 @@ export default function SyllabaryTrainingPage() {
         return array;
     }
 
-    function getRandomVocabularyTraining() {
-        const trainingList: [string, [string, string]][] = Object.entries(getSyllableListToRecord(syllableList));
-        return shuffleArray(trainingList);
-    }
-
-    function reloadTraining() {
-        setTrainingData(getTrainingData())
-    }
-
     useEffect(() => {
-        setTrainingData(getTrainingData());
-    }, [local, basic]);
+        const getTrainingData = () => {
+            if (syllableList.length === 0) {
+                return <div>Loading...</div>;
+            }
+            const trainingList: [string, [string, string]][] = Object.entries(getSyllableListToRecord(syllableList));
+            const trainingCharacters = shuffleArray(trainingList);
+            let trainingData: SyllabaryRecord = {};
+            const initialTextListState: string[] = [];
+            for (let i = 0; i < trainingCharacters.length; i++) {
+                if (initialTextListState.length < 10) {
+                    const basicData = basic && trainingCharacters[i][1][0].length === 1;
+                    const advancedData = !basic && trainingCharacters[i][1][0].length === 2;
+                    if (basicData) {
+                        initialTextListState.push("");
+                        trainingData[trainingCharacters[i][0]] = trainingCharacters[i][1];
+                    }
+                    if (advancedData) {
+                        initialTextListState.push("");
+                        trainingData[trainingCharacters[i][0]] = trainingCharacters[i][1];
+                    }
+                }
+            }
+            setTextList(initialTextListState);
+            setTrainingData(trainingData);
+            setSuccess(false);
+        }
+        getTrainingData();
+    }, [syllableList, basic, retry]);
+    
 
-    const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleReload = useCallback(() => {
+        setRetry(retry + 1)
+    }, []);
+
+    const handleLocalChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setLocal(event.target.value === 'true');
-    };
+    }, [local]);
 
-    const handleBasicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    const handleBasicChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setBasic(event.target.value === 'true');
-    };
+    }, [basic]);
 
     return (
         <div className={"md:w-4/12 size-full"}>
+            {score[0]}/{score[1]}
             <div className="pt-4 pb-4 flex gap-10">
                 <Radio className={"flex-1"}
                     position="right"
@@ -130,10 +142,10 @@ export default function SyllabaryTrainingPage() {
                 <ul className="flex flex-col gap-4 justify-center size-full">
                     {Object.entries(trainingData).map((li, index) => {
                         const key = li[0];
-                        const value = Object.values(li)[1];
+                        const value = local ? Object.values(li)[1][0] : Object.values(li)[1][1];
                         const match = textList[index] === key;
                         return (
-                            <li className={`flex items-center gap-5`}>
+                            <li className={`flex items-center gap-5`} title={key} key={key}>
                                 <div>
                                     <div className={
                                         `text-4xl 
@@ -148,7 +160,7 @@ export default function SyllabaryTrainingPage() {
                                         shadow-lg
                                         ${!match && "from-red-500"}
                                         ${match && "from-fuchsia-500"}`}>
-                                        {value[1]}
+                                        {value}
                                     </div>
                                 </div>
                                 <input
@@ -177,7 +189,7 @@ export default function SyllabaryTrainingPage() {
                             shadow-lg                                        
                             ${!success && "from-red-500 disabled:opacity-75"}
                             ${success && "from-fuchsia-500"}`}
-                                onClick={reloadTraining}
+                                onClick={handleReload}
                                 disabled={!success}>
                             Other Try
                         </button>
