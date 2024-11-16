@@ -25,7 +25,7 @@ export default function VocabularyDictionaryPage() {
     }
 
     return (
-        <div className={"md:w-6/12 size-full"}>
+        <div className={"lg:w-6/12 size-full"}>
             <div className={"flex gap-4"}>
                 <ul className="flex flex-col gap-4 justify-center size-full">
                     {translateData.map(val => {

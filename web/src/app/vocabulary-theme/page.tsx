@@ -52,12 +52,13 @@ export default function VocabularyThemePage() {
     }
 
     return (
-        <div className={"md:w-6/12 size-full"}>
+        <div className={"lg:w-6/12 size-full"}>
             <div className={"flex gap-4"}>
                 <ul className="flex flex-col gap-4 justify-center size-full">
                     <li className={`flex items-center gap-5 size-full`}>
                         <div title={themeData[1]}
                             className={`text-4xl 
+                            size-full
                             text-center
                             flex
                             items-center
@@ -71,7 +72,7 @@ export default function VocabularyThemePage() {
                             {themeData[0]}
                         </div>
                         <input
-                            className={`h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl`}
+                            className={`h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full`}
                             type="text"
                             value={text}
                             onChange={handleInputChange}

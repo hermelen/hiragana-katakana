@@ -46,7 +46,7 @@ export default function VocabularyTranslatePage() {
     }
 
     return (
-        <div className={"md:w-6/12 size-full"}>
+        <div className={"lg:w-6/12 size-full"}>
             <div className={"flex gap-4"}>
                 <ul className="flex flex-col gap-4 justify-center size-full">
                     <li className={`flex items-center gap-5 size-full`}>
@@ -66,7 +66,7 @@ export default function VocabularyTranslatePage() {
                             {translateData[1]}
                         </div>
                         <input
-                            className={`h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl`}
+                            className={`h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full`}
                             type="text"
                             value={text}
                             onChange={handleInputChange}
@@ -76,6 +76,7 @@ export default function VocabularyTranslatePage() {
                         <div className={`w-80 h-10`}></div>
                         <button
                             className={`h-10 
+                            size-full
                             flex-1 
                             text-xl 
                             text-center

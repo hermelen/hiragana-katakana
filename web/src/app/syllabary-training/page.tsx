@@ -99,7 +99,7 @@ export default function SyllabaryTrainingPage() {
   }, [basic]);
 
   return (
-    <div className={"md:w-4/12 size-full"}>
+    <div className={"lg:w-4/12 size-full"}>
       {score.reduce((acc, curr) => acc + curr, 0)}/{(score.length * 10)}
       <div className="pt-4 pb-4 flex gap-10">
         <Radio className={"flex-1"}
@@ -159,7 +159,7 @@ export default function SyllabaryTrainingPage() {
                   </div>
                 </div>
                 <input
-                  className={`h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl`}
+                  className={`h-10 flex-1 size-full text-center rounded-lg shadow-lg text-black text-xl`}
                   type="text"
                   value={textList[index]}
                   onChange={(event) => handleInputChange(event, index)}
