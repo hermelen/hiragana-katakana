@@ -1,10 +1,13 @@
-"use client"
+"use client";
 
-import {getSyllableListToRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
-import React, {useCallback, useEffect, useState} from "react";
-import {Radio} from "@/app/components/Radio";
-import {Syllable} from "@/app/syllabary-table/page";
-import {getSyllableList} from "@/api/http";
+import {
+  getSyllableListToRecord,
+  SyllabaryRecord,
+} from "@/app/lib/syllabaryRecord";
+import React, { useCallback, useEffect, useState } from "react";
+import { Radio } from "@/app/components/Radio";
+import { Syllable } from "@/app/syllabary-table/page";
+import { getSyllableList } from "@/api/http";
 
 export default function SyllabaryTrainingPage() {
   const [trainingData, setTrainingData] = useState<SyllabaryRecord>({});
@@ -24,20 +27,22 @@ export default function SyllabaryTrainingPage() {
     fetchData();
   }, [backendName, apiUrl]);
 
-  const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-    const newTextList = [...textList];
-    newTextList[index] = event.target.value;
-    setTextList(newTextList);
-    computeScore(newTextList);
-  }, [textList]);
-
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+      const newTextList = [...textList];
+      newTextList[index] = event.target.value;
+      setTextList(newTextList);
+      computeScore(newTextList);
+    },
+    [textList],
+  );
 
   function computeScore(sourceList: string[]) {
-    const targetList = Object.entries(trainingData).map((val => val[0]));
-    let tryScore = 0
+    const targetList = Object.entries(trainingData).map((val) => val[0]);
+    let tryScore = 0;
     for (let i = 0; i < targetList.length; i++) {
       if (sourceList[i] === targetList[i]) {
-        tryScore++
+        tryScore++;
       }
     }
     let updatedScore = score;
@@ -58,14 +63,17 @@ export default function SyllabaryTrainingPage() {
       if (syllableList.length === 0) {
         return <div>Loading...</div>;
       }
-      const trainingList: [string, [string, string]][] = Object.entries(getSyllableListToRecord(syllableList));
+      const trainingList: [string, [string, string]][] = Object.entries(
+        getSyllableListToRecord(syllableList),
+      );
       const trainingCharacters = shuffleArray(trainingList);
       let trainingData: SyllabaryRecord = {};
       const initialTextListState: string[] = [];
       for (let i = 0; i < trainingCharacters.length; i++) {
         if (initialTextListState.length < 10) {
           const basicData = basic && trainingCharacters[i][1][0].length === 1;
-          const advancedData = !basic && trainingCharacters[i][1][0].length === 2;
+          const advancedData =
+            !basic && trainingCharacters[i][1][0].length === 2;
           if (basicData) {
             initialTextListState.push("");
             trainingData[trainingCharacters[i][0]] = trainingCharacters[i][1];
@@ -82,68 +90,82 @@ export default function SyllabaryTrainingPage() {
     getTrainingData();
   }, [syllableList, basic, score.length]);
 
-
   const handleReload = useCallback(() => {
     setScore((prevScore) => {
       return [...prevScore, 0];
     });
   }, []);
 
-  const handleLocalChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setLocal(event.target.value === 'true');
-  }, [local]);
+  const handleLocalChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setLocal(event.target.value === "true");
+    },
+    [local],
+  );
 
-
-  const handleBasicChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setBasic(event.target.value === 'true');
-  }, [basic]);
+  const handleBasicChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setBasic(event.target.value === "true");
+    },
+    [basic],
+  );
 
   return (
-    <div className={"lg:w-4/12 size-full"}>
-      {score.reduce((acc, curr) => acc + curr, 0)}/{(score.length * 10)}
+    <div className="lg:w-4/12 size-full">
+      {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
       <div className="pt-4 pb-4 flex gap-10">
-        <Radio className={"flex-1"}
-               position="right"
-               label="hiragana"
-               name="hiragana"
-               value="true"
-               checked={local}
-               onChange={handleLocalChange}/>
-        <Radio className={"flex-1"}
-               position="left"
-               label="katakana"
-               name="katakana"
-               value="false"
-               checked={!local}
-               onChange={handleLocalChange}/>
+        <Radio
+          className="flex-1"
+          position="right"
+          label="hiragana"
+          name="hiragana"
+          value="true"
+          checked={local}
+          onChange={handleLocalChange}
+        />
+        <Radio
+          className="flex-1"
+          position="left"
+          label="katakana"
+          name="katakana"
+          value="false"
+          checked={!local}
+          onChange={handleLocalChange}
+        />
       </div>
       <div className="pt-4 pb-4 flex gap-10">
-        <Radio className={"flex-1"}
-               position="right"
-               label="basic"
-               name="basic"
-               value="true"
-               checked={basic}
-               onChange={handleBasicChange}/>
-        <Radio className={"flex-1"}
-               position="left"
-               label="advanced"
-               name="advanced"
-               value="false"
-               checked={!basic}
-               onChange={handleBasicChange}/>
+        <Radio
+          className="flex-1"
+          position="right"
+          label="basic"
+          name="basic"
+          value="true"
+          checked={basic}
+          onChange={handleBasicChange}
+        />
+        <Radio
+          className="flex-1"
+          position="left"
+          label="advanced"
+          name="advanced"
+          value="false"
+          checked={!basic}
+          onChange={handleBasicChange}
+        />
       </div>
-      <div className={"flex gap-4"}>
+      <div className="flex gap-4">
         <ul className="flex flex-col gap-4 justify-center size-full">
           {Object.entries(trainingData).map((li, index) => {
             const key = li[0];
-            const value = local ? Object.values(li)[1][0] : Object.values(li)[1][1];
+            const value = local
+              ? Object.values(li)[1][0]
+              : Object.values(li)[1][1];
             const match = textList[index] === key;
             return (
-              <li className={`flex items-center gap-5`} title={key} key={key}>
+              <li className="flex items-center gap-5" title={key} key={key}>
                 <div>
-                  <div className={
-                    `text-4xl 
+                  <div
+                    className={`text-4xl 
                                         text-center
                                         flex
                                         items-center
@@ -154,22 +176,25 @@ export default function SyllabaryTrainingPage() {
                                         bg-gradient-to-b 
                                         shadow-lg
                                         ${!match && "from-red-500"}
-                                        ${match && "from-fuchsia-500"}`}>
+                                        ${match && "from-fuchsia-500"}`}
+                  >
                     {value}
                   </div>
                 </div>
                 <input
-                  className={`h-10 flex-1 size-full text-center rounded-lg shadow-lg text-black text-xl`}
+                  className="h-10 flex-1 size-full text-center rounded-lg shadow-lg text-black text-xl"
                   type="text"
                   value={textList[index]}
                   onChange={(event) => handleInputChange(event, index)}
-                  placeholder="Type something..."/>
+                  placeholder="Type something..."
+                />
               </li>
-            )
+            );
           })}
-          <li className={`flex items-center gap-5`}>
-            <div className={`w-20 h-10`}></div>
-            <button className={`h-10
+          <li className="flex items-center gap-5">
+            <div className="w-20 h-10"></div>
+            <button
+              className={`h-10
                             flex-1
                             text-center
                             rounded-lg
@@ -178,12 +203,13 @@ export default function SyllabaryTrainingPage() {
                             text-xl
                             bg-gradient-to-b
                             from-fuchsia-500`}
-                    onClick={handleReload}>
+              onClick={handleReload}
+            >
               Other Try
             </button>
           </li>
         </ul>
       </div>
     </div>
-  )
+  );
 }
