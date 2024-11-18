@@ -1,3 +1,7 @@
+import {Syllable} from "@/app/syllabary-table/page";
+import {SyllabaryRecord} from "@/app/lib/syllabaryRecord";
+import {UUID} from "node:crypto";
+
 export const vocabularyRecord: Record<string, string> = {
     "cheerful": "あかるい",
     "sir": "さん",
@@ -56,4 +60,23 @@ export const vocabularyRecord: Record<string, string> = {
     "cute": "やさい",
     "yes": "はい",
     "no": "いいえ",
+}
+
+export interface Word {
+    id: UUID;
+    roman: string;
+    hiragana?: string;
+    katakana?: string;
+    kanji?: string;
+}
+
+export function formatWordList(wordList: Word[]) : [string, string][] {
+    const arr: [string, string][] = [];
+    for (const word of wordList) {
+        const translation = word.hiragana ?? word.katakana ?? word.kanji;
+        if (translation) {
+            arr.push([word.roman, translation]);            
+        }
+    }
+    return arr;
 }

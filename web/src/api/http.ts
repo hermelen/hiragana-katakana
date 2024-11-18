@@ -11,3 +11,15 @@ export async function getSyllableList(apiUrl: string, backendName: string): Prom
       return [];
     });
 }
+
+export async function getVocabularyList(apiUrl: string, backendName: string): Promise<Syllable[]> {
+  return fetch(`${apiUrl}/api/${backendName}/word`)
+      .then((response) => response.json())
+      .then((response) => {
+        return response;
+      })
+      .catch((err) => {
+        console.error("Error getting data:", err);
+        return [];
+      });
+}

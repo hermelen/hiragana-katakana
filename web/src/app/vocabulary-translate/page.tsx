@@ -1,15 +1,26 @@
 "use client";
 
-import { syllabaryRecord, SyllabaryRecord } from "@/app/lib/syllabaryRecord";
 import React, { useEffect, useState } from "react";
-import { SyllabaryTrapList } from "@/app/lib/syllabaryTrapsList";
-import { Radio } from "@/app/components/Radio";
-import { vocabularyRecord } from "@/app/lib/vocabularyRecord";
+import {formatWordList, vocabularyRecord, Word} from "@/app/lib/vocabularyRecord";
+import {getVocabularyList} from "@/api/http";
+import {getSyllableListToRecord, SyllabaryRecord} from "@/app/lib/syllabaryRecord";
 
 export default function VocabularyTranslatePage() {
     const [translateData, setTranslateData] = useState<[string, string] | null>(null);
     const [success, setSuccess] = useState<boolean>(false);
     const [text, setText] = useState<string>("");
+    const backendName = "rust";
+    const [vocabularyList, setVocabularyList] = useState<Word[]>([]);
+    const [vocabularyRecordList, setVocabularyRecordList] = useState<Record<string, string>>({});
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await getVocabularyList(apiUrl, backendName);
+            setVocabularyList(response);
+        };
+        fetchData();
+    }, [backendName, apiUrl]);
 
     useEffect(() => {
         setTranslateData(getRandomVocabularyTranslate());
@@ -22,13 +33,42 @@ export default function VocabularyTranslatePage() {
         }
     };
 
-    function shuffleArray(array: [string, string][]): [string, string] {
+    function shuffleArray(array: [string, string][]) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
-        return array[0];
+        return array;
     }
+
+    useEffect(() => {
+        const getTrainingData = () => {
+            if (vocabularyList.length === 0) {
+                return <div>Loading...</div>;
+            }
+            const trainingList: [string, string][] = formatWordList(vocabularyList);
+            const trainingCharacters = shuffleArray(trainingList);
+            let trainingData: SyllabaryRecord = {};
+            const initialTextListState: string[] = [];
+            for (let i = 0; i < trainingCharacters.length; i++) {
+                if (initialTextListState.length < 10) {
+                    const basicData = trainingCharacters[i][1][0].length === 1;
+                    const advancedData = trainingCharacters[i][1][0].length === 2;
+                    if (basicData) {
+                        initialTextListState.push("");
+                        trainingData[trainingCharacters[i][0]] = trainingCharacters[i][1];
+                    }
+                    if (advancedData) {
+                        initialTextListState.push("");
+                        trainingData[trainingCharacters[i][0]] = trainingCharacters[i][1];
+                    }
+                }
+            }
+            setTextList(initialTextListState);
+            setTrainingData(trainingData);
+        };
+        getTrainingData();
+    }, [vocabularyList]);
 
     function getRandomVocabularyTranslate(): [string, string] {
         const translateList: [string, string][] = Object.entries(vocabularyRecord);

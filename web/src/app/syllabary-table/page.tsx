@@ -38,7 +38,7 @@ export default function SyllabaryTablePage() {
       if (syllableList.length === 0) {
         return;
       }
-      for (let syllable: Syllable of syllableList) {
+      for (const syllable of syllableList) {
         const currentItem: Record<string, [string, string]> = { [syllable.roman]: [syllable.hiragana, syllable.katakana] };
         if (syllable.roman.length === 1) {
           if (currentArray.length > 0) {
