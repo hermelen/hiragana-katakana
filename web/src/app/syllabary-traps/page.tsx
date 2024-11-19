@@ -20,7 +20,7 @@ export default function SyllabaryTrapsPage() {
   const [success, setSuccess] = useState<boolean>(false);
   const [textList, setTextList] = useState<string[]>([]);
   const [syllableList, setSyllableList] = useState<Syllable[]>([]);
-  const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});
+  const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>(null);
   const backendName = "rust";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -34,10 +34,44 @@ export default function SyllabaryTrapsPage() {
 
   useEffect(() => {
     const syllableListToRecord = () => {
-      setSyllabaryRecord(getSyllableListToRecord(syllableList));
+      if (syllableList.length > 0) {
+        setSyllabaryRecord(getSyllableListToRecord(syllableList));
+      }
     };
     syllableListToRecord();
   }, [syllableList]);
+
+  useEffect(() => {
+    if (syllabaryRecord) {
+      const trapList: SyllabaryTrapList = local ? HiraganaTraps : KatakanaTraps;
+      const trapCharacters = shuffleArray(
+        trapList[Math.floor(Math.random() * trapList.length)],
+      );
+      let trapData: SyllabaryRecord = {};
+      const initialTextListState: string[] = [];
+      for (let i = 0; i < trapCharacters.length; i++) {
+        initialTextListState.push("");
+        trapData[trapCharacters[i]] = syllabaryRecord[trapCharacters[i]];
+      }
+      setTextList(initialTextListState);
+      setTrapData(trapData);
+    }
+  }, [local, syllabaryRecord]);
+
+  const reloadTrap = useCallback(() => {
+    const trapList: SyllabaryTrapList = local ? HiraganaTraps : KatakanaTraps;
+    const trapCharacters = shuffleArray(
+      trapList[Math.floor(Math.random() * trapList.length)],
+    );
+    let trapData: SyllabaryRecord = {};
+    const initialTextListState: string[] = [];
+    for (let i = 0; i < trapCharacters.length; i++) {
+      initialTextListState.push("");
+      trapData[trapCharacters[i]] = syllabaryRecord[trapCharacters[i]];
+    }
+    setTextList(initialTextListState);
+    setTrapData(trapData);
+  }, [local, syllabaryRecord]);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -59,17 +93,6 @@ export default function SyllabaryTrapsPage() {
     return true;
   }
 
-  const getTrapData = useCallback((): SyllabaryRecord => {
-    let trapData: SyllabaryRecord = {};
-    const initialTextListState: string[] = [];
-    for (let i = 0; i < trapCharacters.length; i++) {
-      initialTextListState.push("");
-      trapData[trapCharacters[i]] = syllabaryRecord[trapCharacters[i]];
-    }
-    setTextList(initialTextListState);
-    return trapData;
-  }, [syllabaryRecord, trapCharacters]);
-
   function shuffleArray(array: string[]) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -78,22 +101,13 @@ export default function SyllabaryTrapsPage() {
     return array;
   }
 
-  const trapCharacters = useCallback(() => {
-    const trapList: SyllabaryTrapList = local ? HiraganaTraps : KatakanaTraps;
-    return shuffleArray(trapList[Math.floor(Math.random() * trapList.length)]);
-  }, [local]);
-
-  function reloadTrap() {
-    setTrapData(getTrapData());
-  }
-
-  useEffect(() => {
-    setTrapData(getTrapData());
-  }, [getTrapData, local]);
-
   const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLocal(event.target.value === "true");
   };
+
+  if (!trapData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="lg:w-4/12 size-full">
