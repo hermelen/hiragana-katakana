@@ -5,7 +5,10 @@ import { formatWordList, Word } from "@/app/lib/wordRecord";
 import { getWordList } from "@/api/http";
 
 export default function WordTranslatePage() {
-  const [translateData, setTranslateData] = useState<[string, string]>([]);
+  const [shuffledTranslateData, setShuffledTranslateData] = useState<
+    [string, string][]
+  >([]);
+  const [translateIndex, setTranslateIndex] = useState<number>(0);
   const [success, setSuccess] = useState<boolean>(false);
   const [text, setText] = useState<string>("");
   const [wordList, setWordList] = useState<Word[]>([]);
@@ -21,47 +24,43 @@ export default function WordTranslatePage() {
   }, [backendName, apiUrl]);
 
   useEffect(() => {
-    setTranslateData(getRandomWordTranslate());
-  }, []);
+    const getTrainingData = () => {
+      if (wordList.length === 0) {
+        return <div>Loading...</div>;
+      }
+      setShuffledTranslateData(shuffleArray(formatWordList(wordList)));
+      setTranslateIndex(0);
+    };
+    getTrainingData();
+  }, [wordList]);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const shuffleArray = (array: [string, string][]) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    translateData: [string, string],
+  ) => {
     setText(event.target.value);
     if (translateData) {
       setSuccess(event.target.value === translateData[0]);
     }
   };
 
-  function shuffleArray(array: [string, string][]) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array[1];
-  }
-
-  useEffect(() => {
-    const getTrainingData = () => {
-      if (wordList.length === 0) {
-        return <div>Loading...</div>;
-      }
-      const trainingList: [string, string][] = formatWordList(wordList);
-      const trainingCharacters = shuffleArray(trainingList);
-      setTranslateData(trainingCharacters);
-    };
-    getTrainingData();
-  }, [wordList]);
-
-  const getRandomWordTranslate = useCallback((): [string, string] => {
-    return shuffleArray(formatWordList(wordList));
-  }, []);
-
-  function reloadTranslate() {
-    setTranslateData(getRandomWordTranslate());
+  const loadData = useCallback(() => {
+    console.log(translateIndex);
+    const goAhead = translateIndex + 1 < shuffledTranslateData.length;
+    setTranslateIndex(goAhead ? translateIndex + 1 : 0);
     setText("");
     setSuccess(false);
-  }
+  }, [shuffledTranslateData.length, translateIndex]);
 
-  if (!translateData) {
+  if (!shuffledTranslateData || shuffledTranslateData.length == 0) {
     return <div>Loading...</div>;
   }
 
@@ -72,44 +71,45 @@ export default function WordTranslatePage() {
           <li className="flex items-center gap-5 size-full">
             <div
               className={`text-4xl 
-                            text-center
-                            flex
-                            items-center
-                            justify-center
-                            w-80 
-                            h-10 
-                            rounded-lg 
-                            bg-gradient-to-b 
-                            shadow-lg
-                            ${text !== translateData[0] ? "from-red-500" : "from-fuchsia-500"}`}
-              title={translateData[0]}
+                          text-center
+                          flex
+                          items-center
+                          justify-center
+                          w-80 
+                          h-10 
+                          rounded-lg 
+                          bg-gradient-to-b 
+                          shadow-lg
+                          ${text !== shuffledTranslateData[translateIndex][0] ? "from-red-500" : "from-fuchsia-500"}`}
+              title={shuffledTranslateData[translateIndex][0]}
             >
-              {translateData[1]}
+              {shuffledTranslateData[translateIndex][1]}
             </div>
             <input
               className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
               type="text"
               value={text}
-              onChange={handleInputChange}
+              onChange={(event) =>
+                handleInputChange(event, shuffledTranslateData[translateIndex])
+              }
               placeholder="Type something..."
             />
           </li>
           <li className="flex items-center gap-5 size-full">
             <div className="w-80 h-10"></div>
             <button
-              className={`h-10 
-                            size-full
-                            flex-1 
-                            text-xl 
-                            text-center
-                            flex
-                            items-center
-                            justify-center
-                            rounded-lg 
-                            bg-gradient-to-b 
-                            shadow-lg                                        
-                            ${!success ? "from-red-500 disabled:opacity-75" : "from-fuchsia-500"}`}
-              onClick={reloadTranslate}
+              className={`h-10                           size-full
+                          flex-1 
+                          text-xl 
+                          text-center
+                          flex
+                          items-center
+                          justify-center
+                          rounded-lg 
+                          bg-gradient-to-b 
+                          shadow-lg                                        
+                          ${!success ? "from-red-500 disabled:opacity-75" : "from-fuchsia-500"}`}
+              onClick={loadData}
               disabled={!success}
             >
               Other Try

@@ -43,22 +43,11 @@ export default function SyllabaryTrapsPage() {
 
   useEffect(() => {
     if (syllabaryRecord) {
-      const trapList: SyllabaryTrapList = local ? HiraganaTraps : KatakanaTraps;
-      const trapCharacters = shuffleArray(
-        trapList[Math.floor(Math.random() * trapList.length)],
-      );
-      let trapData: SyllabaryRecord = {};
-      const initialTextListState: string[] = [];
-      for (let i = 0; i < trapCharacters.length; i++) {
-        initialTextListState.push("");
-        trapData[trapCharacters[i]] = syllabaryRecord[trapCharacters[i]];
-      }
-      setTextList(initialTextListState);
-      setTrapData(trapData);
+      loadTrap();
     }
   }, [local, syllabaryRecord]);
 
-  const reloadTrap = useCallback(() => {
+  const loadTrap = useCallback(() => {
     const trapList: SyllabaryTrapList = local ? HiraganaTraps : KatakanaTraps;
     const trapCharacters = shuffleArray(
       trapList[Math.floor(Math.random() * trapList.length)],
@@ -182,7 +171,7 @@ export default function SyllabaryTrapsPage() {
                             shadow-lg                                        
                             ${!success && "from-red-500 disabled:opacity-75"}
                             ${success && "from-fuchsia-500"}`}
-              onClick={reloadTrap}
+              onClick={loadTrap}
               disabled={!success}
             >
               retry
