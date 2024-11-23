@@ -31,7 +31,7 @@ export function Radio({
       <div
         className={`h-8 
             w-8 
-            bg-indigo-500
+            bg-gray-500
             flex
             justify-center
             items-center
@@ -46,7 +46,7 @@ export function Radio({
           value={value}
           checked={checked}
           onChange={onChange}
-          className="w-6 h-6 text-indigo accent-indigo-500 border-indigo-500 outline-0"
+          className="w-6 h-6 accent-gray-500 border-gray-500 outline-0"
         />
       </div>
       {position === "left" && <span className="ml-2">{label}</span>}
