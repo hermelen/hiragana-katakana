@@ -140,8 +140,8 @@ export default function SyllabaryTrapsPage() {
                                     rounded-lg 
                                     bg-gradient-to-b 
                                     shadow-lg
-                                    ${!match && "from-red-500"}
-                                    ${match && "from-fuchsia-500"}`}
+                                    ${!match && "from-rose-500"}
+                                    ${match && "from-indigo-500"}`}
                   title={key}
                 >
                   {local ? value[0] : value[1]}
@@ -169,8 +169,8 @@ export default function SyllabaryTrapsPage() {
                             rounded-lg 
                             bg-gradient-to-b 
                             shadow-lg                                        
-                            ${!success && "from-red-500 disabled:opacity-75"}
-                            ${success && "from-fuchsia-500"}`}
+                            ${!success && "from-rose-500 disabled:opacity-75"}
+                            ${success && "from-indigo-500"}`}
               onClick={loadTrap}
               disabled={!success}
             >

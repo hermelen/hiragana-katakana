@@ -1,10 +1,10 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
-import {Radio} from "@/app/components/Radio";
-import {UUID} from "node:crypto";
-import {getSyllableList} from "@/api/http";
-import {SyllabaryRecord} from "@/app/lib/syllabaryRecord";
+import React, { useEffect, useState } from "react";
+import { Radio } from "@/app/components/Radio";
+import { UUID } from "node:crypto";
+import { getSyllableList } from "@/api/http";
+import { SyllabaryRecord } from "@/app/lib/syllabaryRecord";
 
 export interface Syllable {
   id: UUID;
@@ -18,7 +18,9 @@ export default function SyllabaryTablePage() {
   type TableData = Record<string, [string, string]>[];
   const [local, setLocal] = useState<boolean>(true);
   const [syllableList, setSyllableList] = useState<Syllable[]>([]);
-  const [syllabaryRecordList, setSyllabaryRecordList] = useState<TableData[]>([]);
+  const [syllabaryRecordList, setSyllabaryRecordList] = useState<TableData[]>(
+    [],
+  );
   const noChar = "";
   const backendName = "rust";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -39,7 +41,9 @@ export default function SyllabaryTablePage() {
         return;
       }
       for (const syllable of syllableList) {
-        const currentItem: Record<string, [string, string]> = { [syllable.roman]: [syllable.hiragana, syllable.katakana] };
+        const currentItem: Record<string, [string, string]> = {
+          [syllable.roman]: [syllable.hiragana, syllable.katakana],
+        };
         if (syllable.roman.length === 1) {
           if (currentArray.length > 0) {
             tableData.push(currentArray);
@@ -59,17 +63,15 @@ export default function SyllabaryTablePage() {
           }
         }
       }
-  
+
       if (currentArray.length > 0) {
         tableData.push(currentArray);
       }
-      
+
       setSyllabaryRecordList(tableData);
     };
     formatSyllabaryRecordList();
   }, [syllableList]);
-
-
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLocal(event.target.value === "true");
@@ -113,7 +115,7 @@ export default function SyllabaryTablePage() {
                                         h-20 
                                         rounded-lg 
                                         bg-gradient-to-b 
-                                        from-fuchsia-500
+                                        from-indigo-500
                                         shadow-lg 
                                         ${value[0] === noChar && "invisible"}`}
                 >

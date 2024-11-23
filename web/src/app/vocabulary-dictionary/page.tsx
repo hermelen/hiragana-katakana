@@ -1,14 +1,6 @@
 "use client";
-
-import {
-  getSyllableListToRecord,
-  SyllabaryRecord,
-} from "@/app/lib/syllabaryRecord";
-import React, { useEffect, useState } from "react";
-import { SyllabaryTrapList } from "@/app/lib/syllabaryTrapsList";
-import { Radio } from "@/app/components/Radio";
-import { Syllable } from "@/app/syllabary-table/page";
-import { getSyllableList, getWordList } from "@/api/http";
+import React, { useCallback, useEffect, useState } from "react";
+import { getWordList } from "@/api/http";
 import { formatWordList, Word } from "@/app/lib/wordRecord";
 
 export default function VocabularyDictionaryPage() {
@@ -16,6 +8,10 @@ export default function VocabularyDictionaryPage() {
   const [wordList, setWordList] = useState<Word[]>([]);
   const backendName = "rust";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const [edit, setEdit] = useState<boolean>(false);
+  const toggleEdit = useCallback(() => {
+    setEdit(!edit);
+  }, [edit]);
 
   useEffect(() => {
     const fetchWordData = async () => {
@@ -29,21 +25,13 @@ export default function VocabularyDictionaryPage() {
     setTranslateData(formatWordList(wordList));
   }, [wordList]);
 
-  function shuffleArray(array: Word[]): [string, string] {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return formatWordList(array)[0];
-  }
-
   if (!translateData) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="lg:w-6/12 size-full">
-      <div className="flex gap-4">
+      <div className={`flex gap-4 ${edit && "hidden"}`}>
         <ul className="flex flex-col gap-4 justify-center size-full">
           {translateData.map((val) => {
             const key = val[0];
@@ -61,16 +49,89 @@ export default function VocabularyDictionaryPage() {
                                     rounded-lg 
                                     bg-gradient-to-b 
                                     shadow-lg
-                                    from-fuchsia-500`}
+                                    from-indigo-500`}
                 >
                   {key}
                 </div>
-                <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-xl bg-white flex items-center justify-center">
+                <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-2xl bg-white flex items-center justify-center">
                   {value}
                 </div>
               </li>
             );
           })}
+          <button
+            className={`w-80 
+                          h-10
+                          text-xl 
+                          text-center
+                          flex
+                          items-center
+                          justify-center
+                          rounded-lg 
+                          bg-gradient-to-b 
+                          shadow-lg                                        
+                          from-stone-700 hover:from-stone-600`}
+            onClick={toggleEdit}
+          >
+            Add word
+          </button>
+        </ul>
+      </div>
+      <div className={`flex gap-4 ${!edit && "hidden"}`}>
+        <ul className="flex flex-col gap-4 justify-center size-full">
+          <li className="flex items-center gap-5 size-full">
+            <input
+              className={`text-xl 
+                          text-center
+                          flex
+                          items-center
+                          justify-center
+                          w-80 
+                          h-10 
+                          rounded-lg 
+                          shadow-lg`}
+              placeholder="Japanese version..."
+            />
+            <input
+              className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
+              type="text"
+              placeholder="English version..."
+            />
+          </li>
+          <li className="flex items-center gap-5 size-full">
+            <button
+              className={`h-10                           
+                          w-80
+                          text-xl 
+                          text-center
+                          flex
+                          items-center
+                          justify-center
+                          rounded-lg 
+                          bg-gradient-to-b 
+                          shadow-lg                                        
+                          from-stone-700 hover:from-stone-600`}
+              onClick={toggleEdit}
+            >
+              Cancel
+            </button>
+            <button
+              className={`h-10                           
+                          size-full
+                          flex-1 
+                          text-xl 
+                          text-center
+                          flex
+                          items-center
+                          justify-center
+                          rounded-lg 
+                          bg-gradient-to-b 
+                          shadow-lg                                        
+                          from-indigo-500`}
+            >
+              Save word
+            </button>
+          </li>
         </ul>
       </div>
     </div>

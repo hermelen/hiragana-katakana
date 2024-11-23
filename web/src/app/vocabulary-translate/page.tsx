@@ -53,7 +53,6 @@ export default function WordTranslatePage() {
   };
 
   const loadData = useCallback(() => {
-    console.log(translateIndex);
     const goAhead = translateIndex + 1 < shuffledTranslateData.length;
     setTranslateIndex(goAhead ? translateIndex + 1 : 0);
     setText("");
@@ -80,7 +79,7 @@ export default function WordTranslatePage() {
                           rounded-lg 
                           bg-gradient-to-b 
                           shadow-lg
-                          ${text !== shuffledTranslateData[translateIndex][0] ? "from-red-500" : "from-fuchsia-500"}`}
+                          ${text !== shuffledTranslateData[translateIndex][0] ? "from-rose-500" : "from-indigo-500"}`}
               title={shuffledTranslateData[translateIndex][0]}
             >
               {shuffledTranslateData[translateIndex][1]}
@@ -98,7 +97,8 @@ export default function WordTranslatePage() {
           <li className="flex items-center gap-5 size-full">
             <div className="w-80 h-10"></div>
             <button
-              className={`h-10                           size-full
+              className={`h-10      
+                          size-full
                           flex-1 
                           text-xl 
                           text-center
@@ -108,7 +108,7 @@ export default function WordTranslatePage() {
                           rounded-lg 
                           bg-gradient-to-b 
                           shadow-lg                                        
-                          ${!success ? "from-red-500 disabled:opacity-75" : "from-fuchsia-500"}`}
+                          ${!success ? "from-rose-500 disabled:opacity-75" : "from-indigo-500"}`}
               onClick={loadData}
               disabled={!success}
             >

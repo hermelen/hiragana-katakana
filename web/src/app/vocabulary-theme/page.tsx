@@ -101,7 +101,7 @@ export default function VocabularyThemePage() {
                             rounded-lg 
                             bg-gradient-to-b 
                             shadow-lg
-                            ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-red-500" : "from-fuchsia-500"}`}
+                            ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-rose-500" : "from-indigo-500"}`}
             >
               {themeData[0]}
             </div>
@@ -125,11 +125,11 @@ export default function VocabularyThemePage() {
                             rounded-lg 
                             shadow-lg
                             bg-gradient-to-b 
-                            ${hiragana === themeData[1] ? "from-fuchsia-500" : "from-red-500"}`}
+                            ${hiragana === themeData[1] ? "from-indigo-500" : "from-rose-500"}`}
             >
               hiragana
             </div>
-            <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-xl bg-white flex items-center justify-center">
+            <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-2xl bg-white flex items-center justify-center">
               {hiragana}
             </div>
           </li>
@@ -145,11 +145,11 @@ export default function VocabularyThemePage() {
                             rounded-lg 
                             shadow-lg
                             bg-gradient-to-b 
-                            ${katakana === themeData[1] ? "from-fuchsia-500" : "from-red-500"}`}
+                            ${katakana === themeData[1] ? "from-indigo-500" : "from-rose-500"}`}
             >
               katakana
             </div>
-            <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-xl bg-white flex items-center justify-center">
+            <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-2xl bg-white flex items-center justify-center">
               {katakana}
             </div>
           </li>
@@ -166,7 +166,7 @@ export default function VocabularyThemePage() {
                             rounded-lg 
                             shadow-lg                                        
                             bg-gradient-to-b 
-                            ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-red-500 disabled:opacity-75" : "from-fuchsia-500"}`}
+                            ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-rose-500 disabled:opacity-75" : "from-indigo-500"}`}
               onClick={reloadTheme}
               disabled={hiragana !== themeData[1] && katakana !== themeData[1]}
             >

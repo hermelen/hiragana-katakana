@@ -175,8 +175,8 @@ export default function SyllabaryTrainingPage() {
                                         rounded-lg 
                                         bg-gradient-to-b 
                                         shadow-lg
-                                        ${!match && "from-red-500"}
-                                        ${match && "from-fuchsia-500"}`}
+                                        ${!match && "from-rose-500"}
+                                        ${match && "from-indigo-500"}`}
                   >
                     {value}
                   </div>
@@ -202,7 +202,7 @@ export default function SyllabaryTrainingPage() {
                             text-white
                             text-xl
                             bg-gradient-to-b
-                            from-fuchsia-500`}
+                            from-indigo-500`}
               onClick={handleReload}
             >
               Other Try
