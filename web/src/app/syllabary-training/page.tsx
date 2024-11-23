@@ -111,61 +111,81 @@ export default function SyllabaryTrainingPage() {
   );
 
   return (
-    <div className="lg:w-4/12 size-full">
-      {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
-      <div className="pt-4 pb-4 flex gap-10">
-        <Radio
-          className="flex-1"
-          position="right"
-          label="hiragana"
-          name="hiragana"
-          value="true"
-          checked={local}
-          onChange={handleLocalChange}
-        />
-        <Radio
-          className="flex-1"
-          position="left"
-          label="katakana"
-          name="katakana"
-          value="false"
-          checked={!local}
-          onChange={handleLocalChange}
-        />
+    <div className="size-full lg:flex">
+      <div className="lg:w-4/12 size-full flex justify-end">
+        <div
+          className="lg:hidden inline-flex 
+          justify-center
+          items-center
+          pr-5
+          pl-5
+          mb-5
+          h-10
+          text-center
+          rounded-sm
+          shadow-lg
+          text-white
+          text-xl
+          bg-gradient-to-b
+          from-indigo-500"
+        >
+          {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
+        </div>
       </div>
-      <div className="pt-4 pb-4 flex gap-10">
-        <Radio
-          className="flex-1"
-          position="right"
-          label="basic"
-          name="basic"
-          value="true"
-          checked={basic}
-          onChange={handleBasicChange}
-        />
-        <Radio
-          className="flex-1"
-          position="left"
-          label="advanced"
-          name="advanced"
-          value="false"
-          checked={!basic}
-          onChange={handleBasicChange}
-        />
-      </div>
-      <div className="flex gap-4">
-        <ul className="flex flex-col gap-4 justify-center size-full">
-          {Object.entries(trainingData).map((li, index) => {
-            const key = li[0];
-            const value = local
-              ? Object.values(li)[1][0]
-              : Object.values(li)[1][1];
-            const match = textList[index] === key;
-            return (
-              <li className="flex items-center gap-5" title={key} key={key}>
-                <div>
-                  <div
-                    className={`text-4xl 
+      <div className="lg:w-4/12 size-full">
+        <div className="pt-4 pb-4 flex">
+          <Radio
+            className="flex-1"
+            position="right"
+            label="hiragana"
+            name="hiragana"
+            value="true"
+            checked={local}
+            onChange={handleLocalChange}
+          />
+          <Radio
+            className="flex-1"
+            position="left"
+            label="katakana"
+            name="katakana"
+            value="false"
+            checked={!local}
+            onChange={handleLocalChange}
+          />
+        </div>
+        <div className="pt-4 pb-4 flex">
+          <Radio
+            className="flex-1"
+            position="right"
+            label="basic"
+            name="basic"
+            value="true"
+            checked={basic}
+            onChange={handleBasicChange}
+          />
+          <Radio
+            className="flex-1"
+            position="left"
+            label="advanced"
+            name="advanced"
+            value="false"
+            checked={!basic}
+            onChange={handleBasicChange}
+          />
+        </div>
+        <div className="flex gap-4">
+          <ul className="flex flex-col gap-4 justify-center size-full">
+            {Object.entries(trainingData).map((li, index) => {
+              const key = li[0];
+              const value = local
+                ? Object.values(li)[1][0]
+                : Object.values(li)[1][1];
+              const match = textList[index] === key;
+              return (
+                <li className="flex items-center gap-5" title={key} key={key}>
+                  <div>
+                    <div
+                      className={`text-4xl 
                                         text-center
                                         flex
                                         items-center
@@ -177,24 +197,24 @@ export default function SyllabaryTrainingPage() {
                                         shadow-lg
                                         ${!match && "from-rose-500"}
                                         ${match && "from-indigo-500"}`}
-                  >
-                    {value}
+                    >
+                      {value}
+                    </div>
                   </div>
-                </div>
-                <input
-                  className="h-10 flex-1 size-full text-center rounded-lg shadow-lg text-black text-xl"
-                  type="text"
-                  value={textList[index]}
-                  onChange={(event) => handleInputChange(event, index)}
-                  placeholder="Type something..."
-                />
-              </li>
-            );
-          })}
-          <li className="flex items-center gap-5">
-            <div className="w-20 h-10"></div>
-            <button
-              className={`h-10
+                  <input
+                    className="h-10 flex-1 size-full text-center rounded-lg shadow-lg text-black text-xl"
+                    type="text"
+                    value={textList[index]}
+                    onChange={(event) => handleInputChange(event, index)}
+                    placeholder="Type something..."
+                  />
+                </li>
+              );
+            })}
+            <li className="flex items-center gap-5">
+              <div className="w-20 h-10"></div>
+              <button
+                className={`h-10
                             flex-1
                             text-center
                             rounded-lg
@@ -203,12 +223,31 @@ export default function SyllabaryTrainingPage() {
                             text-xl
                             bg-gradient-to-b
                             from-indigo-500`}
-              onClick={handleReload}
-            >
-              Other Try
-            </button>
-          </li>
-        </ul>
+                onClick={handleReload}
+              >
+                Other Try
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="lg:w-4/12 flex justify-end">
+        <div
+          className="lg:flex hidden 
+                     items-center
+                     pr-5
+                     pl-5
+                     h-10
+                     text-center
+                     rounded-sm
+                     shadow-lg
+                     text-white
+                     text-xl
+                     bg-gradient-to-b
+                     from-indigo-500"
+        >
+          {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
+        </div>
       </div>
     </div>
   );

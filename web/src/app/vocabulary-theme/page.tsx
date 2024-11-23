@@ -12,13 +12,13 @@ import { formatWordList, Word } from "@/app/lib/wordRecord";
 
 export default function VocabularyThemePage() {
   const [themeData, setThemeData] = useState<[string, string]>([]);
-  const [success, setSuccess] = useState<boolean>(false);
   const [text, setText] = useState<string>("");
   const [hiragana, setHiragana] = useState<string>("");
   const [katakana, setKatakana] = useState<string>("");
   const [syllableList, setSyllableList] = useState<Syllable[]>([]);
   const [wordList, setWordList] = useState<Word[]>([]);
   const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});
+  const [score, setScore] = useState<number[]>([0]);
   const backendName = "rust";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -84,13 +84,34 @@ export default function VocabularyThemePage() {
   }
 
   return (
-    <div className="lg:w-6/12 size-full">
-      <div className="flex gap-4">
-        <ul className="flex flex-col gap-4 justify-center size-full">
-          <li className="flex items-center gap-5 size-full">
-            <div
-              title={themeData[1]}
-              className={`text-4xl 
+    <div className="size-full lg:flex">
+      <div className="lg:w-4/12 size-full flex justify-end">
+        <div
+          className="lg:hidden inline-flex 
+          justify-center
+          items-center
+          pr-5
+          pl-5
+          mb-5
+          h-10
+          text-center
+          rounded-sm
+          shadow-lg
+          text-white
+          text-xl
+          bg-gradient-to-b
+          from-indigo-500"
+        >
+          {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
+        </div>
+      </div>
+      <div className="lg:w-6/12 size-full">
+        <div className="flex gap-4">
+          <ul className="flex flex-col gap-4 justify-center size-full">
+            <li className="flex items-center gap-5 size-full">
+              <div
+                title={themeData[1]}
+                className={`text-4xl 
                             size-full
                             text-center
                             flex
@@ -102,20 +123,20 @@ export default function VocabularyThemePage() {
                             bg-gradient-to-b 
                             shadow-lg
                             ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-rose-500" : "from-indigo-500"}`}
-            >
-              {themeData[0]}
-            </div>
-            <input
-              className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
-              type="text"
-              value={text}
-              onChange={handleInputChange}
-              placeholder="Type something..."
-            />
-          </li>
-          <li className="flex items-center gap-5 size-full">
-            <div
-              className={`text-xl 
+              >
+                {themeData[0]}
+              </div>
+              <input
+                className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
+                type="text"
+                value={text}
+                onChange={handleInputChange}
+                placeholder="Type something..."
+              />
+            </li>
+            <li className="flex items-center gap-5 size-full">
+              <div
+                className={`text-xl 
                             text-center
                             flex
                             items-center
@@ -126,16 +147,16 @@ export default function VocabularyThemePage() {
                             shadow-lg
                             bg-gradient-to-b 
                             ${hiragana === themeData[1] ? "from-indigo-500" : "from-rose-500"}`}
-            >
-              hiragana
-            </div>
-            <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-2xl bg-white flex items-center justify-center">
-              {hiragana}
-            </div>
-          </li>
-          <li className="flex items-center gap-5 size-full">
-            <div
-              className={`text-xl 
+              >
+                hiragana
+              </div>
+              <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-2xl bg-white flex items-center justify-center">
+                {hiragana}
+              </div>
+            </li>
+            <li className="flex items-center gap-5 size-full">
+              <div
+                className={`text-xl 
                             text-center
                             flex
                             items-center
@@ -146,17 +167,17 @@ export default function VocabularyThemePage() {
                             shadow-lg
                             bg-gradient-to-b 
                             ${katakana === themeData[1] ? "from-indigo-500" : "from-rose-500"}`}
-            >
-              katakana
-            </div>
-            <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-2xl bg-white flex items-center justify-center">
-              {katakana}
-            </div>
-          </li>
-          <li className="flex items-center gap-5 size-full">
-            <div className="w-80 h-10"></div>
-            <button
-              className={`h-10 
+              >
+                katakana
+              </div>
+              <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-2xl bg-white flex items-center justify-center">
+                {katakana}
+              </div>
+            </li>
+            <li className="flex items-center gap-5 size-full">
+              <div className="w-80 h-10"></div>
+              <button
+                className={`h-10 
                             flex-1 
                             text-xl 
                             text-center
@@ -167,13 +188,34 @@ export default function VocabularyThemePage() {
                             shadow-lg                                        
                             bg-gradient-to-b 
                             ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-rose-500 disabled:opacity-75" : "from-indigo-500"}`}
-              onClick={reloadTheme}
-              disabled={hiragana !== themeData[1] && katakana !== themeData[1]}
-            >
-              Other Try
-            </button>
-          </li>
-        </ul>
+                onClick={reloadTheme}
+                disabled={
+                  hiragana !== themeData[1] && katakana !== themeData[1]
+                }
+              >
+                Other Try
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="lg:w-4/12 flex justify-end">
+        <div
+          className="lg:flex hidden 
+                     items-center
+                     pr-5
+                     pl-5
+                     h-10
+                     text-center
+                     rounded-sm
+                     shadow-lg
+                     text-white
+                     text-xl
+                     bg-gradient-to-b
+                     from-indigo-500"
+        >
+          {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
+        </div>
       </div>
     </div>
   );

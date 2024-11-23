@@ -34,17 +34,17 @@ export default function RootLayout({
     {
       key: "syllabaryTraining",
       href: "/syllabary-training",
-      label: "Syllabary training",
+      label: "Syllable training",
     },
     {
       key: "vocabularyTranslate",
       href: "/vocabulary-translate",
-      label: "Vocabulary translate",
+      label: "Translate training",
     },
     {
       key: "vocabularyTheme",
       href: "/vocabulary-theme",
-      label: "Vocabulary theme",
+      label: "Theme training",
     },
     {
       key: "vocabularyDictionary",

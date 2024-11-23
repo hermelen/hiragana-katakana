@@ -59,7 +59,7 @@ export default function RomanToJapanesePage() {
 
   return (
     <div className="lg:w-6/12 size-full">
-      <div className="pt-4 pb-4 flex gap-10">
+      <div className="pt-4 pb-4 flex">
         <Radio
           className="flex-1"
           position="right"
