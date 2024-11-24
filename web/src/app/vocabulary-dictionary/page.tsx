@@ -1,12 +1,19 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import { getWordList } from "@/api/http";
+import { getWordList, postWord } from "@/api/http";
 import { formatWordList, Word } from "@/app/lib/wordRecord";
 
 export default function VocabularyDictionaryPage() {
   const [translateData, setTranslateData] = useState<[string, string][]>([]);
   const [wordList, setWordList] = useState<Word[]>([]);
+  const [submitDisabled, setSubmitDisabled] = useState<boolean>(true);
   const backendName = "rust";
+  const [newWord, setNewWord] = useState<Word>({
+    roman: "",
+    hiragana: "",
+    katakana: "",
+    kanji: "",
+  });
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   const [edit, setEdit] = useState<boolean>(false);
   const toggleEdit = useCallback(() => {
@@ -21,9 +28,41 @@ export default function VocabularyDictionaryPage() {
     fetchWordData();
   }, [backendName, apiUrl]);
 
+  let submit: () => Promise<void>;
+  submit = useCallback(async () => {
+    const response = await postWord(apiUrl, backendName, newWord);
+    setWordList((prevWordList) => [...prevWordList, response]);
+    setEdit(false);
+    setNewWord({
+      roman: "",
+      hiragana: "",
+      katakana: "",
+      kanji: "",
+    });
+  }, [apiUrl, newWord]);
+
+  const updateSubmitDisabled = useCallback(() => {
+    setSubmitDisabled(
+      !(
+        newWord.roman !== "" &&
+        (newWord.kanji !== "" ||
+          newWord.katakana !== "" ||
+          newWord.hiragana !== "")
+      ),
+    );
+  }, [newWord]);
+
   useEffect(() => {
+    updateSubmitDisabled();
+  }, [updateSubmitDisabled]);
+
+  const updateTranslateData = useCallback(() => {
     setTranslateData(formatWordList(wordList));
   }, [wordList]);
+
+  useEffect(() => {
+    updateTranslateData();
+  }, [updateTranslateData, wordList]);
 
   if (!translateData) {
     return <div>Loading...</div>;
@@ -80,9 +119,44 @@ export default function VocabularyDictionaryPage() {
       <div className={`flex gap-4 ${!edit && "hidden"}`}>
         <ul className="flex flex-col gap-4 justify-center size-full">
           <li className="flex items-center gap-5 size-full">
+            <div className="w-80"></div>
+            <input
+              className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
+              type="text"
+              placeholder="Kanji..."
+              value={newWord.kanji}
+              onChange={(e) =>
+                setNewWord({
+                  ...newWord,
+                  hiragana: "",
+                  katakana: "",
+                  kanji: e.target.value,
+                })
+              }
+            />
+          </li>
+          <li className="flex items-center gap-5 size-full">
+            <div className="w-80"></div>
+            <input
+              className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
+              type="text"
+              placeholder="Katakana..."
+              value={newWord.katakana}
+              onChange={(e) =>
+                setNewWord({
+                  ...newWord,
+                  hiragana: "",
+                  katakana: e.target.value,
+                  kanji: "",
+                })
+              }
+            />
+          </li>
+          <li className="flex items-center gap-5 size-full">
             <input
               className={`text-xl 
                           text-center
+                          text-black
                           flex
                           items-center
                           justify-center
@@ -90,12 +164,25 @@ export default function VocabularyDictionaryPage() {
                           h-10 
                           rounded-lg 
                           shadow-lg`}
-              placeholder="Japanese version..."
+              placeholder="English..."
+              value={newWord.roman}
+              onChange={(e) =>
+                setNewWord({ ...newWord, roman: e.target.value })
+              }
             />
             <input
               className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
               type="text"
-              placeholder="English version..."
+              placeholder="Hiragana..."
+              value={newWord.hiragana}
+              onChange={(e) =>
+                setNewWord({
+                  ...newWord,
+                  hiragana: e.target.value,
+                  katakana: "",
+                  kanji: "",
+                })
+              }
             />
           </li>
           <li className="flex items-center gap-5 size-full">
@@ -127,7 +214,9 @@ export default function VocabularyDictionaryPage() {
                           rounded-lg 
                           bg-gradient-to-b 
                           shadow-lg                                        
-                          from-indigo-500`}
+                          ${submitDisabled ? "from-rose-500 disabled:opacity-75" : "from-indigo-500"}`}
+              disabled={submitDisabled}
+              onClick={submit}
             >
               Save word
             </button>

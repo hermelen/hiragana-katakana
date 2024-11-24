@@ -72,16 +72,19 @@ async fn handle_client(mut stream: TcpStream) {
 
             let (status_line, content) = match &*request {
                 r if r.starts_with("OPTIONS") => (OK_RESPONSE.to_string(), "".to_string()),
+                
                 r if r.starts_with("POST /api/rust/word") => handle_post_words_request(r).await,
-                r if r.starts_with("POST /api/rust/syllable") => handle_post_syllables_request(r).await,
                 r if r.starts_with("GET /api/rust/word/") => handle_get_words_request(r).await,
-                r if r.starts_with("GET /api/rust/syllable/") => handle_get_syllables_request(r).await,
                 r if r.starts_with("GET /api/rust/word") => handle_get_all_words_request(r).await,
-                r if r.starts_with("GET /api/rust/syllable") => {handle_get_all_syllables_request(r).await}
                 r if r.starts_with("PUT /api/rust/word/") => handle_put_words_request(r).await,
+                r if r.starts_with("DELETE /api/rust/syllable/") => {handle_delete_syllables_request(r).await}
+                
+                r if r.starts_with("POST /api/rust/syllable") => handle_post_syllables_request(r).await,
+                r if r.starts_with("GET /api/rust/syllable/") => handle_get_syllables_request(r).await,
+                r if r.starts_with("GET /api/rust/syllable") => {handle_get_all_syllables_request(r).await}
                 r if r.starts_with("PUT /api/rust/syllable/") => handle_put_syllables_request(r).await,
                 r if r.starts_with("DELETE /api/rust/word/") => handle_delete_words_request(r).await,
-                r if r.starts_with("DELETE /api/rust/syllable/") => {handle_delete_syllables_request(r).await}
+                
                 _ => (NOT_FOUND.to_string(), "404 not found".to_string()),
             };
 

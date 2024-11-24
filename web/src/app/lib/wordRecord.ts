@@ -1,7 +1,7 @@
 import { UUID } from "node:crypto";
 
 export interface Word {
-  id: UUID;
+  id?: UUID;
   roman: string;
   hiragana?: string;
   katakana?: string;
