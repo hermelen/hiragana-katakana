@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 type RadioProps = {
   label: string;
@@ -19,25 +19,44 @@ export function Radio({
   position = "right",
   className = "",
 }: RadioProps) {
+  const [cursorClass, setCursorClass] = useState<string>("");
+
+  useEffect(() => {
+    setCursorClass(() => getCursorGlass());
+  }, [checked, getCursorGlass, position]);
+
+  // useCallback(() => {
+  //   setCursorClass(() => getCursorGlass());
+  // }, [getCursorGlass]);
+
+  function getCursorGlass() {
+    return checked
+      ? position === "left"
+        ? "right-2"
+        : "left-2"
+      : position === "left"
+        ? "right-10"
+        : "left-10";
+  }
+
   return (
     <label
       className={`${className}
-      h-8 flex items-center
+      flex items-center
             ${position === "right" && "justify-end"}
             ${position === "left" && "justify-start"}
             flex items-center`}
     >
       {position === "right" && <span className="mr-2">{label}</span>}
       <div
-        className={`h-8 
+        className={`relative h-8 
             w-8 
-            bg-gray-500
+            bg-indigo-500
             flex
-            justify-center
             items-center
             shadow-lg
-            ${position === "right" && "rounded-l-[50%]"}
-            ${position === "left" && "rounded-r-[50%]"}
+            ${position === "right" && "rounded-l-[50%] justify-end"}
+            ${position === "left" && "rounded-r-[50%] justify-start"}
             `}
       >
         <input
@@ -46,8 +65,16 @@ export function Radio({
           value={value}
           checked={checked}
           onChange={onChange}
-          className="w-6 h-6 accent-gray-500 border-gray-500 outline-0"
+          className="hidden"
         />
+        <div
+          className={`h-4 w-6 bg-indigo-200
+          ${position === "right" && "rounded-l-[10rem]"}
+           ${position === "left" && "rounded-r-[10rem]"}`}
+        ></div>
+        <div
+          className={`absolute h-4 w-4 rounded-[50%] bg-rose-700 transition-all transition-100 ${cursorClass}`}
+        ></div>
       </div>
       {position === "left" && <span className="ml-2">{label}</span>}
     </label>
