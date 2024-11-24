@@ -51,7 +51,7 @@ export function Radio({
       <div
         className={`relative h-8 
             w-8 
-            bg-indigo-500
+            bg-rose-500
             flex
             items-center
             shadow-lg
@@ -68,12 +68,15 @@ export function Radio({
           className="hidden"
         />
         <div
-          className={`h-4 w-6 bg-indigo-200
+          className={`
+            h-6 w-7          
+            bg-white
+            opacity-50
           ${position === "right" && "rounded-l-[10rem]"}
            ${position === "left" && "rounded-r-[10rem]"}`}
         ></div>
         <div
-          className={`absolute h-4 w-4 rounded-[50%] bg-rose-700 transition-all transition-100 ${cursorClass}`}
+          className={`absolute h-4 w-4 rounded-[50%] bg-rose-800 transition-all transition-100 ${cursorClass}`}
         ></div>
       </div>
       {position === "left" && <span className="ml-2">{label}</span>}
