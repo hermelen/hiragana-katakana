@@ -21,6 +21,7 @@ export default function SyllabaryTrapsPage() {
   const [textList, setTextList] = useState<string[]>([]);
   const [syllableList, setSyllableList] = useState<Syllable[]>([]);
   const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>(null);
+  const [score, setScore] = useState<number[]>([0]);
   const backendName = "rust";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -99,38 +100,59 @@ export default function SyllabaryTrapsPage() {
   }
 
   return (
-    <div className="lg:w-4/12 size-full">
-      <div className="pt-4 pb-4 flex">
-        <Radio
-          className="flex-1"
-          position="right"
-          label="hiragana"
-          name="syllabary"
-          value="true"
-          checked={local}
-          onChange={handleLocalChange}
-        />
-        <Radio
-          className="flex-1"
-          position="left"
-          label="katakana"
-          name="syllabary"
-          value="false"
-          checked={!local}
-          onChange={handleLocalChange}
-        />
+    <div className="size-full lg:flex">
+      <div className="lg:w-4/12 size-full flex justify-end">
+        <div
+          className="lg:hidden inline-flex 
+          justify-center
+          items-center
+          pr-5
+          pl-5
+          mb-5
+          h-10
+          text-center
+          rounded-sm
+          shadow-lg
+          text-white
+          text-xl
+          bg-gradient-to-b
+          from-indigo-500"
+        >
+          {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
+        </div>
       </div>
-      <div className="flex gap-4">
-        <ul className="flex flex-col gap-4 justify-center size-full">
-          {Object.entries(trapData).map((li, index) => {
-            const key = li[0];
-            const value = Object.values(li)[1];
-            const match = textList[index] === key;
-            return (
-              <li key={li[0]} className="flex items-center gap-5">
-                <div
-                  key={key}
-                  className={`text-4xl 
+      <div className="lg:w-4/12 size-full">
+        <div className="pt-4 pb-4 flex">
+          <Radio
+            className="flex-1"
+            position="right"
+            label="hiragana"
+            name="syllabary"
+            value="true"
+            checked={local}
+            onChange={handleLocalChange}
+          />
+          <Radio
+            className="flex-1"
+            position="left"
+            label="katakana"
+            name="syllabary"
+            value="false"
+            checked={!local}
+            onChange={handleLocalChange}
+          />
+        </div>
+        <div className="flex gap-4">
+          <ul className="flex flex-col gap-4 justify-center size-full">
+            {Object.entries(trapData).map((li, index) => {
+              const key = li[0];
+              const value = Object.values(li)[1];
+              const match = textList[index] === key;
+              return (
+                <li key={li[0]} className="flex items-center gap-5">
+                  <div
+                    key={key}
+                    className={`text-4xl 
                                     text-center
                                     flex
                                     items-center
@@ -142,24 +164,24 @@ export default function SyllabaryTrapsPage() {
                                     shadow-lg
                                     ${!match && "from-rose-500"}
                                     ${match && "from-indigo-500"}`}
-                  title={key}
-                >
-                  {local ? value[0] : value[1]}
-                </div>
-                <input
-                  className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl"
-                  type="text"
-                  value={textList[index]}
-                  onChange={(event) => handleInputChange(event, index)}
-                  placeholder="Type something..."
-                />
-              </li>
-            );
-          })}
-          <li className="flex items-center gap-5">
-            <div className="w-20 h-10"></div>
-            <button
-              className={`h-10 
+                    title={key}
+                  >
+                    {local ? value[0] : value[1]}
+                  </div>
+                  <input
+                    className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl"
+                    type="text"
+                    value={textList[index]}
+                    onChange={(event) => handleInputChange(event, index)}
+                    placeholder="Type something..."
+                  />
+                </li>
+              );
+            })}
+            <li className="flex items-center gap-5">
+              <div className="w-20 h-10"></div>
+              <button
+                className={`h-10 
                             flex-1 
                             text-xl 
                             text-center
@@ -171,13 +193,32 @@ export default function SyllabaryTrapsPage() {
                             shadow-lg                                        
                             ${!success && "from-rose-500 disabled:opacity-75"}
                             ${success && "from-indigo-500"}`}
-              onClick={loadTrap}
-              disabled={!success}
-            >
-              retry
-            </button>
-          </li>
-        </ul>
+                onClick={loadTrap}
+                disabled={!success}
+              >
+                retry
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="lg:w-4/12 flex justify-end">
+        <div
+          className="lg:flex hidden 
+                     items-center
+                     pr-5
+                     pl-5
+                     h-10
+                     text-center
+                     rounded-sm
+                     shadow-lg
+                     text-white
+                     text-xl
+                     bg-gradient-to-b
+                     from-indigo-500"
+        >
+          {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
+        </div>
       </div>
     </div>
   );

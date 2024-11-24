@@ -76,7 +76,6 @@ export default function VocabularyThemePage() {
     setText("");
     setHiragana("");
     setKatakana("");
-    setSuccess(false);
   }
 
   if (!themeData) {
