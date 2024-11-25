@@ -1,7 +1,8 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
 import { getWordList, postWord } from "@/api/http";
-import { formatWordList, Word } from "@/app/lib/wordRecord";
+import { formatTypedWordList, Word } from "@/app/lib/wordRecord";
+import { CharacterType } from "@/app/lib/syllabaryRecord";
 
 export default function VocabularyDictionaryPage() {
   const [translateData, setTranslateData] = useState<[string, string][]>([]);
@@ -57,7 +58,7 @@ export default function VocabularyDictionaryPage() {
   }, [updateSubmitDisabled]);
 
   const updateTranslateData = useCallback(() => {
-    setTranslateData(formatWordList(wordList));
+    setTranslateData(formatTypedWordList(wordList, CharacterType.hiragana));
   }, [wordList]);
 
   useEffect(() => {
