@@ -18,26 +18,27 @@ export function formatWordList(wordList: Word[]): [string, string][] {
 
 export function formatTypedWordList(
   wordList: Word[],
-  type: CharacterType,
+  checkedList: boolean[],
 ): [string, string][] {
   return wordList
     .map((w) => {
-      let translation: string | undefined;
-      switch (type) {
-        case CharacterType.hiragana:
-          translation = w.hiragana;
-          break;
-        case CharacterType.katakana:
-          translation = w.katakana;
-          break;
-        case CharacterType.kanji:
-          translation = w.kanji;
-          break;
+      const typeList: CharacterType[] = [];
+      const translationList: [string, string][] = [];
+      for (let i = 0; i < checkedList.length; i++) {
+        if (checkedList[i]) {
+          typeList.push(i);
+        }
       }
-      if (translation === undefined) {
-        return null;
+      if (typeList.includes(CharacterType.hiragana) && w.hiragana) {
+        translationList.push([w.roman, w.hiragana]);
       }
-      return [w.roman, translation];
+      if (typeList.includes(CharacterType.katakana) && w.katakana) {
+        translationList.push([w.roman, w.katakana]);
+      }
+      if (typeList.includes(CharacterType.kanji) && w.kanji) {
+        translationList.push([w.roman, w.kanji]);
+      }
+      return translationList.flatMap((x) => x);
     })
-    .filter((entry): entry is [string, string] => entry !== null);
+    .filter((entry): entry is [string, string] => entry[1] !== undefined);
 }

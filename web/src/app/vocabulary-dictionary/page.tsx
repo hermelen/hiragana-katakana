@@ -7,6 +7,7 @@ import { CharacterType } from "@/app/lib/syllabaryRecord";
 export default function VocabularyDictionaryPage() {
   const [translateData, setTranslateData] = useState<[string, string][]>([]);
   const [wordList, setWordList] = useState<Word[]>([]);
+  const [checkedList, setCheckedList] = useState<boolean[]>([true, true, true]);
   const [submitDisabled, setSubmitDisabled] = useState<boolean>(true);
   const backendName = "rust";
   const [newWord, setNewWord] = useState<Word>({
@@ -58,8 +59,8 @@ export default function VocabularyDictionaryPage() {
   }, [updateSubmitDisabled]);
 
   const updateTranslateData = useCallback(() => {
-    setTranslateData(formatTypedWordList(wordList, CharacterType.hiragana));
-  }, [wordList]);
+    setTranslateData(formatTypedWordList(wordList, checkedList));
+  }, [wordList, checkedList]);
 
   useEffect(() => {
     updateTranslateData();
@@ -71,6 +72,26 @@ export default function VocabularyDictionaryPage() {
 
   return (
     <div className="lg:w-6/12 size-full">
+      <div className="pt-4 pb-4 flex">
+        {Object.values(CharacterType)
+          .filter((x) => typeof x === "string")
+          .map((type, index) => (
+            <label key={`${type}-${index}`}>
+              <input
+                type="checkbox"
+                checked={checkedList[index]}
+                onChange={() =>
+                  setCheckedList(
+                    checkedList.map((item, idx) =>
+                      idx === index ? !item : item,
+                    ),
+                  )
+                }
+              />
+              {type.toLocaleString()}
+            </label>
+          ))}
+      </div>
       <div className={`flex gap-4 ${edit && "hidden"}`}>
         <ul className="flex flex-col gap-4 justify-center size-full">
           {translateData.map((val) => {
