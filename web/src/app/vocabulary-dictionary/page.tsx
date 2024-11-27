@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { getWordList, postWord } from "@/api/http";
 import { formatTypedWordList, Word } from "@/app/lib/wordRecord";
 import { CharacterType } from "@/app/lib/syllabaryRecord";
+import { Checkboxes } from "@/app/components/Checkboxes";
 
 export default function VocabularyDictionaryPage() {
   const [translateData, setTranslateData] = useState<[string, string][]>([]);
@@ -73,24 +74,10 @@ export default function VocabularyDictionaryPage() {
   return (
     <div className="lg:w-6/12 size-full">
       <div className="pt-4 pb-4 flex">
-        {Object.values(CharacterType)
-          .filter((x) => typeof x === "string")
-          .map((type, index) => (
-            <label key={`${type}-${index}`}>
-              <input
-                type="checkbox"
-                checked={checkedList[index]}
-                onChange={() =>
-                  setCheckedList(
-                    checkedList.map((item, idx) =>
-                      idx === index ? !item : item,
-                    ),
-                  )
-                }
-              />
-              {type.toLocaleString()}
-            </label>
-          ))}
+        <Checkboxes
+          checkedList={checkedList}
+          onChange={(checkedList) => setCheckedList(checkedList)}
+        />
       </div>
       <div className={`flex gap-4 ${edit && "hidden"}`}>
         <ul className="flex flex-col gap-4 justify-center size-full">

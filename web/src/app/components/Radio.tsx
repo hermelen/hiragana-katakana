@@ -23,13 +23,9 @@ export function Radio({
 
   useEffect(() => {
     setCursorClass(() => getCursorGlass());
-  }, [checked, getCursorGlass, position]);
+  }, [checked, position]);
 
-  // useCallback(() => {
-  //   setCursorClass(() => getCursorGlass());
-  // }, [getCursorGlass]);
-
-  function getCursorGlass() {
+  const getCursorGlass = useCallback(() => {
     return checked
       ? position === "left"
         ? "right-2"
@@ -37,7 +33,7 @@ export function Radio({
       : position === "left"
         ? "right-10"
         : "left-10";
-  }
+  }, [checked, position]);
 
   return (
     <label
