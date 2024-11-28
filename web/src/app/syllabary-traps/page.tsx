@@ -13,25 +13,18 @@ import {
 import { Radio } from "@/app/components/Radio";
 import { getSyllableList } from "@/api/http";
 import { Syllable } from "@/app/syllabary-table/page";
+import { computeScore } from "@/app/lib/score";
 
 export default function SyllabaryTrapsPage() {
   const [trapData, setTrapData] = useState<SyllabaryRecord>({});
   const [local, setLocal] = useState<boolean>(true);
-  const [success, setSuccess] = useState<boolean>(false);
   const [textList, setTextList] = useState<string[]>([]);
   const [syllableList, setSyllableList] = useState<Syllable[]>([]);
   const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>(null);
   const [score, setScore] = useState<number[]>([0]);
+  const [trainingLength, setTrainingLength] = useState<number>(0);
   const backendName = "rust";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getSyllableList(apiUrl, backendName);
-      setSyllableList(response);
-    };
-    fetchData();
-  }, [backendName, apiUrl]);
 
   useEffect(() => {
     const syllableListToRecord = () => {
@@ -42,26 +35,34 @@ export default function SyllabaryTrapsPage() {
     syllableListToRecord();
   }, [syllableList]);
 
-  useEffect(() => {
-    if (syllabaryRecord) {
-      loadTrap();
-    }
-  }, [local, syllabaryRecord]);
+  const loadTraining = useCallback(
+    (trainingLength) => {
+      const trapList: SyllabaryTrapList = local ? HiraganaTraps : KatakanaTraps;
+      const trapCharacters = shuffleArray(
+        trapList[Math.floor(Math.random() * trapList.length)],
+      );
+      let trapData: SyllabaryRecord = {};
+      const initialTextListState: string[] = [];
+      for (let i = 0; i < trapCharacters.length; i++) {
+        initialTextListState.push("");
+        trapData[trapCharacters[i]] = syllabaryRecord[trapCharacters[i]];
+      }
+      setTextList(initialTextListState);
+      setTrapData(trapData);
+      setTrainingLength(trainingLength + trapCharacters.length);
+    },
+    [local, syllabaryRecord],
+  );
 
-  const loadTrap = useCallback(() => {
-    const trapList: SyllabaryTrapList = local ? HiraganaTraps : KatakanaTraps;
-    const trapCharacters = shuffleArray(
-      trapList[Math.floor(Math.random() * trapList.length)],
-    );
-    let trapData: SyllabaryRecord = {};
-    const initialTextListState: string[] = [];
-    for (let i = 0; i < trapCharacters.length; i++) {
-      initialTextListState.push("");
-      trapData[trapCharacters[i]] = syllabaryRecord[trapCharacters[i]];
-    }
-    setTextList(initialTextListState);
-    setTrapData(trapData);
-  }, [local, syllabaryRecord]);
+  const reLoadTraining = useCallback(
+    (trainingLength) => {
+      loadTraining(trainingLength);
+      setScore((prevScore) => {
+        return [...prevScore, 0];
+      });
+    },
+    [loadTraining],
+  );
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -70,18 +71,8 @@ export default function SyllabaryTrapsPage() {
     const newTextList = [...textList];
     newTextList[index] = event.target.value;
     setTextList(newTextList);
-    setSuccess(computeSuccess(newTextList));
+    setScore(computeScore(newTextList, score, trapData));
   };
-
-  function computeSuccess(sourceList: string[]) {
-    const targetList = Object.entries(trapData).map((val) => val[0]);
-    for (let i = 0; i < targetList.length; i++) {
-      if (sourceList[i] !== targetList[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
 
   function shuffleArray(array: string[]) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -94,6 +85,20 @@ export default function SyllabaryTrapsPage() {
   const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLocal(event.target.value === "true");
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getSyllableList(apiUrl, backendName);
+      setSyllableList(response);
+    };
+    fetchData();
+  }, [backendName, apiUrl]);
+
+  useEffect(() => {
+    if (syllabaryRecord) {
+      loadTraining(trainingLength);
+    }
+  }, [loadTraining, local, syllabaryRecord, trainingLength]);
 
   if (!trapData) {
     return <div>Loading...</div>;
@@ -118,7 +123,7 @@ export default function SyllabaryTrapsPage() {
           bg-gradient-to-b
           from-indigo-500"
         >
-          {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
+          {score.reduce((acc, curr) => acc + curr, 0)}/{trainingLength}
         </div>
       </div>
       <div className="lg:w-4/12 size-full">
@@ -191,12 +196,10 @@ export default function SyllabaryTrapsPage() {
                             rounded-lg 
                             bg-gradient-to-b 
                             shadow-lg                                        
-                            ${!success && "from-rose-500 disabled:opacity-75"}
-                            ${success && "from-indigo-500"}`}
-                onClick={loadTrap}
-                disabled={!success}
+                            from-indigo-500`}
+                onClick={() => reLoadTraining(trainingLength)}
               >
-                retry
+                Next
               </button>
             </li>
           </ul>
@@ -217,7 +220,7 @@ export default function SyllabaryTrapsPage() {
                      bg-gradient-to-b
                      from-indigo-500"
         >
-          {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
+          {score.reduce((acc, curr) => acc + curr, 0)}/{trainingLength}
         </div>
       </div>
     </div>

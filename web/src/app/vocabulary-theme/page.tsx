@@ -101,7 +101,8 @@ export default function VocabularyThemePage() {
           bg-gradient-to-b
           from-indigo-500"
         >
-          {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
+          {score.reduce((acc, curr) => acc + curr, 0)}/
+          {score.length * trainingLength}
         </div>
       </div>
       <div className="lg:w-6/12 size-full">
@@ -213,7 +214,8 @@ export default function VocabularyThemePage() {
                      bg-gradient-to-b
                      from-indigo-500"
         >
-          {score.reduce((acc, curr) => acc + curr, 0)}/{score.length * 10}
+          {score.reduce((acc, curr) => acc + curr, 0)}/
+          {score.length * trainingLength}
         </div>
       </div>
     </div>
