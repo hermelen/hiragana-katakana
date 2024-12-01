@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { getJapanese } from "@/app/services/theme";
 import { getSyllableList, getWordList } from "@/api/http";
 import { Syllable } from "@/app/syllabary-table/page";
@@ -9,6 +9,7 @@ import {
   SyllabaryRecord,
 } from "@/app/lib/syllabaryRecord";
 import { formatWordList, Word } from "@/app/lib/wordRecord";
+import { Score } from "@/app/components/Score";
 
 export default function VocabularyThemePage() {
   const [themeData, setThemeData] = useState<[string, string]>([]);
@@ -19,6 +20,7 @@ export default function VocabularyThemePage() {
   const [wordList, setWordList] = useState<Word[]>([]);
   const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});
   const [score, setScore] = useState<number[]>([0]);
+  const [trainingLength, setTrainingLength] = useState<number>(0);
   const backendName = "rust";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -46,7 +48,12 @@ export default function VocabularyThemePage() {
   }, [syllableList]);
 
   useEffect(() => {
-    setThemeData(shuffleArray(formatWordList(wordList)));
+    if (wordList.length > 0) {
+      console.log(wordList);
+      setThemeData(shuffleArray(formatWordList(wordList)));
+      console.log("setThemeData");
+      setTrainingLength(trainingLength + 1);
+    }
   }, [wordList]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +68,17 @@ export default function VocabularyThemePage() {
     );
     setHiragana(translation[0].join(""));
     setKatakana(translation[1].join(""));
+    if (themeData) {
+      setScore((prevScores) => {
+        const updatedScores = [...prevScores];
+        updatedScores[updatedScores.length - 1] =
+          themeData[1] === translation[0].join("") ||
+          themeData[1] === translation[1].join("")
+            ? 1
+            : 0;
+        return updatedScores;
+      });
+    }
   };
 
   function shuffleArray(array: [string, string][]): [string, string] {
@@ -71,12 +89,21 @@ export default function VocabularyThemePage() {
     return array[0];
   }
 
-  function reloadTheme() {
-    setThemeData(shuffleArray(formatWordList(wordList)));
-    setText("");
-    setHiragana("");
-    setKatakana("");
-  }
+  const reloadTheme = useCallback(
+    (trainingLength) => {
+      if (wordList.length > 0) {
+        setThemeData(shuffleArray(formatWordList(wordList)));
+        setText("");
+        setHiragana("");
+        setKatakana("");
+        setTrainingLength(trainingLength + 1);
+        setScore((prevScore) => {
+          return [...prevScore, 0];
+        });
+      }
+    },
+    [wordList],
+  );
 
   if (!themeData) {
     return <div>Loading...</div>;
@@ -85,24 +112,8 @@ export default function VocabularyThemePage() {
   return (
     <div className="size-full lg:flex">
       <div className="lg:w-4/12 size-full flex justify-end">
-        <div
-          className="lg:hidden inline-flex 
-          justify-center
-          items-center
-          pr-5
-          pl-5
-          mb-5
-          h-10
-          text-center
-          rounded-sm
-          shadow-lg
-          text-white
-          text-xl
-          bg-gradient-to-b
-          from-indigo-500"
-        >
-          {score.reduce((acc, curr) => acc + curr, 0)}/
-          {score.length * trainingLength}
+        <div className="lg:hidden flex">
+          <Score score={score} trainingLength={trainingLength} />
         </div>
       </div>
       <div className="lg:w-6/12 size-full">
@@ -187,35 +198,18 @@ export default function VocabularyThemePage() {
                             rounded-lg 
                             shadow-lg                                        
                             bg-gradient-to-b 
-                            ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-rose-500 disabled:opacity-75" : "from-indigo-500"}`}
-                onClick={reloadTheme}
-                disabled={
-                  hiragana !== themeData[1] && katakana !== themeData[1]
-                }
+                            from-indigo-500`}
+                onClick={() => reloadTheme(trainingLength)}
               >
-                Other Try
+                Next
               </button>
             </li>
           </ul>
         </div>
       </div>
       <div className="lg:w-4/12 flex justify-end">
-        <div
-          className="lg:flex hidden 
-                     items-center
-                     pr-5
-                     pl-5
-                     h-10
-                     text-center
-                     rounded-sm
-                     shadow-lg
-                     text-white
-                     text-xl
-                     bg-gradient-to-b
-                     from-indigo-500"
-        >
-          {score.reduce((acc, curr) => acc + curr, 0)}/
-          {score.length * trainingLength}
+        <div className="lg:flex hidden">
+          <Score score={score} trainingLength={trainingLength} />
         </div>
       </div>
     </div>

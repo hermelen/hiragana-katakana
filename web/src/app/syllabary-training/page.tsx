@@ -9,6 +9,7 @@ import { Radio } from "@/app/components/Radio";
 import { Syllable } from "@/app/syllabary-table/page";
 import { getSyllableList } from "@/api/http";
 import { computeScore } from "@/app/lib/score";
+import { Score } from "@/app/components/Score";
 
 export default function SyllabaryTrainingPage() {
   const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});
@@ -109,23 +110,8 @@ export default function SyllabaryTrainingPage() {
   return (
     <div className="size-full lg:flex">
       <div className="lg:w-4/12 size-full flex justify-end">
-        <div
-          className="lg:hidden inline-flex 
-          justify-center
-          items-center
-          pr-5
-          pl-5
-          mb-5
-          h-10
-          text-center
-          rounded-sm
-          shadow-lg
-          text-white
-          text-xl
-          bg-gradient-to-b
-          from-indigo-500"
-        >
-          {score.reduce((acc, curr) => acc + curr, 0)}/{trainingLength}
+        <div className="lg:hidden flex">
+          <Score score={score} trainingLength={trainingLength} />
         </div>
       </div>
       <div className="lg:w-4/12 size-full">
@@ -228,21 +214,8 @@ export default function SyllabaryTrainingPage() {
         </div>
       </div>
       <div className="lg:w-4/12 flex justify-end">
-        <div
-          className="lg:flex hidden 
-                     items-center
-                     pr-5
-                     pl-5
-                     h-10
-                     text-center
-                     rounded-sm
-                     shadow-lg
-                     text-white
-                     text-xl
-                     bg-gradient-to-b
-                     from-indigo-500"
-        >
-          {score.reduce((acc, curr) => acc + curr, 0)}/{trainingLength}
+        <div className="lg:flex hidden">
+          <Score score={score} trainingLength={trainingLength} />
         </div>
       </div>
     </div>

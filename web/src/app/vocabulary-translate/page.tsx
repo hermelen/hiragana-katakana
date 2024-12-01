@@ -3,16 +3,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { formatWordList, Word } from "@/app/lib/wordRecord";
 import { getWordList } from "@/api/http";
+import { Score } from "@/app/components/Score";
+import { computeScore } from "@/app/lib/score";
 
 export default function WordTranslatePage() {
   const [shuffledTranslateData, setShuffledTranslateData] = useState<
     [string, string][]
   >([]);
   const [translateIndex, setTranslateIndex] = useState<number>(0);
-  const [success, setSuccess] = useState<boolean>(false);
   const [text, setText] = useState<string>("");
   const [wordList, setWordList] = useState<Word[]>([]);
   const [score, setScore] = useState<number[]>([0]);
+  const [trainingLength, setTrainingLength] = useState<number>(0);
   const backendName = "rust";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -31,6 +33,7 @@ export default function WordTranslatePage() {
       }
       setShuffledTranslateData(shuffleArray(formatWordList(wordList)));
       setTranslateIndex(0);
+      setTrainingLength(trainingLength + 1);
     };
     getTrainingData();
   }, [wordList]);
@@ -49,15 +52,24 @@ export default function WordTranslatePage() {
   ) => {
     setText(event.target.value);
     if (translateData) {
-      setSuccess(event.target.value === translateData[0]);
+      setScore((prevScores) => {
+        const updatedScores = [...prevScores];
+        updatedScores[updatedScores.length - 1] =
+          event.target.value === translateData[0] ? 1 : 0;
+        console.log(updatedScores);
+        return updatedScores;
+      });
     }
   };
 
   const loadData = useCallback(() => {
     const goAhead = translateIndex + 1 < shuffledTranslateData.length;
+    setTrainingLength(trainingLength + 1);
+    setScore((prevScore) => {
+      return [...prevScore, 0];
+    });
     setTranslateIndex(goAhead ? translateIndex + 1 : 0);
     setText("");
-    setSuccess(false);
   }, [shuffledTranslateData.length, translateIndex]);
 
   if (!shuffledTranslateData || shuffledTranslateData.length == 0) {
@@ -67,24 +79,8 @@ export default function WordTranslatePage() {
   return (
     <div className="size-full lg:flex">
       <div className="lg:w-4/12 size-full flex justify-end">
-        <div
-          className="lg:hidden inline-flex 
-          justify-center
-          items-center
-          pr-5
-          pl-5
-          mb-5
-          h-10
-          text-center
-          rounded-sm
-          shadow-lg
-          text-white
-          text-xl
-          bg-gradient-to-b
-          from-indigo-500"
-        >
-          {score.reduce((acc, curr) => acc + curr, 0)}/
-          {score.length * trainingLength}
+        <div className="lg:hidden flex">
+          <Score score={score} trainingLength={trainingLength} />
         </div>
       </div>
       <div className="lg:w-6/12 size-full">
@@ -134,9 +130,8 @@ export default function WordTranslatePage() {
                           rounded-lg 
                           bg-gradient-to-b 
                           shadow-lg                                        
-                          ${!success ? "from-rose-500 disabled:opacity-75" : "from-indigo-500"}`}
+                          from-indigo-500`}
                 onClick={loadData}
-                disabled={!success}
               >
                 Other Try
               </button>
@@ -145,22 +140,8 @@ export default function WordTranslatePage() {
         </div>
       </div>
       <div className="lg:w-4/12 flex justify-end">
-        <div
-          className="lg:flex hidden 
-                     items-center
-                     pr-5
-                     pl-5
-                     h-10
-                     text-center
-                     rounded-sm
-                     shadow-lg
-                     text-white
-                     text-xl
-                     bg-gradient-to-b
-                     from-indigo-500"
-        >
-          {score.reduce((acc, curr) => acc + curr, 0)}/
-          {score.length * trainingLength}
+        <div className="lg:flex hidden">
+          <Score score={score} trainingLength={trainingLength} />
         </div>
       </div>
     </div>

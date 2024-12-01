@@ -14,6 +14,7 @@ import { Radio } from "@/app/components/Radio";
 import { getSyllableList } from "@/api/http";
 import { Syllable } from "@/app/syllabary-table/page";
 import { computeScore } from "@/app/lib/score";
+import { Score } from "@/app/components/Score";
 
 export default function SyllabaryTrapsPage() {
   const [trapData, setTrapData] = useState<SyllabaryRecord>({});
@@ -25,15 +26,6 @@ export default function SyllabaryTrapsPage() {
   const [trainingLength, setTrainingLength] = useState<number>(0);
   const backendName = "rust";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
-  useEffect(() => {
-    const syllableListToRecord = () => {
-      if (syllableList.length > 0) {
-        setSyllabaryRecord(getSyllableListToRecord(syllableList));
-      }
-    };
-    syllableListToRecord();
-  }, [syllableList]);
 
   const loadTraining = useCallback(
     (trainingLength) => {
@@ -61,7 +53,7 @@ export default function SyllabaryTrapsPage() {
         return [...prevScore, 0];
       });
     },
-    [loadTraining],
+    [syllabaryRecord],
   );
 
   const handleInputChange = (
@@ -98,7 +90,16 @@ export default function SyllabaryTrapsPage() {
     if (syllabaryRecord) {
       loadTraining(trainingLength);
     }
-  }, [loadTraining, local, syllabaryRecord, trainingLength]);
+  }, [loadTraining, syllabaryRecord]);
+
+  useEffect(() => {
+    const syllableListToRecord = () => {
+      if (syllableList.length > 0) {
+        setSyllabaryRecord(getSyllableListToRecord(syllableList));
+      }
+    };
+    syllableListToRecord();
+  }, [syllableList]);
 
   if (!trapData) {
     return <div>Loading...</div>;
@@ -107,23 +108,8 @@ export default function SyllabaryTrapsPage() {
   return (
     <div className="size-full lg:flex">
       <div className="lg:w-4/12 size-full flex justify-end">
-        <div
-          className="lg:hidden inline-flex 
-          justify-center
-          items-center
-          pr-5
-          pl-5
-          mb-5
-          h-10
-          text-center
-          rounded-sm
-          shadow-lg
-          text-white
-          text-xl
-          bg-gradient-to-b
-          from-indigo-500"
-        >
-          {score.reduce((acc, curr) => acc + curr, 0)}/{trainingLength}
+        <div className="lg:hidden flex">
+          <Score score={score} trainingLength={trainingLength} />
         </div>
       </div>
       <div className="lg:w-4/12 size-full">
@@ -206,21 +192,8 @@ export default function SyllabaryTrapsPage() {
         </div>
       </div>
       <div className="lg:w-4/12 flex justify-end">
-        <div
-          className="lg:flex hidden 
-                     items-center
-                     pr-5
-                     pl-5
-                     h-10
-                     text-center
-                     rounded-sm
-                     shadow-lg
-                     text-white
-                     text-xl
-                     bg-gradient-to-b
-                     from-indigo-500"
-        >
-          {score.reduce((acc, curr) => acc + curr, 0)}/{trainingLength}
+        <div className="lg:flex hidden">
+          <Score score={score} trainingLength={trainingLength} />
         </div>
       </div>
     </div>
