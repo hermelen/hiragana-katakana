@@ -34,21 +34,21 @@ export default function RootLayout({
     {
       key: "syllabaryTraining",
       href: "/syllabary-training",
-      label: "Syllable training",
+      label: "Syllabary training",
     },
     {
-      key: "vocabularyTranslate",
-      href: "/vocabulary-translate",
+      key: "translateTraining",
+      href: "/translate-training",
       label: "Translate training",
     },
     {
-      key: "vocabularyTheme",
-      href: "/vocabulary-theme",
+      key: "themeTraining",
+      href: "/theme-training",
       label: "Theme training",
     },
     {
-      key: "vocabularyDictionary",
-      href: "/vocabulary-dictionary",
+      key: "dictionary",
+      href: "/dictionary",
       label: "Dictionary",
     },
     {

@@ -1,4 +1,4 @@
-export type SyllabaryTrapList = string[string[]];
+export type SyllabaryTrapList = string[][];
 export const HiraganaTraps: SyllabaryTrapList = [
   ["u", "tsu", "dzu"],
   ["sa", "za", "chi", "ra", "dji"],

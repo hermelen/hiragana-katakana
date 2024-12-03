@@ -11,8 +11,8 @@ import {
 import { formatWordList, Word } from "@/app/lib/wordRecord";
 import { Score } from "@/app/components/Score";
 
-export default function VocabularyThemePage() {
-  const [themeData, setThemeData] = useState<[string, string]>([]);
+export default function ThemeTrainingPage() {
+  const [themeData, setThemeData] = useState<[string?, string?]>([]);
   const [text, setText] = useState<string>("");
   const [hiragana, setHiragana] = useState<string>("");
   const [katakana, setKatakana] = useState<string>("");

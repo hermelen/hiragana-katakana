@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Radio } from "@/app/components/Radio";
 import { UUID } from "node:crypto";
 import { getSyllableList } from "@/api/http";
-import { SyllabaryRecord } from "@/app/lib/syllabaryRecord";
 
 export interface Syllable {
   id: UUID;

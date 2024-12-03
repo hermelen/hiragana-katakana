@@ -5,7 +5,7 @@ import { formatTypedWordList, Word } from "@/app/lib/wordRecord";
 import { CharacterType } from "@/app/lib/syllabaryRecord";
 import { Checkboxes } from "@/app/components/Checkboxes";
 
-export default function VocabularyDictionaryPage() {
+export default function DictionaryPage() {
   const [translateData, setTranslateData] = useState<[string, string][]>([]);
   const [wordList, setWordList] = useState<Word[]>([]);
   const [checkedList, setCheckedList] = useState<boolean[]>([true, true, true]);

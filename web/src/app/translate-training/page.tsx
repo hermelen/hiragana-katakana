@@ -6,7 +6,7 @@ import { getWordList } from "@/api/http";
 import { Score } from "@/app/components/Score";
 import { computeScore } from "@/app/lib/score";
 
-export default function WordTranslatePage() {
+export default function TranslateTrainingPage() {
   const [shuffledTranslateData, setShuffledTranslateData] = useState<
     [string, string][]
   >([]);

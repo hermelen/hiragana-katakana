@@ -16,7 +16,7 @@ import { Syllable } from "@/app/syllabary-table/page";
 import { computeScore } from "@/app/lib/score";
 import { Score } from "@/app/components/Score";
 
-export default function SyllabaryTrapsPage() {
+export default function TrapsPage() {
   const [trapData, setTrapData] = useState<SyllabaryRecord>({});
   const [local, setLocal] = useState<boolean>(true);
   const [textList, setTextList] = useState<string[]>([]);
