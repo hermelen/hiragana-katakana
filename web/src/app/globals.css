@@ -19,3 +19,20 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* dictionary-page */
+
+.toggle-visible-children-on-hover button {
+  display: none;
+}
+.toggle-visible-children-on-hover div:nth-child(1) {
+  display: flex;
+}
+.toggle-visible-children-on-hover:hover button {
+  display: flex;
+}
+.toggle-visible-children-on-hover:hover div:nth-child(2) {
+  display: none;
+}
+
+/* dictionary-page */

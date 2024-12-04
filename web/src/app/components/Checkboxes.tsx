@@ -2,8 +2,8 @@ import { CharacterType } from "@/app/lib/syllabaryRecord";
 import React from "react";
 
 type CheckboxesProps = {
-  checkedList: [boolean, boolean, boolean];
-  onChange: (checkedList: [boolean, boolean, boolean]) => void;
+  checkedList: boolean[];
+  onChange: (checkedList: boolean[]) => void;
 };
 
 export function Checkboxes({ checkedList, onChange }: CheckboxesProps) {

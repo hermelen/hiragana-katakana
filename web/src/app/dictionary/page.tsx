@@ -2,7 +2,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { getWordList, postWord } from "@/api/http";
 import { formatTypedWordList, Word } from "@/app/lib/wordRecord";
-import { CharacterType } from "@/app/lib/syllabaryRecord";
 import { Checkboxes } from "@/app/components/Checkboxes";
 
 export default function DictionaryPage() {
@@ -73,7 +72,7 @@ export default function DictionaryPage() {
 
   return (
     <div className="lg:w-6/12 size-full">
-      <div className="pt-4 pb-4 flex">
+      <div className={`pt-4 pb-4 flex ${edit && "hidden"}`}>
         <Checkboxes
           checkedList={checkedList}
           onChange={(checkedList) => setCheckedList(checkedList)}
@@ -85,7 +84,25 @@ export default function DictionaryPage() {
             const key = val[0];
             const value = val[1];
             return (
-              <li className="flex items-center gap-5 size-full" key={key}>
+              <li
+                className="flex items-center gap-5 size-full toggle-visible-children-on-hover"
+                key={key}
+              >
+                <button
+                  className={`text-xl 
+                                    text-center
+                                    flex
+                                    items-center
+                                    justify-center
+                                    w-80 
+                                    h-10 
+                                    rounded-lg 
+                                    bg-gradient-to-b 
+                                    shadow-lg
+                                    from-stone-600`}
+                >
+                  Edit
+                </button>
                 <div
                   className={`text-4xl 
                                     text-center
