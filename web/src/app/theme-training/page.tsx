@@ -2,14 +2,15 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { getJapanese } from "@/app/services/theme";
-import { getSyllableList, getWordList } from "@/api/http";
-import { Syllable } from "@/app/syllabary-table/page";
+import { getWordList } from "@/api/http";
 import {
   getSyllableListToRecord,
   SyllabaryRecord,
 } from "@/app/lib/syllabaryRecord";
 import { formatWordList, Word } from "@/app/lib/wordRecord";
 import { Score } from "@/app/components/Score";
+import {SyllableService, WordService} from "@/api";
+import { Syllable } from "@/api/syllable";
 
 export default function ThemeTrainingPage() {
   const [themeData, setThemeData] = useState<[string?, string?]>([]);
@@ -26,7 +27,7 @@ export default function ThemeTrainingPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getSyllableList(apiUrl, backendName);
+      const response = await SyllableService.list(apiUrl, backendName);
       setSyllableList(response);
     };
     fetchData();
@@ -34,7 +35,7 @@ export default function ThemeTrainingPage() {
 
   useEffect(() => {
     const fetchWordData = async () => {
-      const response = await getWordList(apiUrl, backendName);
+      const response = await WordService.list(apiUrl, backendName);
       setWordList(response);
     };
     fetchWordData();
@@ -90,7 +91,7 @@ export default function ThemeTrainingPage() {
   }
 
   const reloadTheme = useCallback(
-    (trainingLength) => {
+    (trainingLength: number) => {
       if (wordList.length > 0) {
         setThemeData(shuffleArray(formatWordList(wordList)));
         setText("");

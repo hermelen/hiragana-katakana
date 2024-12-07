@@ -11,43 +11,47 @@ import {
   KatakanaTraps,
 } from "@/app/lib/syllabaryTrapsList";
 import { Radio } from "@/app/components/Radio";
-import { getSyllableList } from "@/api/http";
-import { Syllable } from "@/app/syllabary-table/page";
 import { computeScore } from "@/app/lib/score";
 import { Score } from "@/app/components/Score";
+import { SyllableService } from "@/api";
+import { Syllable } from "@/api/syllable";
 
 export default function TrapsPage() {
   const [trapData, setTrapData] = useState<SyllabaryRecord>({});
   const [local, setLocal] = useState<boolean>(true);
   const [textList, setTextList] = useState<string[]>([]);
   const [syllableList, setSyllableList] = useState<Syllable[]>([]);
-  const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>(null);
+  const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});
   const [score, setScore] = useState<number[]>([0]);
   const [trainingLength, setTrainingLength] = useState<number>(0);
   const backendName = "rust";
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const loadTraining = useCallback(
-    (trainingLength) => {
-      const trapList: SyllabaryTrapList = local ? HiraganaTraps : KatakanaTraps;
-      const trapCharacters = shuffleArray(
-        trapList[Math.floor(Math.random() * trapList.length)],
-      );
-      let trapData: SyllabaryRecord = {};
-      const initialTextListState: string[] = [];
-      for (let i = 0; i < trapCharacters.length; i++) {
-        initialTextListState.push("");
-        trapData[trapCharacters[i]] = syllabaryRecord[trapCharacters[i]];
+    (trainingLength: number) => {
+      if (syllableList.length > 0) {
+        const trapList: SyllabaryTrapList = local
+          ? HiraganaTraps
+          : KatakanaTraps;
+        const trapCharacters = shuffleArray(
+          trapList[Math.floor(Math.random() * trapList.length)],
+        );
+        let trapData: SyllabaryRecord = {};
+        const initialTextListState: string[] = [];
+        for (let i = 0; i < trapCharacters.length; i++) {
+          initialTextListState.push("");
+          trapData[trapCharacters[i]] = syllabaryRecord[trapCharacters[i]];
+        }
+        setTextList(initialTextListState);
+        setTrapData(trapData);
+        setTrainingLength(trainingLength + trapCharacters.length);
       }
-      setTextList(initialTextListState);
-      setTrapData(trapData);
-      setTrainingLength(trainingLength + trapCharacters.length);
     },
     [local, syllabaryRecord],
   );
 
   const reLoadTraining = useCallback(
-    (trainingLength) => {
+    (trainingLength: number) => {
       loadTraining(trainingLength);
       setScore((prevScore) => {
         return [...prevScore, 0];
@@ -80,7 +84,7 @@ export default function TrapsPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getSyllableList(apiUrl, backendName);
+      const response = await SyllableService.list(apiUrl, backendName);
       setSyllableList(response);
     };
     fetchData();

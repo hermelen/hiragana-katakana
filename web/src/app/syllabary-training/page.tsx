@@ -6,10 +6,10 @@ import {
 } from "@/app/lib/syllabaryRecord";
 import React, { useCallback, useEffect, useState } from "react";
 import { Radio } from "@/app/components/Radio";
-import { Syllable } from "@/app/syllabary-table/page";
-import { getSyllableList } from "@/api/http";
 import { computeScore } from "@/app/lib/score";
 import { Score } from "@/app/components/Score";
+import { SyllableService } from "@/api";
+import { Syllable } from "@/api/syllable";
 
 export default function SyllabaryTrainingPage() {
   const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});
@@ -41,7 +41,7 @@ export default function SyllabaryTrainingPage() {
   };
 
   const loadTraining = useCallback(
-    (trainingLength) => {
+    (trainingLength: number) => {
       const trainingList: [string, [string, string]][] = Object.entries(
         getSyllableListToRecord(syllableList),
       );
@@ -66,7 +66,7 @@ export default function SyllabaryTrainingPage() {
   );
 
   const reLoadTraining = useCallback(
-    (trainingLength) => {
+    (trainingLength: number) => {
       loadTraining(trainingLength);
       setScore((prevScore) => {
         return [...prevScore, 0];
@@ -91,7 +91,7 @@ export default function SyllabaryTrainingPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getSyllableList(apiUrl, backendName);
+      const response = await SyllableService.list(apiUrl, backendName);
       setSyllableList(response);
     };
     fetchData();

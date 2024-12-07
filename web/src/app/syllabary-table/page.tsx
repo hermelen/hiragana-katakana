@@ -2,16 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { Radio } from "@/app/components/Radio";
-import { UUID } from "node:crypto";
-import { getSyllableList } from "@/api/http";
-
-export interface Syllable {
-  id: UUID;
-  roman: string;
-  hiragana: string;
-  katakana: string;
-  kanji?: string;
-}
+import { Syllable } from "@/api/syllable";
+import { SyllableService } from "@/api";
 
 export default function SyllabaryTablePage() {
   type TableData = Record<string, [string, string]>[];
@@ -26,7 +18,7 @@ export default function SyllabaryTablePage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getSyllableList(apiUrl, backendName);
+      const response = await SyllableService.list(apiUrl, backendName);
       setSyllableList(response);
     };
     fetchData();

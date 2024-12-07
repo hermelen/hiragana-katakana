@@ -1,4 +1,4 @@
-import { Syllable } from "@/app/syllabary-table/page";
+import { Syllable } from "@/api/syllable";
 
 export type SyllabaryRecord = Record<string, [string, string]>;
 

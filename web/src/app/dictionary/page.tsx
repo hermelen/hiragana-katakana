@@ -1,8 +1,8 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import { getWordList, postWord } from "@/api/http";
 import { formatTypedWordList, Word } from "@/app/lib/wordRecord";
 import { Checkboxes } from "@/app/components/Checkboxes";
+import { WordService } from "@/api";
 
 export default function DictionaryPage() {
   const [translateData, setTranslateData] = useState<[string, string][]>([]);
@@ -24,7 +24,7 @@ export default function DictionaryPage() {
 
   useEffect(() => {
     const fetchWordData = async () => {
-      const response = await getWordList(apiUrl, backendName);
+      const response = await WordService.list(apiUrl, backendName);
       setWordList(response);
     };
     fetchWordData();
@@ -32,7 +32,7 @@ export default function DictionaryPage() {
 
   let submit: () => Promise<void>;
   submit = useCallback(async () => {
-    const response = await postWord(apiUrl, backendName, newWord);
+    const response = await WordService.create(apiUrl, backendName, newWord);
     setWordList((prevWordList) => [...prevWordList, response]);
     setEdit(false);
     setNewWord({

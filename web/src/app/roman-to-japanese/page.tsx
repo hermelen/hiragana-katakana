@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { Radio } from "@/app/components/Radio";
 import { getJapanese, getPhonetic, getRoman } from "@/app/services/theme";
-import { getSyllableList } from "@/api/http";
-import { Syllable } from "@/app/syllabary-table/page";
 import {
   getSyllableListToRecord,
   SyllabaryRecord,
 } from "@/app/lib/syllabaryRecord";
+import { SyllableService } from "@/api";
+import {Syllable} from "@/api/syllable";
 
 export default function RomanToJapanesePage() {
   const [text, setText] = useState<string>("");
@@ -23,7 +23,7 @@ export default function RomanToJapanesePage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getSyllableList(apiUrl, backendName);
+      const response = await SyllableService.list(apiUrl, backendName);
       setSyllableList(response);
     };
     fetchData();

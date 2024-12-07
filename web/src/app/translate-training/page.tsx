@@ -5,6 +5,7 @@ import { formatWordList, Word } from "@/app/lib/wordRecord";
 import { getWordList } from "@/api/http";
 import { Score } from "@/app/components/Score";
 import { computeScore } from "@/app/lib/score";
+import {WordService} from "@/api";
 
 export default function TranslateTrainingPage() {
   const [shuffledTranslateData, setShuffledTranslateData] = useState<
@@ -20,7 +21,7 @@ export default function TranslateTrainingPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getWordList(apiUrl, backendName);
+      const response = await WordService.list(apiUrl, backendName);
       setWordList(response);
     };
     fetchData();
