@@ -19,7 +19,7 @@ export default function SyllabaryTrainingPage() {
   const [score, setScore] = useState<number[]>([0]);
   const [trainingLength, setTrainingLength] = useState<number>(0);
   const [syllableList, setSyllableList] = useState<Syllable[]>([]);
-  const backendName = "rust";
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const handleInputChange = useCallback(
@@ -91,11 +91,11 @@ export default function SyllabaryTrainingPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await SyllableService.list(apiUrl, backendName);
+      const response = await SyllableService.list(apiUrl);
       setSyllableList(response);
     };
     fetchData();
-  }, [backendName, apiUrl]);
+  }, [apiUrl]);
 
   useEffect(() => {
     if (syllableList) {

@@ -2,7 +2,7 @@
 
 import localFont from "next/font/local";
 import "./globals.css";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -21,6 +21,11 @@ export default function RootLayout({
   const router = useRouter();
   const pathname = usePathname();
   const tabs: { key: string; href: string; label: string }[] = [
+    {
+      key: "home",
+      href: "/",
+      label: "Home",
+    },
     {
       key: "syllabaryTable",
       href: "/syllabary-table",
@@ -57,9 +62,9 @@ export default function RootLayout({
       label: "Roman to japanese",
     },
     {
-      key: "home",
-      href: "/",
-      label: "Home",
+      key: "user",
+      href: "/user",
+      label: "User",
     },
   ];
 

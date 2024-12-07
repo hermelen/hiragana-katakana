@@ -12,23 +12,21 @@ export interface Syllable {
 export class SyllableServiceClient {
   constructor(private http: HttpClient) {}
 
-  async save(apiUrl: string, backendName: string, program: Syllable) {
-    return this.http.postAs<string>(`${apiUrl}/api/${backendName}/syllable`, {
+  async save(apiUrl: string, program: Syllable) {
+    return this.http.postAs<string>(`${apiUrl}/api/syllable`, {
       body: program,
     });
   }
 
-  async list(apiUrl: string, backendName: string) {
-    return this.http.get<Syllable[]>(`${apiUrl}/api/${backendName}/syllable`);
+  async list(apiUrl: string) {
+    return this.http.get<Syllable[]>(`${apiUrl}/api/syllable`);
   }
 
-  async get(apiUrl: string, backendName: string, id: string) {
-    return this.http.get<Syllable[]>(
-      `${apiUrl}/api/${backendName}/syllable/${id}`,
-    );
+  async get(apiUrl: string, id: string) {
+    return this.http.get<Syllable[]>(`${apiUrl}/api/syllable/${id}`);
   }
 
-  async delete(apiUrl: string, backendName: string, id: string) {
-    return this.http.del(`${apiUrl}/api/${backendName}/syllable/${id}`);
+  async delete(apiUrl: string, id: string) {
+    return this.http.del(`${apiUrl}/api/syllable/${id}`);
   }
 }

@@ -12,27 +12,27 @@ export interface Word {
 export class WordServiceClient {
   constructor(private http: HttpClient) {}
 
-  async save(apiUrl: string, backendName: string, word: Word) {
-    return this.http.postAs<Word>(`${apiUrl}/api/${backendName}/word`, {
+  async save(apiUrl: string, word: Word) {
+    return this.http.postAs<Word>(`${apiUrl}/api/word`, {
       body: word,
     });
   }
 
-  async create(apiUrl: string, backendName: string, word: Word) {
-    return this.http.postAs<Word>(`${apiUrl}/api/${backendName}/word`, {
+  async create(apiUrl: string, word: Word) {
+    return this.http.postAs<Word>(`${apiUrl}/api/word`, {
       body: word,
     });
   }
 
-  async list(apiUrl: string, backendName: string) {
-    return this.http.get<Word[]>(`${apiUrl}/api/${backendName}/word`);
+  async list(apiUrl: string) {
+    return this.http.get<Word[]>(`${apiUrl}/api/word`);
   }
 
-  async get(apiUrl: string, backendName: string, id: string) {
-    return this.http.get<Word[]>(`${apiUrl}/api/${backendName}/word/${id}`);
+  async get(apiUrl: string, id: string) {
+    return this.http.get<Word[]>(`${apiUrl}/api/word/${id}`);
   }
 
-  async delete(apiUrl: string, backendName: string, id: string) {
-    return this.http.del(`${apiUrl}/api/${backendName}/word/${id}`);
+  async delete(apiUrl: string, id: string) {
+    return this.http.del(`${apiUrl}/api/word/${id}`);
   }
 }

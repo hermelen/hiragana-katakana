@@ -8,7 +8,7 @@ import {
   SyllabaryRecord,
 } from "@/app/lib/syllabaryRecord";
 import { SyllableService } from "@/api";
-import {Syllable} from "@/api/syllable";
+import { Syllable } from "@/api/syllable";
 
 export default function RomanToJapanesePage() {
   const [text, setText] = useState<string>("");
@@ -18,16 +18,16 @@ export default function RomanToJapanesePage() {
   const [local, setLocal] = useState<boolean>(true);
   const [syllableList, setSyllableList] = useState<Syllable[]>([]);
   const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});
-  const backendName = "rust";
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await SyllableService.list(apiUrl, backendName);
+      const response = await SyllableService.list(apiUrl);
       setSyllableList(response);
     };
     fetchData();
-  }, [backendName, apiUrl]);
+  }, [apiUrl]);
 
   useEffect(() => {
     const syllableListToRecord = () => {

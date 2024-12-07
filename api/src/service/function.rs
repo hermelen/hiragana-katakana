@@ -37,6 +37,7 @@ impl FromRow for crate::user::model::User {
             username: row.get(1),
             email: row.get(2),
             password: row.get(3),
+            is_admin: row.get(4),
         }
     }
 }

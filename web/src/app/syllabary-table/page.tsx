@@ -13,16 +13,16 @@ export default function SyllabaryTablePage() {
     [],
   );
   const noChar = "";
-  const backendName = "rust";
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await SyllableService.list(apiUrl, backendName);
+      const response = await SyllableService.list(apiUrl);
       setSyllableList(response);
     };
     fetchData();
-  }, [backendName, apiUrl]);
+  }, [apiUrl]);
 
   useEffect(() => {
     const formatSyllabaryRecordList = () => {

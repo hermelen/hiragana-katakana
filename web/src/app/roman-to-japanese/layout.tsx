@@ -1,4 +1,4 @@
-export default function SyllabaryLayout({
+export default function RomanToJapaneseLayout({
   children,
 }: {
   children: React.ReactNode;

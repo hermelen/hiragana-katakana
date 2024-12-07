@@ -6,9 +6,9 @@ import {
 } from "@/app/lib/syllabaryRecord";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  SyllabaryTrapList,
   HiraganaTraps,
   KatakanaTraps,
+  SyllabaryTrapList,
 } from "@/app/lib/syllabaryTrapsList";
 import { Radio } from "@/app/components/Radio";
 import { computeScore } from "@/app/lib/score";
@@ -24,7 +24,7 @@ export default function TrapsPage() {
   const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});
   const [score, setScore] = useState<number[]>([0]);
   const [trainingLength, setTrainingLength] = useState<number>(0);
-  const backendName = "rust";
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const loadTraining = useCallback(
@@ -84,11 +84,11 @@ export default function TrapsPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await SyllableService.list(apiUrl, backendName);
+      const response = await SyllableService.list(apiUrl);
       setSyllableList(response);
     };
     fetchData();
-  }, [backendName, apiUrl]);
+  }, [apiUrl]);
 
   useEffect(() => {
     if (syllabaryRecord) {

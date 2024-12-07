@@ -1,4 +1,4 @@
-export default function TranslateTrainingLayout({
+export default function UserLayout({
   children,
 }: {
   children: React.ReactNode;

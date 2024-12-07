@@ -1,4 +1,4 @@
-export default function VocabularyDictionaryLayout({
+export default function DictionaryLayout({
   children,
 }: {
   children: React.ReactNode;

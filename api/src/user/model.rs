@@ -7,4 +7,5 @@ pub struct User {
     pub(crate) username: String,
     pub(crate) email: String,
     pub(crate) password: String,
+    pub(crate) is_admin: bool,
 }

@@ -18,8 +18,8 @@ pub(crate) async fn handle_post_users_request(request: &str) -> (String, String)
 
             match client
                 .query_one(
-                    "INSERT INTO user (username, email, password) VALUES ($1, $2, $3) RETURNING id",
-                    &[&user.username, &user.email, &user.password],
+                    "INSERT INTO user (username, email, password, is_admin) VALUES ($1, $2, $3) RETURNING id",
+                    &[&user.username, &user.email, &user.password, &user.is_admin],
                 )
                 .await
             {
@@ -118,8 +118,8 @@ pub(crate) async fn handle_put_users_request(request: &str) -> (String, String) 
 
             match client
                 .execute(
-                    "UPDATE user SET username = $1, email = $2, password = $3 WHERE id = $4",
-                    &[&user.username, &user.email, &user.password, &id],
+                    "UPDATE user SET username = $1, email = $2, password = $3, is_admin = $4 WHERE id = $5",
+                    &[&user.username, &user.email, &user.password, &user.is_admin, &id],
                 )
                 .await
             {

@@ -9,7 +9,7 @@ export default function DictionaryPage() {
   const [wordList, setWordList] = useState<Word[]>([]);
   const [checkedList, setCheckedList] = useState<boolean[]>([true, true, true]);
   const [submitDisabled, setSubmitDisabled] = useState<boolean>(true);
-  const backendName = "rust";
+
   const [newWord, setNewWord] = useState<Word>({
     roman: "",
     hiragana: "",
@@ -24,15 +24,15 @@ export default function DictionaryPage() {
 
   useEffect(() => {
     const fetchWordData = async () => {
-      const response = await WordService.list(apiUrl, backendName);
+      const response = await WordService.list(apiUrl);
       setWordList(response);
     };
     fetchWordData();
-  }, [backendName, apiUrl]);
+  }, [apiUrl]);
 
   let submit: () => Promise<void>;
   submit = useCallback(async () => {
-    const response = await WordService.create(apiUrl, backendName, newWord);
+    const response = await WordService.create(apiUrl, newWord);
     setWordList((prevWordList) => [...prevWordList, response]);
     setEdit(false);
     setNewWord({

@@ -2,14 +2,13 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { getJapanese } from "@/app/services/theme";
-import { getWordList } from "@/api/http";
 import {
   getSyllableListToRecord,
   SyllabaryRecord,
 } from "@/app/lib/syllabaryRecord";
 import { formatWordList, Word } from "@/app/lib/wordRecord";
 import { Score } from "@/app/components/Score";
-import {SyllableService, WordService} from "@/api";
+import { SyllableService, WordService } from "@/api";
 import { Syllable } from "@/api/syllable";
 
 export default function ThemeTrainingPage() {
@@ -22,24 +21,24 @@ export default function ThemeTrainingPage() {
   const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});
   const [score, setScore] = useState<number[]>([0]);
   const [trainingLength, setTrainingLength] = useState<number>(0);
-  const backendName = "rust";
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await SyllableService.list(apiUrl, backendName);
+      const response = await SyllableService.list(apiUrl);
       setSyllableList(response);
     };
     fetchData();
-  }, [backendName, apiUrl]);
+  }, [apiUrl]);
 
   useEffect(() => {
     const fetchWordData = async () => {
-      const response = await WordService.list(apiUrl, backendName);
+      const response = await WordService.list(apiUrl);
       setWordList(response);
     };
     fetchWordData();
-  }, [backendName, apiUrl]);
+  }, [apiUrl]);
 
   useEffect(() => {
     const syllableListToRecord = () => {
@@ -50,9 +49,7 @@ export default function ThemeTrainingPage() {
 
   useEffect(() => {
     if (wordList.length > 0) {
-      console.log(wordList);
       setThemeData(shuffleArray(formatWordList(wordList)));
-      console.log("setThemeData");
       setTrainingLength(trainingLength + 1);
     }
   }, [wordList]);

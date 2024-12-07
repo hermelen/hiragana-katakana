@@ -6,6 +6,14 @@ export type AuthUser = {
   email: string;
 };
 
+export type User = {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+  is_admin: string;
+};
+
 export type AuthResponse = {
   token: string;
 };
@@ -14,6 +22,7 @@ export type RegisterQuery = {
   username: string;
   email: string;
   password: string;
+  is_admin: boolean;
 };
 
 type PasswordChanged = { Changed: { token: string } };
@@ -30,6 +39,34 @@ export type Credentials = {
 
 export class UserServiceClient {
   constructor(private http: HttpClient) {}
+
+  private static isPasswordChanged(r: ResetResponse): r is PasswordChanged {
+    return typeof r === "object";
+  }
+
+  async save(apiUrl: string, user: User) {
+    return this.http.postAs<User>(`${apiUrl}/api/user`, {
+      body: user,
+    });
+  }
+
+  async create(apiUrl: string, user: User) {
+    return this.http.postAs<User>(`${apiUrl}/api/user`, {
+      body: user,
+    });
+  }
+
+  async list(apiUrl: string) {
+    return this.http.get<User[]>(`${apiUrl}/api/user`);
+  }
+
+  async get(apiUrl: string, id: string) {
+    return this.http.get<User[]>(`${apiUrl}/api/user/${id}`);
+  }
+
+  async delete(apiUrl: string, id: string) {
+    return this.http.del(`${apiUrl}/api/user/${id}`);
+  }
 
   async me() {
     return this.http.get<AuthUser>("/api/user/me");
@@ -66,9 +103,5 @@ export class UserServiceClient {
     if (UserServiceClient.isPasswordChanged(resetResponse)) {
       this.http.setToken(resetResponse.Changed.token);
     }
-  }
-
-  private static isPasswordChanged(r: ResetResponse): r is PasswordChanged {
-    return typeof r === "object";
   }
 }

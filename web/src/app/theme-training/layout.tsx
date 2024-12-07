@@ -1,4 +1,4 @@
-export default function VocabularyThemeLayout({
+export default function ThemeTrainingLayout({
   children,
 }: {
   children: React.ReactNode;

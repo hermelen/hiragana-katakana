@@ -2,10 +2,8 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { formatWordList, Word } from "@/app/lib/wordRecord";
-import { getWordList } from "@/api/http";
 import { Score } from "@/app/components/Score";
-import { computeScore } from "@/app/lib/score";
-import {WordService} from "@/api";
+import { WordService } from "@/api";
 
 export default function TranslateTrainingPage() {
   const [shuffledTranslateData, setShuffledTranslateData] = useState<
@@ -16,16 +14,16 @@ export default function TranslateTrainingPage() {
   const [wordList, setWordList] = useState<Word[]>([]);
   const [score, setScore] = useState<number[]>([0]);
   const [trainingLength, setTrainingLength] = useState<number>(0);
-  const backendName = "rust";
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await WordService.list(apiUrl, backendName);
+      const response = await WordService.list(apiUrl);
       setWordList(response);
     };
     fetchData();
-  }, [backendName, apiUrl]);
+  }, [apiUrl]);
 
   useEffect(() => {
     const getTrainingData = () => {

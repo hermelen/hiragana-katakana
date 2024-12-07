@@ -14,9 +14,6 @@ mod service;
 mod user;
 mod word;
 
-// #[macro_use]
-// extern crate serde_derive;
-
 #[main]
 async fn main() {
     // Set up the database asynchronously
