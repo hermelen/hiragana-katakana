@@ -30,18 +30,6 @@ impl FromRow for crate::syllable::model::Syllable {
     }
 }
 
-impl FromRow for crate::user::model::User {
-    fn from_row(row: Row) -> Self {
-        crate::user::model::User {
-            id: Some(row.get(0)),
-            username: row.get(1),
-            email: row.get(2),
-            password: row.get(3),
-            is_admin: row.get(4),
-        }
-    }
-}
-
 impl FromRow for crate::word::model::Word {
     fn from_row(row: Row) -> Self {
         crate::word::model::Word {
@@ -50,6 +38,18 @@ impl FromRow for crate::word::model::Word {
             hiragana: row.get::<_, Option<String>>(2),
             katakana: row.get::<_, Option<String>>(3),
             kanji: row.get::<_, Option<String>>(4),
+        }
+    }
+}
+
+impl FromRow for crate::user::model::User {
+    fn from_row(row: Row) -> Self {
+        crate::user::model::User {
+            id: Some(row.get(0)),
+            username: row.get(1),
+            email: row.get(2),
+            password: row.get(3),
+            is_admin: row.get(4),
         }
     }
 }

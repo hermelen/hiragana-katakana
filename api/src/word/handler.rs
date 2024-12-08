@@ -1,8 +1,8 @@
-use tokio_postgres::NoTls;
-use uuid::Uuid;
 use crate::service::constant::{DB_URL, INTERNAL_ERROR, NOT_FOUND, OK_RESPONSE};
 use crate::service::function::{get_id, new_from_row};
 use crate::word::model::Word;
+use tokio_postgres::NoTls;
+use uuid::Uuid;
 
 pub async fn handle_post_words_request(request: &str) -> (String, String) {
     match (
@@ -49,7 +49,7 @@ pub async fn handle_post_words_request(request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_get_words_request(request: &str) -> (String, String) {
+pub async fn handle_get_word_request(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         tokio_postgres::connect(DB_URL, NoTls).await,
@@ -100,8 +100,11 @@ pub async fn handle_get_all_words_request(_request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_put_words_request(request: &str) -> (String, String) {
-    match (get_id(&request).parse::<Uuid>(), get_word_request_body(&request), tokio_postgres::connect(DB_URL, NoTls).await,
+pub async fn handle_put_word_request(request: &str) -> (String, String) {
+    match (
+        get_id(&request).parse::<Uuid>(),
+        get_word_request_body(&request),
+        tokio_postgres::connect(DB_URL, NoTls).await,
     ) {
         (Ok(id), Ok(word), Ok((client, connection))) => {
             tokio::spawn(async move {
@@ -128,8 +131,11 @@ pub async fn handle_put_words_request(request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_delete_words_request(request: &str) -> (String, String) {
-    match (get_id(&request).parse::<Uuid>(), tokio_postgres::connect(DB_URL, NoTls).await) {
+pub async fn handle_delete_word_request(request: &str) -> (String, String) {
+    match (
+        get_id(&request).parse::<Uuid>(),
+        tokio_postgres::connect(DB_URL, NoTls).await,
+    ) {
         (Ok(id), Ok((client, connection))) => {
             tokio::spawn(async move {
                 if let Err(e) = connection.await {

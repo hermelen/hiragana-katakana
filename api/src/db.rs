@@ -12,7 +12,7 @@ pub async fn init_db() -> Result<(), Box<dyn std::error::Error>> {
     println!("Connected to the database");
     client
         .batch_execute(
-            r#"
+            "
         CREATE TABLE IF NOT EXISTS syllable (
             id uuid DEFAULT gen_random_uuid(),
             roman VARCHAR NOT NULL,
@@ -27,14 +27,14 @@ pub async fn init_db() -> Result<(), Box<dyn std::error::Error>> {
             katakana VARCHAR NULL,
             kanji VARCHAR NULL
         );
-        CREATE TABLE IF NOT EXISTS "user" (
+        CREATE TABLE IF NOT EXISTS auth_user (
             id uuid DEFAULT gen_random_uuid(),
             username VARCHAR NOT NULL,
             email VARCHAR NOT NULL,
             password VARCHAR NOT NULL,
             is_admin BOOLEAN NOT NULL DEFAULT FALSE
         );
-        "#,
+        ",
         )
         .await?;
 

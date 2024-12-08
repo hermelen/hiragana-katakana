@@ -49,7 +49,7 @@ pub async fn handle_post_syllables_request(request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_get_syllables_request(request: &str) -> (String, String) {
+pub async fn handle_get_syllable_request(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         tokio_postgres::connect(DB_URL, NoTls).await,
@@ -101,7 +101,7 @@ pub async fn handle_get_all_syllables_request(_request: &str) -> (String, String
     }
 }
 
-pub async fn handle_put_syllables_request(request: &str) -> (String, String) {
+pub async fn handle_put_syllable_request(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         get_syllable_request_body(&request),
@@ -130,7 +130,7 @@ pub async fn handle_put_syllables_request(request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_delete_syllables_request(request: &str) -> (String, String) {
+pub async fn handle_delete_syllable_request(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         tokio_postgres::connect(DB_URL, NoTls).await,

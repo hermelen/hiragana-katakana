@@ -18,7 +18,7 @@ pub(crate) async fn handle_post_users_request(request: &str) -> (String, String)
 
             match client
                 .query_one(
-                    "INSERT INTO user (username, email, password, is_admin) VALUES ($1, $2, $3) RETURNING id",
+                    "INSERT INTO auth_user (username, email, password, is_admin) VALUES ($1, $2, $3, $4) RETURNING id",
                     &[&user.username, &user.email, &user.password, &user.is_admin],
                 )
                 .await
@@ -26,15 +26,12 @@ pub(crate) async fn handle_post_users_request(request: &str) -> (String, String)
                 Ok(row) => {
                     let id: Uuid = row.get(0);
                     match client
-                        .query_one("SELECT * FROM user WHERE id = $1", &[&id])
+                        .query_one("SELECT * FROM auth_user WHERE id = $1", &[&id])
                         .await
                     {
                         Ok(row) => {
                             let user: User = new_from_row(row).await;
-                            (
-                                OK_RESPONSE.to_string(),
-                                serde_json::to_string(&user).unwrap(),
-                            )
+                            (OK_RESPONSE.to_string(), serde_json::to_string(&user).unwrap())
                         }
                         Err(_) => (
                             INTERNAL_ERROR.to_string(),
@@ -52,7 +49,7 @@ pub(crate) async fn handle_post_users_request(request: &str) -> (String, String)
     }
 }
 
-pub(crate) async fn handle_get_users_request(request: &str) -> (String, String) {
+pub(crate) async fn handle_get_user_request(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         tokio_postgres::connect(DB_URL, NoTls).await,
@@ -64,7 +61,7 @@ pub(crate) async fn handle_get_users_request(request: &str) -> (String, String) 
                 }
             });
             match client
-                .query_one("SELECT * FROM user WHERE id = $1", &[&id])
+                .query_one("SELECT * FROM auth_user WHERE id = $1", &[&id])
                 .await
             {
                 Ok(row) => {
@@ -90,7 +87,7 @@ pub(crate) async fn handle_get_all_users_request(_request: &str) -> (String, Str
                 }
             });
             let mut users = Vec::new();
-            for row in client.query("SELECT * FROM user", &[]).await.unwrap() {
+            for row in client.query("SELECT * FROM auth_user", &[]).await.unwrap() {
                 let user: User = new_from_row(row).await;
                 users.push(user);
             }
@@ -103,7 +100,7 @@ pub(crate) async fn handle_get_all_users_request(_request: &str) -> (String, Str
     }
 }
 
-pub(crate) async fn handle_put_users_request(request: &str) -> (String, String) {
+pub(crate) async fn handle_put_user_request(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         get_user_request_body(&request),
@@ -118,7 +115,7 @@ pub(crate) async fn handle_put_users_request(request: &str) -> (String, String) 
 
             match client
                 .execute(
-                    "UPDATE user SET username = $1, email = $2, password = $3, is_admin = $4 WHERE id = $5",
+                    "UPDATE auth_user SET username = $1, email = $2, password = $3, is_admin = $4 WHERE id = $5",
                     &[&user.username, &user.email, &user.password, &user.is_admin, &id],
                 )
                 .await
@@ -134,7 +131,7 @@ pub(crate) async fn handle_put_users_request(request: &str) -> (String, String) 
     }
 }
 
-pub(crate) async fn handle_delete_users_request(request: &str) -> (String, String) {
+pub(crate) async fn handle_delete_user_request(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         tokio_postgres::connect(DB_URL, NoTls).await,
@@ -147,7 +144,7 @@ pub(crate) async fn handle_delete_users_request(request: &str) -> (String, Strin
             });
 
             match client
-                .execute("DELETE FROM user WHERE id = $1", &[&id])
+                .execute("DELETE FROM auth_user WHERE id = $1", &[&id])
                 .await
             {
                 Ok(rows_affected) => {
