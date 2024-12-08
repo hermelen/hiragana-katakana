@@ -3,6 +3,8 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import { usePathname, useRouter } from "next/navigation";
+import React, { useCallback, useEffect, useState } from "react";
+import { Tab, tabList } from "@/api/nav";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,55 +20,49 @@ const geistMono = localFont({
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const [hiddenTab, setHiddenTab] = useState<boolean[]>([]);
   const router = useRouter();
   const pathname = usePathname();
-  const tabs: { key: string; href: string; label: string }[] = [
-    {
-      key: "home",
-      href: "/",
-      label: "Home",
+
+  useEffect(() => {
+    setHiddenTab(tabList.map(() => true));
+  }, []);
+
+  const tabClick = useCallback(
+    (
+      event: React.MouseEvent<HTMLLIElement>,
+      tab: Tab,
+      index: number,
+      isChild: boolean,
+    ) => {
+      event.stopPropagation();
+      let hiddenTabArray = tabList.map(() => true);
+      setHiddenTab(hiddenTabArray);
+      if (isChild) {
+        router.push(tab.href);
+      } else {
+        if (tab.children.length === 0) {
+          router.push(tab.href);
+        } else {
+          hiddenTabArray[index] = false;
+          setHiddenTab(hiddenTabArray);
+        }
+      }
     },
-    {
-      key: "syllabaryTable",
-      href: "/syllabary-table",
-      label: "Syllabary table",
-    },
-    {
-      key: "syllabaryTraps",
-      href: "/syllabary-traps",
-      label: "Syllabary traps",
-    },
-    {
-      key: "syllabaryTraining",
-      href: "/syllabary-training",
-      label: "Syllabary training",
-    },
-    {
-      key: "translateTraining",
-      href: "/translate-training",
-      label: "Translate training",
-    },
-    {
-      key: "themeTraining",
-      href: "/theme-training",
-      label: "Theme training",
-    },
-    {
-      key: "dictionary",
-      href: "/dictionary",
-      label: "Dictionary",
-    },
-    {
-      key: "romanToJapanese",
-      href: "/roman-to-japanese",
-      label: "Roman to japanese",
-    },
-    {
-      key: "user",
-      href: "/user",
-      label: "User",
-    },
-  ];
+    [router],
+  );
+
+  function isActive(href: string) {
+    if (href === "/") {
+      return pathname === "/";
+    } else {
+      return pathname.startsWith(href);
+    }
+  }
+
+  if (hiddenTab.length === 0) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <html lang="fr">
@@ -75,26 +71,53 @@ export default function RootLayout({
       >
         <nav>
           <ul className="flex flex-wrap gap-1 full-size justify-between">
-            {tabs.map((tab: { key: string; href: string; label: string }) => (
+            {tabList.map((tab: Tab, index: number) => (
               <li
-                className={`flex-auto
-            cursor-pointer
-            text-2xl 
-            text-center
-            flex
-            items-center
-            justify-center
-            h-20 
-            pl-2 
-            pr-2
-            rounded-sm 
-            shadow-lg
-            bg-gradient-to-b 
-             ${pathname === tab.href ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}`}
+                className={`relative 
+                    flex-auto
+                    cursor-pointer
+                    text-2xl 
+                    text-center
+                    flex
+                    items-center
+                    justify-center
+                    h-20 
+                    pl-2 
+                    pr-2
+                    rounded-sm 
+                    shadow-lg
+                    bg-gradient-to-b 
+                     ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}`}
                 key={tab.key}
-                onClick={() => router.push(tab.href)}
+                onClick={(event) => tabClick(event, tab, index, false)}
               >
                 {tab.label}
+                <ul
+                  className={`absolute top-20 w-full ${tab.children.length === 0 || (hiddenTab[index] && "hidden")}`}
+                >
+                  {tab.children.map((child) => (
+                    <li
+                      className={`flex-auto
+                            cursor-pointer
+                            text-2xl 
+                            text-center
+                            flex
+                            items-center
+                            justify-center
+                            h-20 
+                            pl-2 
+                            pr-2
+                            rounded-sm 
+                            shadow-lg
+                            bg-gradient-to-b 
+                             ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}`}
+                      key={child.key}
+                      onClick={(event) => tabClick(event, child, index, true)}
+                    >
+                      {child.label}
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>

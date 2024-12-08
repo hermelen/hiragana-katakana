@@ -1,4 +1,4 @@
-export default function UserLayout({
+export default function UserListLayout({
   children,
 }: {
   children: React.ReactNode;
