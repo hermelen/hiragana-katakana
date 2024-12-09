@@ -100,15 +100,16 @@ export default function SyllabaryTablePage() {
                 <li
                   key={liIndex}
                   className={`flex
-                                        items-center
-                                        justify-center
-                                        w-20 
-                                        h-20 
-                                        rounded-lg 
-                                        bg-gradient-to-b 
-                                        from-indigo-500
-                                        shadow-lg 
-                                        ${value[0] === noChar && "invisible"}`}
+                              items-center
+                              justify-center
+                              w-20 
+                              h-20 
+                              rounded-lg 
+                              bg-gradient-to-b 
+                              to-stone-800 
+                              from-indigo-500
+                              shadow-lg 
+                              ${value[0] === noChar && "invisible"}`}
                 >
                   <div key={key}>
                     <div className="text-4xl text-center">

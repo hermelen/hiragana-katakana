@@ -175,7 +175,8 @@ export default function SyllabaryTrainingPage() {
                                         w-20 
                                         h-10 
                                         rounded-lg 
-                                        bg-gradient-to-b 
+                                        bg-gradient-to-b  
+                                        to-stone-800
                                         shadow-lg
                                         ${!match && "from-rose-500"}
                                         ${match && "from-indigo-500"}`}
@@ -203,7 +204,8 @@ export default function SyllabaryTrainingPage() {
                             shadow-lg
                             text-white
                             text-xl
-                            bg-gradient-to-b
+                            bg-gradient-to-b 
+                            to-stone-800
                             from-indigo-500`}
                 onClick={() => reLoadTraining(trainingLength)}
               >

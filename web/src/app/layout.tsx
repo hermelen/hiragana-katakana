@@ -122,7 +122,7 @@ export default function RootLayout({
             ))}
           </ul>
         </nav>
-        {children}
+        <div className="max-h-dvh overflow-scroll pb-80">{children}</div>
       </body>
     </html>
   );

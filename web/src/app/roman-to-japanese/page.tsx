@@ -102,6 +102,7 @@ export default function RomanToJapanesePage() {
                             h-10 
                             rounded-lg 
                             bg-gradient-to-b 
+                            to-stone-800 
                             shadow-lg 
                             from-indigo-500`}
             >

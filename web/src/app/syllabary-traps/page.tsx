@@ -110,7 +110,7 @@ export default function TrapsPage() {
   }
 
   return (
-    <div className="size-full lg:flex">
+    <div className="lg:flex size-full">
       <div className="lg:w-4/12 size-full flex justify-end">
         <div className="lg:hidden flex">
           <Score score={score} trainingLength={trainingLength} />
@@ -156,6 +156,7 @@ export default function TrapsPage() {
                                     h-10 
                                     rounded-lg 
                                     bg-gradient-to-b 
+                                    to-stone-800 
                                     shadow-lg
                                     ${!match && "from-rose-500"}
                                     ${match && "from-indigo-500"}`}
@@ -185,6 +186,7 @@ export default function TrapsPage() {
                             justify-center
                             rounded-lg 
                             bg-gradient-to-b 
+                            to-stone-800 
                             shadow-lg                                        
                             from-indigo-500`}
                 onClick={() => reLoadTraining(trainingLength)}

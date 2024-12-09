@@ -18,7 +18,8 @@ export function Score({ score, trainingLength }: ScoreProps) {
                        shadow-lg
                        text-white
                        text-xl
-                       bg-gradient-to-b
+                       bg-gradient-to-b 
+                       to-stone-800
                        from-indigo-500"
     >
       {score.reduce((acc, curr) => acc + curr, 0)}/{trainingLength}

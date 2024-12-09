@@ -76,7 +76,7 @@ export default function TranslateTrainingPage() {
   }
 
   return (
-    <div className="size-full lg:flex">
+    <div className="lg:flex size-full">
       <div className="lg:w-4/12 size-full flex justify-end">
         <div className="lg:hidden flex">
           <Score score={score} trainingLength={trainingLength} />
@@ -96,6 +96,7 @@ export default function TranslateTrainingPage() {
                           h-10 
                           rounded-lg 
                           bg-gradient-to-b 
+                          to-stone-800 
                           shadow-lg
                           ${text !== shuffledTranslateData[translateIndex][0] ? "from-rose-500" : "from-indigo-500"}`}
                 title={shuffledTranslateData[translateIndex][0]}
@@ -128,6 +129,7 @@ export default function TranslateTrainingPage() {
                           justify-center
                           rounded-lg 
                           bg-gradient-to-b 
+                          to-stone-800 
                           shadow-lg                                        
                           from-indigo-500`}
                 onClick={loadData}

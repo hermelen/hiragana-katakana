@@ -71,6 +71,12 @@ export const tabList: Tab[] = [
         label: "Login",
         children: [],
       },
+      {
+        key: "userProfile",
+        href: "/user/profile",
+        label: "Profile",
+        children: [],
+      },
     ],
   },
 ];

@@ -108,7 +108,7 @@ export default function ThemeTrainingPage() {
   }
 
   return (
-    <div className="size-full lg:flex">
+    <div className="lg:flex size-full">
       <div className="lg:w-4/12 size-full flex justify-end">
         <div className="lg:hidden flex">
           <Score score={score} trainingLength={trainingLength} />
@@ -130,6 +130,7 @@ export default function ThemeTrainingPage() {
                             h-10 
                             rounded-lg 
                             bg-gradient-to-b 
+                            to-stone-800 
                             shadow-lg
                             ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-rose-500" : "from-indigo-500"}`}
               >
@@ -155,6 +156,7 @@ export default function ThemeTrainingPage() {
                             rounded-lg 
                             shadow-lg
                             bg-gradient-to-b 
+                            to-stone-800 
                             ${hiragana === themeData[1] ? "from-indigo-500" : "from-rose-500"}`}
               >
                 hiragana
@@ -175,6 +177,7 @@ export default function ThemeTrainingPage() {
                             rounded-lg 
                             shadow-lg
                             bg-gradient-to-b 
+                            to-stone-800 
                             ${katakana === themeData[1] ? "from-indigo-500" : "from-rose-500"}`}
               >
                 katakana
@@ -196,6 +199,7 @@ export default function ThemeTrainingPage() {
                             rounded-lg 
                             shadow-lg                                        
                             bg-gradient-to-b 
+                            to-stone-800 
                             from-indigo-500`}
                 onClick={() => reloadTheme(trainingLength)}
               >
