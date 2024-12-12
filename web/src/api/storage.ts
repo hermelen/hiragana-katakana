@@ -1,14 +1,14 @@
 class LocalStorage {
   getToken() {
-    return window.localStorage.getItem("token");
+    return window.localStorage.getItem("hkk-token");
   }
 
   setToken(token: string) {
-    return window.localStorage.setItem("token", token);
+    return window.localStorage.setItem("hkk-token", token);
   }
 
   removeToken() {
-    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("hkk-token");
   }
 }
 

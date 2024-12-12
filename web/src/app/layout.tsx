@@ -29,10 +29,6 @@ export default function RootLayout({
     setHiddenTabList(tabList.map(() => true));
   }, []);
 
-  if (hiddenTabList.length === 0) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <html lang="fr">
       <body
