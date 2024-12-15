@@ -1,51 +1,97 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { User } from "@/api/user";
+import React, { useState } from "react";
 import { UserService } from "@/api";
 
-export default function UserListPage() {
-  const [userList, setUserList] = useState<User[]>([]);
-
+export default function UserLoginPage() {
+  const [username_or_email, setUsername_or_email] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await UserService.list(apiUrl);
-      console.log(response);
-      setUserList(response);
-    };
-    fetchData();
-  }, [apiUrl]);
-  if (userList.length === 0) return <div>Loading...</div>;
+  const submitLogin = () => {
+    UserService.login(apiUrl, { username_or_email, password });
+  };
 
   return (
-    <div className="size-full lg:flex">
+    <div className="lg:flex size-full">
       <div className="lg:w-4/12 size-full flex justify-end"></div>
       <div className="lg:w-6/12 size-full">
-        <ul className="flex flex-col gap-4 justify-center size-full">
-          <li className="flex items-center gap-5 size-full">
-            <div className="flex flex-1 text-xl">
-              <div className="text-xl w-40">Username</div>
-              <div className="text-xl flex justify-start">Email</div>
-            </div>
-            <div className="text-xl text-center">Is admin</div>
-          </li>
-          {userList.map((user) => (
-            <li key={user.id} className="flex items-center gap-5 size-full">
-              <div className="flex flex-1 text-xl">
-                <div className="text-xl w-40">{user.username}</div>
-                <div className="text-xl flex justify-start">{user.email}</div>
+        <div className="flex gap-4">
+          <ul className="flex flex-col gap-4 justify-center size-full">
+            <li className="flex items-center gap-5 size-full">
+              <div
+                className={`text-2xl 
+                            size-full
+                            text-center
+                            flex
+                            items-center
+                            justify-center
+                            w-80 
+                            h-10 
+                            rounded-lg 
+                            bg-gradient-to-b 
+                            to-stone-800 
+                            shadow-lg
+                            from-indigo-500`}
+              >
+                Username/Email
               </div>
               <input
-                readOnly
-                type="checkbox"
-                className="text-xl text-center"
-                checked={user.is_admin}
+                className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
+                type="text"
+                value={username_or_email}
+                onChange={(e) => setUsername_or_email(e.target.value)}
+                placeholder="Type something..."
               />
             </li>
-          ))}
-        </ul>
+            <li className="flex items-center gap-5 size-full">
+              <div
+                className={`text-2xl 
+                            size-full
+                            text-center
+                            flex
+                            items-center
+                            justify-center
+                            w-80 
+                            h-10 
+                            rounded-lg 
+                            bg-gradient-to-b 
+                            to-stone-800 
+                            shadow-lg
+                            from-indigo-500`}
+              >
+                Password
+              </div>
+              <input
+                className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
+                type="text"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Type something..."
+              />
+            </li>
+            <li className="flex items-center gap-5 size-full">
+              <div className="w-80 h-10"></div>
+              <button
+                className={`h-10 
+                            flex-1 
+                            text-xl 
+                            text-center
+                            flex
+                            items-center
+                            justify-center
+                            rounded-lg 
+                            shadow-lg                                        
+                            bg-gradient-to-b 
+                            to-stone-800 
+                            from-indigo-500`}
+                onClick={() => submitLogin()}
+              >
+                Submit
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
       <div className="lg:w-4/12 flex justify-end"></div>
     </div>

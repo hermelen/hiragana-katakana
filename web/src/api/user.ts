@@ -72,9 +72,9 @@ export class UserServiceClient {
     return this.http.get<AuthUser>("/api/user/me");
   }
 
-  async login(credentials: Credentials) {
+  async login(apiUrl: string, credentials: Credentials) {
     const authResponse = await this.http.postAs<AuthResponse>(
-      "/api/user/login",
+      `${apiUrl}/api/user/login`,
       {
         body: credentials,
       },

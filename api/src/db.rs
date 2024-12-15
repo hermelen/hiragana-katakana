@@ -1,42 +1,31 @@
-use crate::service::constant::DB_URL;
-use tokio_postgres::NoTls;
+use anyhow::{Context, Result};
+use sqlx::postgres::PgPoolOptions;
+use sqlx::PgPool;
+use uuid::{NoContext, Timestamp, Uuid};
 
-pub async fn init_db() -> Result<(), Box<dyn std::error::Error>> {
-    let (client, connection) = tokio_postgres::connect(DB_URL, NoTls).await?;
+pub fn new_uuid() -> Uuid {
+    let ts = Timestamp::now(NoContext);
+    Uuid::new_v7(ts)
+}
 
-    tokio::spawn(async move {
-        if let Err(e) = connection.await {
-            println!("Connection error: {}", e);
-        }
-    });
-    println!("Connected to the database");
-    client
-        .batch_execute(
-            "
-        CREATE TABLE IF NOT EXISTS syllable (
-            id uuid DEFAULT gen_random_uuid(),
-            roman VARCHAR NOT NULL,
-            hiragana VARCHAR NOT NULL,
-            katakana VARCHAR NOT NULL, 
-            kanji VARCHAR NULL
-        );
-        CREATE TABLE IF NOT EXISTS word (
-            id uuid DEFAULT gen_random_uuid(),
-            roman VARCHAR NOT NULL,
-            hiragana VARCHAR NULL,
-            katakana VARCHAR NULL,
-            kanji VARCHAR NULL
-        );
-        CREATE TABLE IF NOT EXISTS auth_user (
-            id uuid DEFAULT gen_random_uuid(),
-            username VARCHAR NOT NULL,
-            email VARCHAR NOT NULL,
-            password VARCHAR NOT NULL,
-            is_admin BOOLEAN NOT NULL DEFAULT FALSE
-        );
-        ",
-        )
-        .await?;
+pub async fn init_db() -> Result<PgPool> {
+    // We create a single connection pool for SQLx that's shared across the whole application.
+    // This saves us from opening a new connection for every API call, which is wasteful.
+    let db = PgPoolOptions::new()
+        // The default connection limit for a Postgres server is 100 connections, minus 3 for superusers.
+        // Since we're using the default superuser we don't have to worry about this too much,
+        // although we should leave some connections available for manual access.
+        //
+        // If you're deploying your application with multiple replicas, then the total
+        // across all replicas should not exceed the Postgres connection limit.
+        .max_connections(50)
+        .connect(&std::env::var("DATABASE_URL").expect("DATABASE_URL must be set"))
+        .await
+        .context("could not connect to database_url")?;
 
-    Ok(())
+    // This embeds database migrations in the application binary so we can ensure the database
+    // is migrated correctly on startup
+    sqlx::migrate!("./migrations/").run(&db).await?;
+
+    Ok(db)
 }
