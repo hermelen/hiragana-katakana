@@ -4,9 +4,9 @@ use crate::user::model::User;
 use tokio_postgres::NoTls;
 use uuid::Uuid;
 
-pub(crate) async fn handle_post_users_request(request: &str) -> (String, String) {
+pub(crate) async fn post_users(request: &str) -> (String, String) {
     match (
-        get_user_request_body(request),
+        get_user_body(request),
         tokio_postgres::connect(DB_URL, NoTls).await,
     ) {
         (Ok(user), Ok((client, connection))) => {
@@ -49,7 +49,7 @@ pub(crate) async fn handle_post_users_request(request: &str) -> (String, String)
     }
 }
 
-pub(crate) async fn handle_get_user_request(request: &str) -> (String, String) {
+pub(crate) async fn get_user(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         tokio_postgres::connect(DB_URL, NoTls).await,
@@ -78,7 +78,7 @@ pub(crate) async fn handle_get_user_request(request: &str) -> (String, String) {
     }
 }
 
-pub(crate) async fn handle_get_all_users_request(_request: &str) -> (String, String) {
+pub(crate) async fn get_users(_request: &str) -> (String, String) {
     match tokio_postgres::connect(DB_URL, NoTls).await {
         Ok((client, connection)) => {
             tokio::spawn(async move {
@@ -100,10 +100,10 @@ pub(crate) async fn handle_get_all_users_request(_request: &str) -> (String, Str
     }
 }
 
-pub(crate) async fn handle_put_user_request(request: &str) -> (String, String) {
+pub(crate) async fn put_user(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
-        get_user_request_body(&request),
+        get_user_body(&request),
         tokio_postgres::connect(DB_URL, NoTls).await,
     ) {
         (Ok(id), Ok(user), Ok((client, connection))) => {
@@ -131,7 +131,7 @@ pub(crate) async fn handle_put_user_request(request: &str) -> (String, String) {
     }
 }
 
-pub(crate) async fn handle_delete_user_request(request: &str) -> (String, String) {
+pub(crate) async fn delete_user(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         tokio_postgres::connect(DB_URL, NoTls).await,
@@ -295,6 +295,6 @@ pub(crate) async fn handle_delete_user_request(request: &str) -> (String, String
 //     }
 // }
 
-fn get_user_request_body(request: &str) -> Result<User, serde_json::Error> {
+fn get_user_body(request: &str) -> Result<User, serde_json::Error> {
     serde_json::from_str(request.split("\r\n\r\n").last().unwrap_or_default())
 }

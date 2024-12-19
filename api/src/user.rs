@@ -2,8 +2,8 @@ use axum::routing::{delete, get, post, put};
 use axum::Router;
 
 use crate::user::handler::{
-    handle_delete_user_request, handle_get_all_users_request, handle_get_user_request,
-    handle_post_users_request, handle_put_user_request,
+    delete_user, get_users, get_user,
+    post_users, put_user,
 };
 
 
@@ -12,11 +12,11 @@ pub mod model;
 
 pub fn user_router() -> Router {
     Router::new()
-        .route("/api/user", post(handle_post_users_request))
-        .route("/api/user/", get(handle_get_user_request))
-        .route("/api/user", get(handle_get_all_users_request))
-        .route("/api/user/", put(handle_put_user_request))
-        .route("/api/user/", delete(handle_delete_user_request))
+        .route("/api/user", post(post_users))
+        .route("/api/user/", get(get_user))
+        .route("/api/user", get(get_users))
+        .route("/api/user/", put(put_user))
+        .route("/api/user/", delete(delete_user))
         // .route("/api/user/register", post(register))
         // .route("/api/user/confirm/:token", post(confirm))
         // .route("/api/user/reset", post(reset))

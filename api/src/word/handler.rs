@@ -4,9 +4,9 @@ use crate::word::model::Word;
 use tokio_postgres::NoTls;
 use uuid::Uuid;
 
-pub async fn handle_post_words_request(request: &str) -> (String, String) {
+pub async fn post_words(request: &str) -> (String, String) {
     match (
-        get_word_request_body(request),
+        get_word_body(request),
         tokio_postgres::connect(DB_URL, NoTls).await,
     ) {
         (Ok(word), Ok((client, connection))) => {
@@ -49,7 +49,7 @@ pub async fn handle_post_words_request(request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_get_word_request(request: &str) -> (String, String) {
+pub async fn get_word(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         tokio_postgres::connect(DB_URL, NoTls).await,
@@ -78,7 +78,7 @@ pub async fn handle_get_word_request(request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_get_all_words_request(_request: &str) -> (String, String) {
+pub async fn get_words(_request: &str) -> (String, String) {
     match tokio_postgres::connect(DB_URL, NoTls).await {
         Ok((client, connection)) => {
             tokio::spawn(async move {
@@ -100,10 +100,10 @@ pub async fn handle_get_all_words_request(_request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_put_word_request(request: &str) -> (String, String) {
+pub async fn put_word(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
-        get_word_request_body(&request),
+        get_word_body(&request),
         tokio_postgres::connect(DB_URL, NoTls).await,
     ) {
         (Ok(id), Ok(word), Ok((client, connection))) => {
@@ -131,7 +131,7 @@ pub async fn handle_put_word_request(request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_delete_word_request(request: &str) -> (String, String) {
+pub async fn delete_word(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         tokio_postgres::connect(DB_URL, NoTls).await,
@@ -164,6 +164,6 @@ pub async fn handle_delete_word_request(request: &str) -> (String, String) {
     }
 }
 
-fn get_word_request_body(request: &str) -> Result<Word, serde_json::Error> {
+fn get_word_body(request: &str) -> Result<Word, serde_json::Error> {
     serde_json::from_str(request.split("\r\n\r\n").last().unwrap_or_default())
 }

@@ -4,9 +4,9 @@ use crate::syllable::model::Syllable;
 use tokio_postgres::NoTls;
 use uuid::Uuid;
 
-pub async fn handle_post_syllables_request(request: &str) -> (String, String) {
+pub async fn post_syllables(request: &str) -> (String, String) {
     match (
-        get_syllable_request_body(request),
+        get_syllable_body(request),
         tokio_postgres::connect(DB_URL, NoTls).await,
     ) {
         (Ok(syllable), Ok((client, connection))) => {
@@ -49,7 +49,16 @@ pub async fn handle_post_syllables_request(request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_get_syllable_request(request: &str) -> (String, String) {
+// pub async fn get_movie(
+//     Extension(db): Extension<PgPool>,
+//     auth_user: AuthUser,
+//     Path(id): Path<Uuid>,
+// ) -> Result<Json<Movie>> {
+//     let movie = service::get_movie(db, id, auth_user.id).await?;
+//     Ok(Json(movie))
+// }
+
+pub async fn get_syllable(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         tokio_postgres::connect(DB_URL, NoTls).await,
@@ -78,7 +87,7 @@ pub async fn handle_get_syllable_request(request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_get_all_syllables_request(_request: &str) -> (String, String) {
+pub async fn get_syllables(_request: &str) -> (String, String) {
     match tokio_postgres::connect(DB_URL, NoTls).await {
         Ok((client, connection)) => {
             tokio::spawn(async move {
@@ -101,10 +110,10 @@ pub async fn handle_get_all_syllables_request(_request: &str) -> (String, String
     }
 }
 
-pub async fn handle_put_syllable_request(request: &str) -> (String, String) {
+pub async fn put_syllable(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
-        get_syllable_request_body(&request),
+        get_syllable_body(&request),
         tokio_postgres::connect(DB_URL, NoTls).await,
     ) {
         (Ok(id), Ok(syllable), Ok((client, connection))) => {
@@ -130,7 +139,7 @@ pub async fn handle_put_syllable_request(request: &str) -> (String, String) {
     }
 }
 
-pub async fn handle_delete_syllable_request(request: &str) -> (String, String) {
+pub async fn delete_syllable(request: &str) -> (String, String) {
     match (
         get_id(&request).parse::<Uuid>(),
         tokio_postgres::connect(DB_URL, NoTls).await,
@@ -163,6 +172,6 @@ pub async fn handle_delete_syllable_request(request: &str) -> (String, String) {
     }
 }
 
-fn get_syllable_request_body(request: &str) -> Result<Syllable, serde_json::Error> {
+fn get_syllable_body(request: &str) -> Result<Syllable, serde_json::Error> {
     serde_json::from_str(request.split("\r\n\r\n").last().unwrap_or_default())
 }
