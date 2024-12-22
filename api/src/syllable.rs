@@ -3,17 +3,20 @@ use axum::Router;
 
 use crate::syllable::handler::{
     delete_syllable, get_syllables, get_syllable,
-    post_syllables, put_syllable,
+    create_syllable, update_syllable,
 };
+
 
 mod handler;
 pub mod model;
+mod service;
 
-pub async fn syllable_router() -> Router {
+pub fn syllable_router() -> Router {
     Router::new()
-        .route("POST /api/syllable", post(post_syllables))
-        .route("GET /api/syllable/", get(get_syllable))
-        .route("GET /api/syllable", get(get_syllables))
-        .route("PUT /api/syllable/", put(put_syllable))
-        .route("DELETE /api/syllable/", delete(delete_syllable))
+        .route("/api/syllable", post(create_syllable))
+        .route("/api/syllable/", get(get_syllable))
+        .route("/api/syllable", get(get_syllables))
+        .route("/api/syllable/", put(update_syllable))
+        .route("/api/syllable/", delete(delete_syllable))
 }
+

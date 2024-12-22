@@ -5,8 +5,6 @@ mod word;
 mod syllable;
 mod config;
 mod server;
-mod service;
-
 
 use anyhow::Result;
 use dotenvy::dotenv;
@@ -40,7 +38,7 @@ async fn try_main() -> Result<()> {
     dotenv().ok();
 
     let config = Config::load();
-    let db = init_db().await?;
+    let db = init_db(&config.database_url).await?;
 
     server::handle_client(db, config).await?;
 

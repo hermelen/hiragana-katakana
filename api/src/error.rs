@@ -14,10 +14,10 @@ pub async fn handle_error<T: Future<Output = anyhow::Result<()>>>(run: fn() -> T
 }
 
 pub enum AppError {
-    Unauthorized,
+    // Unauthorized,
     NotFound,
-    BadRequest,
-    Conflict(String),
+    // BadRequest,
+    // Conflict(String),
     Unexpected(anyhow::Error),
 }
 
@@ -26,12 +26,12 @@ pub type Result<T> = anyhow::Result<T, AppError>;
 impl IntoResponse for AppError {
     fn into_response(self) -> Response {
         let (status_code, body) = match self {
-            AppError::Unauthorized => (
-                StatusCode::UNAUTHORIZED,
-                "Unauthorized: invalid username or password".to_string(),
-            ),
+            // AppError::Unauthorized => (
+            //     StatusCode::UNAUTHORIZED,
+            //     "Unauthorized: invalid username or password".to_string(),
+            // ),
             AppError::NotFound => (StatusCode::NOT_FOUND, "Not Found".to_string()),
-            AppError::Conflict(msg) => (StatusCode::CONFLICT, msg),
+            // AppError::Conflict(msg) => (StatusCode::CONFLICT, msg),
             AppError::Unexpected(err) => {
                 error!("{}", err);
                 err.chain().for_each(|cause| error!("because: {}", cause));
@@ -40,7 +40,7 @@ impl IntoResponse for AppError {
                     "Internal Server Error".to_string(),
                 )
             }
-            AppError::BadRequest => (StatusCode::BAD_REQUEST, "Bad Request".to_string()),
+            // AppError::BadRequest => (StatusCode::BAD_REQUEST, "Bad Request".to_string()),
         };
 
         (status_code, body).into_response()

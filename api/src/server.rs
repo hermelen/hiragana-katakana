@@ -5,9 +5,7 @@ use crate::word::word_router;
 use anyhow::Result;
 use axum::{http, Extension, Router};
 use axum::http::Method;
-use moka::sync::Cache;
 use sqlx::PgPool;
-use crate::user::model::UserPendingQueryCache;
 use tower_http::trace;
 use tower_http::trace::TraceLayer;
 use tracing::Level;
@@ -15,7 +13,6 @@ use tower_http::cors::{Any, CorsLayer};
 use crate::config::Config;
 
 pub async fn handle_client(db: PgPool, config: Config) -> Result<()> {
-    let cache: UserPendingQueryCache = Cache::new(1000);
 
     let trace_layer = TraceLayer::new_for_http()
         .make_span_with(trace::DefaultMakeSpan::new().level(Level::INFO))
@@ -37,7 +34,6 @@ pub async fn handle_client(db: PgPool, config: Config) -> Result<()> {
         .layer(trace_layer)
         .layer(cors)
         .layer(Extension(db))
-        .layer(Extension(cache))
         .layer(Extension(config));
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 5000));
