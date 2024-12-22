@@ -18,15 +18,15 @@ export class SyllableServiceClient {
     });
   }
 
-  async list(apiUrl: string) {
-    return this.http.get<Syllable[]>(`${apiUrl}/api/syllable`);
+  async list() {
+    return this.http.get<Syllable[]>("/api/syllable");
   }
 
-  async get(apiUrl: string, id: string) {
-    return this.http.get<Syllable[]>(`${apiUrl}/api/syllable/${id}`);
+  async get(id: string) {
+    return this.http.get<Syllable[]>(`/api/syllable/${id}`);
   }
 
-  async delete(apiUrl: string, id: string) {
-    return this.http.del(`${apiUrl}/api/syllable/${id}`);
+  async delete(id: string) {
+    return this.http.del(`/api/syllable/${id}`);
   }
 }

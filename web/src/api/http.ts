@@ -1,5 +1,15 @@
 import { BadRequest, Conflict, NotFound, Unauthorized } from "./exception";
 import { Storage } from "@/api/storage";
+import Dispatcher from "undici-types/dispatcher";
+import {
+  BodyInit,
+  HeadersInit,
+  ReferrerPolicy,
+  RequestCredentials,
+  RequestDuplex,
+  RequestMode,
+  RequestRedirect,
+} from "undici-types/fetch";
 
 export class HttpClient {
   constructor(protected readonly baseUrl: string) {}

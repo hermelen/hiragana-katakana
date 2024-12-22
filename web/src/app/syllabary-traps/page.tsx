@@ -25,8 +25,6 @@ export default function TrapsPage() {
   const [score, setScore] = useState<number[]>([0]);
   const [trainingLength, setTrainingLength] = useState<number>(0);
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
   const loadTraining = useCallback(
     (trainingLength: number) => {
       if (syllableList.length > 0) {
@@ -84,11 +82,11 @@ export default function TrapsPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await SyllableService.list(apiUrl);
+      const response = await SyllableService.list();
       setSyllableList(response);
     };
     fetchData();
-  }, [apiUrl]);
+  }, []);
 
   useEffect(() => {
     if (syllabaryRecord) {

@@ -14,15 +14,13 @@ export default function SyllabaryTablePage() {
   );
   const noChar = "";
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
   useEffect(() => {
     const fetchData = async () => {
-      const response = await SyllableService.list(apiUrl);
+      const response = await SyllableService.list();
       setSyllableList(response);
     };
     fetchData();
-  }, [apiUrl]);
+  }, []);
 
   useEffect(() => {
     const formatSyllabaryRecordList = () => {

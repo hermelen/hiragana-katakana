@@ -15,15 +15,13 @@ export default function TranslateTrainingPage() {
   const [score, setScore] = useState<number[]>([0]);
   const [trainingLength, setTrainingLength] = useState<number>(0);
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
   useEffect(() => {
     const fetchData = async () => {
-      const response = await WordService.list(apiUrl);
+      const response = await WordService.list();
       setWordList(response);
     };
     fetchData();
-  }, [apiUrl]);
+  }, []);
 
   useEffect(() => {
     const getTrainingData = () => {

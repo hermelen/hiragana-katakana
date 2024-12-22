@@ -12,27 +12,27 @@ export interface Word {
 export class WordServiceClient {
   constructor(private http: HttpClient) {}
 
-  async save(apiUrl: string, word: Word) {
-    return this.http.postAs<Word>(`${apiUrl}/api/word`, {
+  async save(word: Word) {
+    return this.http.postAs<Word>("/api/word", {
       body: word,
     });
   }
 
-  async create(apiUrl: string, word: Word) {
-    return this.http.postAs<Word>(`${apiUrl}/api/word`, {
+  async create(word: Word) {
+    return this.http.postAs<Word>("/api/word", {
       body: word,
     });
   }
 
-  async list(apiUrl: string) {
-    return this.http.get<Word[]>(`${apiUrl}/api/word`);
+  async list() {
+    return this.http.get<Word[]>("/api/word");
   }
 
-  async get(apiUrl: string, id: string) {
-    return this.http.get<Word[]>(`${apiUrl}/api/word/${id}`);
+  async get(id: string) {
+    return this.http.get<Word[]>(`/api/word/${id}`);
   }
 
-  async delete(apiUrl: string, id: string) {
-    return this.http.del(`${apiUrl}/api/word/${id}`);
+  async delete(id: string) {
+    return this.http.del(`/api/word/${id}`);
   }
 }

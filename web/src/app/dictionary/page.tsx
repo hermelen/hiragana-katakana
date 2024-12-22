@@ -16,7 +16,7 @@ export default function DictionaryPage() {
     katakana: "",
     kanji: "",
   });
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
   const [edit, setEdit] = useState<boolean>(false);
   const toggleEdit = useCallback(() => {
     setEdit(!edit);
@@ -24,15 +24,15 @@ export default function DictionaryPage() {
 
   useEffect(() => {
     const fetchWordData = async () => {
-      const response = await WordService.list(apiUrl);
+      const response = await WordService.list();
       setWordList(response);
     };
     fetchWordData();
-  }, [apiUrl]);
+  }, []);
 
   let submit: () => Promise<void>;
   submit = useCallback(async () => {
-    const response = await WordService.create(apiUrl, newWord);
+    const response = await WordService.create(newWord);
     setWordList((prevWordList) => [...prevWordList, response]);
     setEdit(false);
     setNewWord({
@@ -41,7 +41,7 @@ export default function DictionaryPage() {
       katakana: "",
       kanji: "",
     });
-  }, [apiUrl, newWord]);
+  }, [newWord]);
 
   const updateSubmitDisabled = useCallback(() => {
     setSubmitDisabled(

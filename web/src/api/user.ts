@@ -44,37 +44,37 @@ export class UserServiceClient {
     return typeof r === "object";
   }
 
-  async save(apiUrl: string, user: User) {
-    return this.http.postAs<User>(`${apiUrl}/api/user`, {
+  async save(user: User) {
+    return this.http.postAs<User>("/api/user", {
       body: user,
     });
   }
 
-  async create(apiUrl: string, user: User) {
-    return this.http.postAs<User>(`${apiUrl}/api/user`, {
+  async create(user: User) {
+    return this.http.postAs<User>("/api/user", {
       body: user,
     });
   }
 
-  async list(apiUrl: string) {
-    return this.http.get<User[]>(`${apiUrl}/api/user`);
+  async list() {
+    return this.http.get<User[]>("/api/user");
   }
 
-  async get(apiUrl: string, id: string) {
-    return this.http.get<User[]>(`${apiUrl}/api/user/${id}`);
+  async get(id: string) {
+    return this.http.get<User[]>(`/api/user/${id}`);
   }
 
-  async delete(apiUrl: string, id: string) {
-    return this.http.del(`${apiUrl}/api/user/${id}`);
+  async delete(id: string) {
+    return this.http.del(`/api/user/${id}`);
   }
 
   async me() {
     return this.http.get<AuthUser>("/api/user/me");
   }
 
-  async login(apiUrl: string, credentials: Credentials) {
+  async login(credentials: Credentials) {
     const authResponse = await this.http.postAs<AuthResponse>(
-      `${apiUrl}/api/user/login`,
+      "/api/user/login",
       {
         body: credentials,
       },

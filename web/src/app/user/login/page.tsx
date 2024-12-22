@@ -6,7 +6,6 @@ import { UserService } from "@/api";
 export default function UserLoginPage() {
   const [username_or_email, setUsername_or_email] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const submitLogin = () => {
     UserService.login(apiUrl, { username_or_email, password });

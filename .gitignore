@@ -3,6 +3,7 @@
 api/target/*
 api/Cargo.lock
 api/.idea/
+api/.env
 
 web/node_modules/
 web/.idea/

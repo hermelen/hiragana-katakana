@@ -20,8 +20,6 @@ export default function SyllabaryTrainingPage() {
   const [trainingLength, setTrainingLength] = useState<number>(0);
   const [syllableList, setSyllableList] = useState<Syllable[]>([]);
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
       const newTextList = [...textList];
@@ -91,11 +89,11 @@ export default function SyllabaryTrainingPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await SyllableService.list(apiUrl);
+      const response = await SyllableService.list();
       setSyllableList(response);
     };
     fetchData();
-  }, [apiUrl]);
+  }, []);
 
   useEffect(() => {
     if (syllableList) {

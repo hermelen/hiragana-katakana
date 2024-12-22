@@ -22,23 +22,21 @@ export default function ThemeTrainingPage() {
   const [score, setScore] = useState<number[]>([0]);
   const [trainingLength, setTrainingLength] = useState<number>(0);
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
   useEffect(() => {
     const fetchData = async () => {
-      const response = await SyllableService.list(apiUrl);
+      const response = await SyllableService.list();
       setSyllableList(response);
     };
     fetchData();
-  }, [apiUrl]);
+  }, []);
 
   useEffect(() => {
     const fetchWordData = async () => {
-      const response = await WordService.list(apiUrl);
+      const response = await WordService.list();
       setWordList(response);
     };
     fetchWordData();
-  }, [apiUrl]);
+  }, []);
 
   useEffect(() => {
     const syllableListToRecord = () => {
