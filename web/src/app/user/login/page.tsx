@@ -8,7 +8,7 @@ export default function UserLoginPage() {
   const [password, setPassword] = useState<string>("");
 
   const submitLogin = () => {
-    UserService.login(apiUrl, { username_or_email, password });
+    UserService.login({ username_or_email, password });
   };
 
   return (

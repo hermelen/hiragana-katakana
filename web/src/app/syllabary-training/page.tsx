@@ -46,14 +46,21 @@ export default function SyllabaryTrainingPage() {
       const trainingCharacters = shuffleArray(trainingList);
       let record: SyllabaryRecord = {};
       const initialTextListState: string[] = [];
-      for (let i = 0; i < trainingCharacters.length; i++) {
-        if (initialTextListState.length < 10) {
-          if (basic && trainingCharacters[i][1][0].length === 1) {
+      for (
+        let i = 0;
+        i < trainingCharacters.length && Object.entries(record).length < 10;
+        i++
+      ) {
+        if (basic) {
+          if (trainingCharacters[i][1][0].length === 1) {
             record[trainingCharacters[i][0]] = trainingCharacters[i][1];
-          } else if (trainingCharacters[i][1][0].length === 2) {
-            record[trainingCharacters[i][0]] = trainingCharacters[i][1];
+            initialTextListState.push("");
           }
-          initialTextListState.push("");
+        } else {
+          if (trainingCharacters[i][1][0].length === 2) {
+            record[trainingCharacters[i][0]] = trainingCharacters[i][1];
+            initialTextListState.push("");
+          }
         }
       }
       setTextList(initialTextListState);
@@ -160,9 +167,12 @@ export default function SyllabaryTrainingPage() {
               const value = local
                 ? Object.values(li)[1][0]
                 : Object.values(li)[1][1];
+              const title = local
+                ? Object.values(li)[1][1]
+                : Object.values(li)[1][0];
               const match = textList[index] === key;
               return (
-                <li className="flex items-center gap-5" title={key} key={key}>
+                <li className="flex items-center gap-5" title={title} key={key}>
                   <div>
                     <div
                       className={`text-4xl 

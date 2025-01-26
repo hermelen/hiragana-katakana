@@ -9,11 +9,11 @@ export default function UserListPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await UserService.list(apiUrl);
+      const response = await UserService.list();
       setUserList(response);
     };
     fetchData();
-  }, [apiUrl]);
+  }, []);
   if (userList.length === 0) return <div>Loading...</div>;
 
   return (
