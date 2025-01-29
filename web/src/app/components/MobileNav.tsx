@@ -2,19 +2,19 @@ import React, { useCallback } from "react";
 import { Tab, tabList } from "@/api/nav";
 import { router } from "next/client";
 
-type NavProps = {
+type MobileNavProps = {
   pathname: string;
   hiddenTabList: boolean[];
   hiddenTabListChange: (hiddenTabList: boolean[]) => void;
   routeChange: (path: string) => void;
 };
 
-export function Nav({
+export function MobileNav({
   pathname,
   hiddenTabList,
   hiddenTabListChange,
   routeChange,
-}: NavProps) {
+}: MobileNavProps) {
   const tabClick = useCallback(
     (
       event: React.MouseEvent<HTMLLIElement>,
