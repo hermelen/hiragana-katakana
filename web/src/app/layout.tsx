@@ -25,7 +25,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const [hiddenTabList, setHiddenTabList] = useState<boolean[]>([]);
-  const [deviceType, setDeviceType] = useState<"mobile" | "desktop">("desktop");
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -33,10 +33,10 @@ export default function RootLayout({
     setHiddenTabList(tabList.map(() => true));
 
     const fetchDeviceType = async () => {
-      const headersList = await headers();
-      const { device } = userAgent({ headers: headersList });
-      const deviceType = device?.type === "mobile" ? "mobile" : "desktop";
-      setDeviceType(deviceType);
+      const userAgent = navigator.userAgent;
+      const isMobileDevice = /android.+mobile|ip(hone|[oa]d)/i.test(userAgent);
+      console.log(isMobileDevice);
+      setIsMobile(isMobileDevice);
     };
 
     fetchDeviceType();
@@ -47,7 +47,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-stone-800 p-2`}
       >
-        {deviceType === "mobile" ? (
+        {isMobile ? (
           <MobileNav
             pathname={pathname}
             hiddenTabList={hiddenTabList}
@@ -66,7 +66,7 @@ export default function RootLayout({
             }
           />
         )}
-        ;<div className="max-h-dvh overflow-scroll pb-80">{children}</div>
+        <div className="max-h-dvh overflow-scroll pb-80">{children}</div>
       </body>
     </html>
   );
