@@ -98,8 +98,8 @@ export default function DictionaryPage() {
                                     h-10 
                                     rounded-lg 
                                     bg-gradient-to-b 
-                                    to-stone-800 
                                     shadow-lg
+                                    to-stone-800 
                                     from-stone-600`}
                 >
                   Edit
@@ -114,9 +114,9 @@ export default function DictionaryPage() {
                                     h-10 
                                     rounded-lg 
                                     bg-gradient-to-b 
-                                    to-stone-800 
                                     shadow-lg
-                                    from-indigo-500`}
+                                    from-indigo-500
+                                    to-stone-800`}
                 >
                   {key}
                 </div>
@@ -136,8 +136,8 @@ export default function DictionaryPage() {
                           justify-center
                           rounded-lg 
                           bg-gradient-to-b 
-                          to-stone-800 
-                          shadow-lg                                        
+                          shadow-lg 
+                          to-stone-800                                        
                           from-stone-700 hover:from-stone-600`}
             onClick={toggleEdit}
           >
@@ -225,8 +225,8 @@ export default function DictionaryPage() {
                           justify-center
                           rounded-lg 
                           bg-gradient-to-b 
-                          to-stone-800 
-                          shadow-lg                                        
+                          shadow-lg 
+                          to-stone-800                                      
                           from-stone-700 hover:from-stone-600`}
               onClick={toggleEdit}
             >
@@ -243,8 +243,8 @@ export default function DictionaryPage() {
                           justify-center
                           rounded-lg 
                           bg-gradient-to-b 
-                          to-stone-800 
-                          shadow-lg                                        
+                          shadow-lg 
+                          to-stone-800                                     
                           ${submitDisabled ? "from-rose-500 disabled:opacity-75" : "from-indigo-500"}`}
               disabled={submitDisabled}
               onClick={submit}

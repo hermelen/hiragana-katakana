@@ -33,9 +33,10 @@ export function Checkboxes({ checkedList, onChange }: CheckboxesProps) {
                           w-80 
                           h-10 
                           rounded-lg 
-                          bg-gradient-to-b to-stone-800 
+                          bg-gradient-to-b 
                           shadow-lg
-                          ${checkedList[index] ? "from-yellow-500 hover:from-yellow-400 hover:to-stone-800" : "from-rose-500"}`}
+                          ${checkedList[index] ? "from-yellow-500 hover:from-yellow-400" : "from-rose-500"}
+                          to-stone-800`}
             >
               {type.toLocaleString()}
               <span className="absolute right-2">

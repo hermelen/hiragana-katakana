@@ -104,8 +104,8 @@ export default function SyllabaryTablePage() {
                               h-20 
                               rounded-lg 
                               bg-gradient-to-b 
-                              to-stone-800 
                               from-indigo-500
+                              to-stone-800 
                               shadow-lg 
                               ${value[0] === noChar && "invisible"}`}
                 >

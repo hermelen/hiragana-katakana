@@ -94,9 +94,9 @@ export default function TranslateTrainingPage() {
                           h-10 
                           rounded-lg 
                           bg-gradient-to-b 
-                          to-stone-800 
                           shadow-lg
-                          ${text !== shuffledTranslateData[translateIndex][0] ? "from-rose-500" : "from-indigo-500"}`}
+                          ${text !== shuffledTranslateData[translateIndex][0] ? "from-rose-500" : "from-indigo-500"}
+                          to-stone-800`}
                 title={shuffledTranslateData[translateIndex][0]}
               >
                 {shuffledTranslateData[translateIndex][1]}
@@ -127,8 +127,8 @@ export default function TranslateTrainingPage() {
                           justify-center
                           rounded-lg 
                           bg-gradient-to-b 
-                          to-stone-800 
-                          shadow-lg                                        
+                          shadow-lg 
+                          to-stone-800                                     
                           from-indigo-500`}
                 onClick={loadData}
               >

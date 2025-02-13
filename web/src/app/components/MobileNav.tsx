@@ -106,6 +106,7 @@ export function MobileNav({
                     rounded-sm 
                     shadow-lg
                     bg-gradient-to-b 
+                    to-stone-800
                     ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}`}
             key={tab.key}
           >
@@ -177,7 +178,8 @@ export function MobileNav({
                             shadow-lg
                             bg-gradient-to-b 
                             ${childIndex === 0 ? "justify-between" : "justify-end"}
-                            ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}`}
+                            ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
+                            to-stone-800`}
                   key={child.key}
                 >
                   <span

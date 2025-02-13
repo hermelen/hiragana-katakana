@@ -29,9 +29,9 @@ export default function UserLoginPage() {
                             h-10 
                             rounded-lg 
                             bg-gradient-to-b 
-                            to-stone-800 
                             shadow-lg
-                            from-indigo-500`}
+                            from-indigo-500
+                            to-stone-800`}
               >
                 Username/Email
               </div>
@@ -55,8 +55,8 @@ export default function UserLoginPage() {
                             h-10 
                             rounded-lg 
                             bg-gradient-to-b 
-                            to-stone-800 
                             shadow-lg
+                            to-stone-800 
                             from-indigo-500`}
               >
                 Password

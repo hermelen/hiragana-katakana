@@ -154,10 +154,10 @@ export default function TrapsPage() {
                                     h-10 
                                     rounded-lg 
                                     bg-gradient-to-b 
-                                    to-stone-800 
                                     shadow-lg
                                     ${!match && "from-rose-500"}
-                                    ${match && "from-indigo-500"}`}
+                                    ${match && "from-indigo-500"}
+                                    to-stone-800`}
                     title={key}
                   >
                     {local ? value[0] : value[1]}
@@ -184,8 +184,8 @@ export default function TrapsPage() {
                             justify-center
                             rounded-lg 
                             bg-gradient-to-b 
-                            to-stone-800 
-                            shadow-lg                                        
+                            shadow-lg 
+                            to-stone-800                                      
                             from-indigo-500`}
                 onClick={() => reLoadTraining(trainingLength)}
               >

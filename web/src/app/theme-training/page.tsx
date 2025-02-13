@@ -128,9 +128,9 @@ export default function ThemeTrainingPage() {
                             h-10 
                             rounded-lg 
                             bg-gradient-to-b 
-                            to-stone-800 
                             shadow-lg
-                            ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-rose-500" : "from-indigo-500"}`}
+                            ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-rose-500" : "from-indigo-500"}
+                            to-stone-800`}
               >
                 {themeData[0]}
               </div>

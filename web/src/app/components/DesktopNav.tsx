@@ -70,7 +70,8 @@ export function DesktopNav({
                     rounded-sm 
                     shadow-lg
                     bg-gradient-to-b 
-                     ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}`}
+                    to-stone-800 
+                    ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}`}
             key={tab.key}
             onClick={(event) => tabClick(event, tab, index, false)}
           >
@@ -93,7 +94,8 @@ export function DesktopNav({
                             rounded-sm 
                             shadow-lg
                             bg-gradient-to-b 
-                             ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}`}
+                            ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
+                            to-stone-800`}
                   key={child.key}
                   onClick={(event) => tabClick(event, child, index, true)}
                 >
