@@ -11,7 +11,7 @@ import { Score } from "@/app/components/Score";
 import { SyllableService, WordService } from "@/api";
 import { Syllable } from "@/api/syllable";
 import { Label } from "@/app/components/Label";
-import { InputValue } from "@/app/components/InputValue";
+import { InputText } from "@/app/components/InputText";
 import { BasicButton } from "@/app/components/BasicButton";
 import { DisplayValue } from "@/app/components/DisplayValue";
 
@@ -138,7 +138,7 @@ export default function ThemeTrainingPage() {
                 title={title}
                 width={80}
               />
-              <InputValue
+              <InputText
                 value={text}
                 classValue="size-full"
                 onChangeHandler={handleInputChange}

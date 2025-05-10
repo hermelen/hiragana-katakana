@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { formatTypedWordList, Word } from "@/app/lib/wordRecord";
 import { Checkboxes } from "@/app/components/Checkboxes";
 import { WordService } from "@/api";
-import { InputValue } from "@/app/components/InputValue";
+import { InputText } from "@/app/components/InputText";
 import { BasicButton } from "@/app/components/BasicButton";
 import { DisplayValue } from "@/app/components/DisplayValue";
 import {Label} from "@/app/components/Label";
@@ -114,7 +114,7 @@ export default function DictionaryPage() {
         <ul className="flex flex-col gap-4 justify-center size-full">
           <li className="flex items-center gap-5 size-full">
             <div className="w-80"></div>
-            <InputValue
+            <InputText
               value={newWord.kanji}
               classValue="size-full"
               placeholder="Kanji..."
@@ -130,7 +130,7 @@ export default function DictionaryPage() {
           </li>
           <li className="flex items-center gap-5 size-full">
             <div className="w-80"></div>
-            <InputValue
+            <InputText
               value={newWord.katakana}
               classValue="size-full"
               placeholder="Katakana..."
@@ -145,7 +145,7 @@ export default function DictionaryPage() {
             />
           </li>
           <li className="flex items-center gap-5 size-full">
-            <InputValue
+            <InputText
               value={newWord.roman}
               classValue="size-full"
               placeholder="English..."
@@ -153,7 +153,7 @@ export default function DictionaryPage() {
                 setNewWord({ ...newWord, roman: e.target.value })
               }
             />
-            <InputValue
+            <InputText
               value={newWord.hiragana}
               classValue="size-full"
               placeholder="Hiragana..."

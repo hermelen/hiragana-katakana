@@ -5,7 +5,7 @@ import { formatWordList, Word } from "@/app/lib/wordRecord";
 import { Score } from "@/app/components/Score";
 import { WordService } from "@/api";
 import { Label } from "@/app/components/Label";
-import { InputValue } from "@/app/components/InputValue";
+import { InputText } from "@/app/components/InputText";
 import { BasicButton } from "@/app/components/BasicButton";
 
 export default function TranslateTrainingPage() {
@@ -104,7 +104,7 @@ export default function TranslateTrainingPage() {
                 title={title}
                 width={80}
               />
-              <InputValue
+              <InputText
                 value={text}
                 classValue="size-full"
                 onChangeHandler={(event: React.ChangeEvent<HTMLInputElement>) =>

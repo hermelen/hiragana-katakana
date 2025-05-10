@@ -11,7 +11,7 @@ import { Score } from "@/app/components/Score";
 import { SyllableService } from "@/api";
 import { Syllable } from "@/api/syllable";
 import { Label } from "@/app/components/Label";
-import { InputValue } from "@/app/components/InputValue";
+import { InputText } from "@/app/components/InputText";
 import { BasicButton } from "@/app/components/BasicButton";
 
 export default function SyllabaryTrainingPage() {
@@ -186,7 +186,7 @@ export default function SyllabaryTrainingPage() {
                     title={title}
                     width={20}
                   ></Label>
-                  <InputValue
+                  <InputText
                     value={textList[index]}
                     onChangeHandler={(event) => handleInputChange(event, index)}
                   />

@@ -9,7 +9,7 @@ import {
 } from "@/app/lib/syllabaryRecord";
 import { SyllableService } from "@/api";
 import { Syllable } from "@/api/syllable";
-import { InputValue } from "@/app/components/InputValue";
+import { InputText } from "@/app/components/InputText";
 import { DisplayValue } from "@/app/components/DisplayValue";
 
 export default function RomanToJapanesePage() {
@@ -83,7 +83,7 @@ export default function RomanToJapanesePage() {
         <ul className="flex flex-col gap-4 justify-center size-full">
           <li className="flex items-center gap-5 size-full">
             <div className="w-80 h-10"></div>
-            <InputValue value={text} onChangeHandler={handleInputChange} />
+            <InputText value={text} onChangeHandler={handleInputChange} />
           </li>
           <li className="flex items-center gap-5 size-full">
             <div

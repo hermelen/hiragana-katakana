@@ -7,7 +7,7 @@ type InputValueProps = {
   placeholder?: string;
 };
 
-export function InputValue({
+export function InputText({
   value,
   classValue,
   onChangeHandler,

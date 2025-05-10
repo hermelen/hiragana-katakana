@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { UserService } from "@/api";
-import { InputValue } from "@/app/components/InputValue";
+import { InputText } from "@/app/components/InputText";
 import { BasicButton } from "@/app/components/BasicButton";
 
 export default function UserLoginPage() {
@@ -37,7 +37,7 @@ export default function UserLoginPage() {
               >
                 Username/Email
               </div>
-              <InputValue
+              <InputText
                 value={username_or_email}
                 placeholder="Type username or email"
                 classValue="size-full"
@@ -62,7 +62,7 @@ export default function UserLoginPage() {
               >
                 Password
               </div>
-              <InputValue
+              <InputText
                 value={password}
                 placeholder="Type password"
                 classValue="size-full"
