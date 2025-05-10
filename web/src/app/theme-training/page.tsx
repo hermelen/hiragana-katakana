@@ -10,8 +10,10 @@ import { formatWordList, Word } from "@/app/lib/wordRecord";
 import { Score } from "@/app/components/Score";
 import { SyllableService, WordService } from "@/api";
 import { Syllable } from "@/api/syllable";
-import { SyllabaryValue } from "@/app/components/SyllabaryValue";
-import {InputData} from "@/app/components/InputData";
+import { Label } from "@/app/components/Label";
+import { InputValue } from "@/app/components/InputValue";
+import { BasicButton } from "@/app/components/BasicButton";
+import { DisplayValue } from "@/app/components/DisplayValue";
 
 export default function ThemeTrainingPage() {
   const [themeData, setThemeData] = useState<[string?, string?]>([]);
@@ -130,13 +132,13 @@ export default function ThemeTrainingPage() {
         <div className="flex gap-4">
           <ul className="flex flex-col gap-4 justify-center size-full">
             <li className="flex items-center gap-5 size-full" key={key}>
-              <SyllabaryValue
+              <Label
                 match={match}
-                displayValue={displayValue}
+                label={displayValue}
                 title={title}
                 width={80}
-              ></SyllabaryValue>
-              <InputData
+              />
+              <InputValue
                 value={text}
                 classValue="size-full"
                 onChangeHandler={handleInputChange}
@@ -159,50 +161,23 @@ export default function ThemeTrainingPage() {
               >
                 hiragana
               </div>
-              <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-2xl bg-white flex items-center justify-center">
-                {hiragana}
-              </div>
+              <DisplayValue label={hiragana} />
             </li>
             <li className="flex items-center gap-5 size-full">
-              <div
-                className={`text-xl 
-                            text-center
-                            flex
-                            items-center
-                            justify-center
-                            w-80 
-                            h-10 
-                            rounded-lg 
-                            shadow-lg
-                            bg-gradient-to-b 
-                            to-stone-800 
-                            ${katakana === themeData[1] ? "from-indigo-500" : "from-rose-500"}`}
-              >
-                katakana
-              </div>
-              <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-2xl bg-white flex items-center justify-center">
-                {katakana}
-              </div>
+              <Label
+                label="katakana"
+                width={80}
+                match={katakana === themeData[1]}
+                textSize="text-xl"
+              />
+              <DisplayValue label={katakana} />
             </li>
             <li className="flex items-center gap-5 size-full">
               <div className="w-80 h-10"></div>
-              <button
-                className={`h-10 
-                            flex-1 
-                            text-xl 
-                            text-center
-                            flex
-                            items-center
-                            justify-center
-                            rounded-lg 
-                            shadow-lg                                        
-                            bg-gradient-to-b 
-                            to-stone-800 
-                            from-indigo-500`}
-                onClick={() => reloadTheme(trainingLength)}
-              >
-                Next
-              </button>
+              <BasicButton
+                label="Next"
+                onClickHandler={() => reloadTheme(trainingLength)}
+              />
             </li>
           </ul>
         </div>

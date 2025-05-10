@@ -10,8 +10,9 @@ import { computeScore } from "@/app/lib/score";
 import { Score } from "@/app/components/Score";
 import { SyllableService } from "@/api";
 import { Syllable } from "@/api/syllable";
-import {SyllabaryValue} from "@/app/components/SyllabaryValue";
-import {InputData} from "@/app/components/InputData";
+import { Label } from "@/app/components/Label";
+import { InputValue } from "@/app/components/InputValue";
+import { BasicButton } from "@/app/components/BasicButton";
 
 export default function SyllabaryTrainingPage() {
   const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});
@@ -179,13 +180,13 @@ export default function SyllabaryTrainingPage() {
               const title = getSyllabaryValue(li, local, false);
               return (
                 <li className="flex items-center gap-5" key={key}>
-                  <SyllabaryValue
+                  <Label
                     match={match}
-                    displayValue={displayValue}
+                    label={displayValue}
                     title={title}
                     width={20}
-                  ></SyllabaryValue>
-                  <InputData
+                  ></Label>
+                  <InputValue
                     value={textList[index]}
                     onChangeHandler={(event) => handleInputChange(event, index)}
                   />
@@ -194,21 +195,10 @@ export default function SyllabaryTrainingPage() {
             })}
             <li className="flex items-center gap-5">
               <div className="w-20 h-10"></div>
-              <button
-                className={`h-10
-                            flex-1
-                            text-center
-                            rounded-lg
-                            shadow-lg
-                            text-white
-                            text-xl
-                            bg-gradient-to-b 
-                            to-stone-800
-                            from-indigo-500`}
-                onClick={() => reLoadTraining(trainingLength)}
-              >
-                Other Try
-              </button>
+              <BasicButton
+                label="Other Try"
+                onClickHandler={() => reLoadTraining(trainingLength)}
+              />
             </li>
           </ul>
         </div>

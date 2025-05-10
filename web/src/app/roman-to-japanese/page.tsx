@@ -9,7 +9,8 @@ import {
 } from "@/app/lib/syllabaryRecord";
 import { SyllableService } from "@/api";
 import { Syllable } from "@/api/syllable";
-import {InputData} from "@/app/components/InputData";
+import { InputValue } from "@/app/components/InputValue";
+import { DisplayValue } from "@/app/components/DisplayValue";
 
 export default function RomanToJapanesePage() {
   const [text, setText] = useState<string>("");
@@ -82,7 +83,7 @@ export default function RomanToJapanesePage() {
         <ul className="flex flex-col gap-4 justify-center size-full">
           <li className="flex items-center gap-5 size-full">
             <div className="w-80 h-10"></div>
-            <InputData value={text} onChangeHandler={handleInputChange} />
+            <InputValue value={text} onChangeHandler={handleInputChange} />
           </li>
           <li className="flex items-center gap-5 size-full">
             <div
@@ -101,10 +102,7 @@ export default function RomanToJapanesePage() {
             >
               {roman}
             </div>
-            <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-2xl bg-white flex items-center justify-center">
-              {local && hiragana}
-              {!local && katakana}
-            </div>
+            <DisplayValue label={local ? hiragana : katakana} />
           </li>
         </ul>
       </div>

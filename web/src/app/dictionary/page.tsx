@@ -3,7 +3,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { formatTypedWordList, Word } from "@/app/lib/wordRecord";
 import { Checkboxes } from "@/app/components/Checkboxes";
 import { WordService } from "@/api";
-import {InputData} from "@/app/components/InputData";
+import { InputValue } from "@/app/components/InputValue";
+import { BasicButton } from "@/app/components/BasicButton";
+import { DisplayValue } from "@/app/components/DisplayValue";
+import {Label} from "@/app/components/Label";
 
 export default function DictionaryPage() {
   const [translateData, setTranslateData] = useState<[string, string][]>([]);
@@ -89,68 +92,29 @@ export default function DictionaryPage() {
                 className="flex items-center gap-5 size-full toggle-visible-children-on-hover"
                 key={key}
               >
-                <button
-                  className={`text-xl 
-                                    text-center
-                                    flex
-                                    items-center
-                                    justify-center
-                                    w-80 
-                                    h-10 
-                                    rounded-lg 
-                                    bg-gradient-to-b 
-                                    shadow-lg
-                                    to-stone-800 
-                                    from-stone-600`}
-                >
-                  Edit
-                </button>
-                <div
-                  className={`text-4xl 
-                                    text-center
-                                    flex
-                                    items-center
-                                    justify-center
-                                    w-80 
-                                    h-10 
-                                    rounded-lg 
-                                    bg-gradient-to-b 
-                                    shadow-lg
-                                    from-indigo-500
-                                    to-stone-800`}
-                >
-                  {key}
-                </div>
-                <div className="h-10 flex-1 rounded-lg shadow-lg text-black text-2xl bg-white flex items-center justify-center">
-                  {value}
-                </div>
+                <BasicButton
+                  label="Edit"
+                  fromGradient="from-stone-600"
+                  onClickHandler={() => console.log("To be implemented")}
+                />
+                <Label label={key} width={80} />
+                <DisplayValue label={value} />
               </li>
             );
           })}
-          <button
-            className={`w-80 
-                          h-10
-                          text-xl 
-                          text-center
-                          flex
-                          items-center
-                          justify-center
-                          rounded-lg 
-                          bg-gradient-to-b 
-                          shadow-lg 
-                          to-stone-800                                        
-                          from-stone-700 hover:from-stone-600`}
-            onClick={toggleEdit}
-          >
-            Add word
-          </button>
+          <BasicButton
+            label="Add word"
+            fromGradient="from-stone-700"
+            fromHoverGradient="hover:from-stone-600"
+            onClickHandler={toggleEdit}
+          />
         </ul>
       </div>
       <div className={`flex gap-4 ${!edit && "hidden"}`}>
         <ul className="flex flex-col gap-4 justify-center size-full">
           <li className="flex items-center gap-5 size-full">
             <div className="w-80"></div>
-            <InputData
+            <InputValue
               value={newWord.kanji}
               classValue="size-full"
               placeholder="Kanji..."
@@ -166,7 +130,7 @@ export default function DictionaryPage() {
           </li>
           <li className="flex items-center gap-5 size-full">
             <div className="w-80"></div>
-            <InputData
+            <InputValue
               value={newWord.katakana}
               classValue="size-full"
               placeholder="Katakana..."
@@ -181,7 +145,7 @@ export default function DictionaryPage() {
             />
           </li>
           <li className="flex items-center gap-5 size-full">
-            <InputData
+            <InputValue
               value={newWord.roman}
               classValue="size-full"
               placeholder="English..."
@@ -189,7 +153,7 @@ export default function DictionaryPage() {
                 setNewWord({ ...newWord, roman: e.target.value })
               }
             />
-            <InputData
+            <InputValue
               value={newWord.hiragana}
               classValue="size-full"
               placeholder="Hiragana..."
@@ -204,42 +168,22 @@ export default function DictionaryPage() {
             />
           </li>
           <li className="flex items-center gap-5 size-full">
-            <button
-              className={`h-10                           
-                          w-80
-                          text-xl 
-                          text-center
-                          flex
-                          items-center
-                          justify-center
-                          rounded-lg 
-                          bg-gradient-to-b 
-                          shadow-lg 
-                          to-stone-800                                      
-                          from-stone-700 hover:from-stone-600`}
-              onClick={toggleEdit}
-            >
-              Cancel
-            </button>
-            <button
-              className={`h-10                           
-                          size-full
-                          flex-1 
-                          text-xl 
-                          text-center
-                          flex
-                          items-center
-                          justify-center
-                          rounded-lg 
-                          bg-gradient-to-b 
-                          shadow-lg 
-                          to-stone-800                                     
-                          ${submitDisabled ? "from-rose-500 disabled:opacity-75" : "from-indigo-500"}`}
+            <BasicButton
+              label="Cancel"
+              fromGradient="from-stone-700"
+              fromHoverGradient="from-stone-600"
+              onClickHandler={toggleEdit}
+            />
+            <BasicButton
+              label="Save word"
+              fromGradient={
+                submitDisabled
+                  ? "from-rose-500 disabled:opacity-75"
+                  : "from-indigo-500"
+              }
               disabled={submitDisabled}
-              onClick={submit}
-            >
-              Save word
-            </button>
+              onClickHandler={submit}
+            />
           </li>
         </ul>
       </div>

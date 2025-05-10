@@ -4,8 +4,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { formatWordList, Word } from "@/app/lib/wordRecord";
 import { Score } from "@/app/components/Score";
 import { WordService } from "@/api";
-import { SyllabaryValue } from "@/app/components/SyllabaryValue";
-import { InputData } from "@/app/components/InputData";
+import { Label } from "@/app/components/Label";
+import { InputValue } from "@/app/components/InputValue";
+import { BasicButton } from "@/app/components/BasicButton";
 
 export default function TranslateTrainingPage() {
   const [shuffledTranslateData, setShuffledTranslateData] = useState<
@@ -97,13 +98,13 @@ export default function TranslateTrainingPage() {
         <div className="flex gap-4">
           <ul className="flex flex-col gap-4 justify-center size-full">
             <li className="flex items-center gap-5 size-full" key={key}>
-              <SyllabaryValue
+              <Label
                 match={match}
-                displayValue={displayValue}
+                label={displayValue}
                 title={title}
                 width={80}
               />
-              <InputData
+              <InputValue
                 value={text}
                 classValue="size-full"
                 onChangeHandler={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -116,24 +117,7 @@ export default function TranslateTrainingPage() {
             </li>
             <li className="flex items-center gap-5 size-full">
               <div className="w-80 h-10"></div>
-              <button
-                className={`h-10      
-                          size-full
-                          flex-1 
-                          text-xl 
-                          text-center
-                          flex
-                          items-center
-                          justify-center
-                          rounded-lg 
-                          bg-gradient-to-b 
-                          shadow-lg 
-                          to-stone-800                                     
-                          from-indigo-500`}
-                onClick={loadData}
-              >
-                Other Try
-              </button>
+              <BasicButton label="Other Try" onClickHandler={loadData} />
             </li>
           </ul>
         </div>

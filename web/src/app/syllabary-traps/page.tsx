@@ -15,8 +15,9 @@ import { computeScore } from "@/app/lib/score";
 import { Score } from "@/app/components/Score";
 import { SyllableService } from "@/api";
 import { Syllable } from "@/api/syllable";
-import {SyllabaryValue} from "@/app/components/SyllabaryValue";
-import {InputData} from "@/app/components/InputData";
+import { Label } from "@/app/components/Label";
+import { InputValue } from "@/app/components/InputValue";
+import { BasicButton } from "@/app/components/BasicButton";
 
 export default function TrapsPage() {
   const [trapData, setTrapData] = useState<SyllabaryRecord>({});
@@ -154,13 +155,13 @@ export default function TrapsPage() {
               const title = getSyllabaryValue(li, local, false);
               return (
                 <li className="flex items-center gap-5" key={key}>
-                  <SyllabaryValue
+                  <Label
                     match={match}
-                    displayValue={displayValue}
+                    label={displayValue}
                     title={title}
                     width={20}
-                  ></SyllabaryValue>
-                  <InputData
+                  ></Label>
+                  <InputValue
                     value={textList[index]}
                     onChangeHandler={(event) => handleInputChange(event, index)}
                   />
@@ -169,23 +170,10 @@ export default function TrapsPage() {
             })}
             <li className="flex items-center gap-5">
               <div className="w-20 h-10"></div>
-              <button
-                className={`h-10 
-                            flex-1 
-                            text-xl 
-                            text-center
-                            flex
-                            items-center
-                            justify-center
-                            rounded-lg 
-                            bg-gradient-to-b 
-                            shadow-lg 
-                            to-stone-800                                      
-                            from-indigo-500`}
-                onClick={() => reLoadTraining(trainingLength)}
-              >
-                Next
-              </button>
+              <BasicButton
+                label="Next"
+                onClickHandler={() => reLoadTraining(trainingLength)}
+              />
             </li>
           </ul>
         </div>

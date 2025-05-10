@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { UserService } from "@/api";
-import { InputData } from "@/app/components/InputData";
+import { InputValue } from "@/app/components/InputValue";
+import { BasicButton } from "@/app/components/BasicButton";
 
 export default function UserLoginPage() {
   const [username_or_email, setUsernameOrEmail] = useState<string>("");
@@ -36,7 +37,7 @@ export default function UserLoginPage() {
               >
                 Username/Email
               </div>
-              <InputData
+              <InputValue
                 value={username_or_email}
                 placeholder="Type username or email"
                 classValue="size-full"
@@ -61,7 +62,7 @@ export default function UserLoginPage() {
               >
                 Password
               </div>
-              <InputData
+              <InputValue
                 value={password}
                 placeholder="Type password"
                 classValue="size-full"
@@ -70,23 +71,10 @@ export default function UserLoginPage() {
             </li>
             <li className="flex items-center gap-5 size-full">
               <div className="w-80 h-10"></div>
-              <button
-                className={`h-10 
-                            flex-1 
-                            text-xl 
-                            text-center
-                            flex
-                            items-center
-                            justify-center
-                            rounded-lg 
-                            shadow-lg                                        
-                            bg-gradient-to-b 
-                            to-stone-800 
-                            from-indigo-500`}
-                onClick={() => submitLogin()}
-              >
-                Submit
-              </button>
+              <BasicButton
+                label="Submit"
+                onClickHandler={() => submitLogin()}
+              />
             </li>
           </ul>
         </div>
