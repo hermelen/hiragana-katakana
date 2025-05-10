@@ -15,6 +15,8 @@ import { computeScore } from "@/app/lib/score";
 import { Score } from "@/app/components/Score";
 import { SyllableService } from "@/api";
 import { Syllable } from "@/api/syllable";
+import {SyllabaryValue} from "@/app/components/SyllabaryValue";
+import {InputData} from "@/app/components/InputData";
 
 export default function TrapsPage() {
   const [trapData, setTrapData] = useState<SyllabaryRecord>({});
@@ -74,6 +76,14 @@ export default function TrapsPage() {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+  }
+
+  function getSyllabaryValue(
+    li: [string, [string, string]],
+    isLocal: boolean,
+    isDisplay: boolean,
+  ) {
+    return Object.values(li)[1][isLocal && isDisplay ? 0 : 1];
   }
 
   const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,35 +149,20 @@ export default function TrapsPage() {
           <ul className="flex flex-col gap-4 justify-center size-full">
             {Object.entries(trapData).map((li, index) => {
               const key = li[0];
-              const value = Object.values(li)[1];
               const match = textList[index] === key;
+              const displayValue = getSyllabaryValue(li, local, true);
+              const title = getSyllabaryValue(li, local, false);
               return (
-                <li key={li[0]} className="flex items-center gap-5">
-                  <div
-                    key={key}
-                    className={`text-4xl 
-                                    text-center
-                                    flex
-                                    items-center
-                                    justify-center
-                                    w-20 
-                                    h-10 
-                                    rounded-lg 
-                                    bg-gradient-to-b 
-                                    shadow-lg
-                                    ${!match && "from-rose-500"}
-                                    ${match && "from-indigo-500"}
-                                    to-stone-800`}
-                    title={key}
-                  >
-                    {local ? value[0] : value[1]}
-                  </div>
-                  <input
-                    className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl"
-                    type="text"
+                <li className="flex items-center gap-5" key={key}>
+                  <SyllabaryValue
+                    match={match}
+                    displayValue={displayValue}
+                    title={title}
+                    width={20}
+                  ></SyllabaryValue>
+                  <InputData
                     value={textList[index]}
-                    onChange={(event) => handleInputChange(event, index)}
-                    placeholder="Type something..."
+                    onChangeHandler={(event) => handleInputChange(event, index)}
                   />
                 </li>
               );

@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { formatTypedWordList, Word } from "@/app/lib/wordRecord";
 import { Checkboxes } from "@/app/components/Checkboxes";
 import { WordService } from "@/api";
+import {InputData} from "@/app/components/InputData";
 
 export default function DictionaryPage() {
   const [translateData, setTranslateData] = useState<[string, string][]>([]);
@@ -149,12 +150,11 @@ export default function DictionaryPage() {
         <ul className="flex flex-col gap-4 justify-center size-full">
           <li className="flex items-center gap-5 size-full">
             <div className="w-80"></div>
-            <input
-              className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
-              type="text"
-              placeholder="Kanji..."
+            <InputData
               value={newWord.kanji}
-              onChange={(e) =>
+              classValue="size-full"
+              placeholder="Kanji..."
+              onChangeHandler={(e) =>
                 setNewWord({
                   ...newWord,
                   hiragana: "",
@@ -166,12 +166,11 @@ export default function DictionaryPage() {
           </li>
           <li className="flex items-center gap-5 size-full">
             <div className="w-80"></div>
-            <input
-              className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
-              type="text"
-              placeholder="Katakana..."
+            <InputData
               value={newWord.katakana}
-              onChange={(e) =>
+              classValue="size-full"
+              placeholder="Katakana..."
+              onChangeHandler={(e) =>
                 setNewWord({
                   ...newWord,
                   hiragana: "",
@@ -182,29 +181,19 @@ export default function DictionaryPage() {
             />
           </li>
           <li className="flex items-center gap-5 size-full">
-            <input
-              className={`text-xl 
-                          text-center
-                          text-black
-                          flex
-                          items-center
-                          justify-center
-                          w-80 
-                          h-10 
-                          rounded-lg 
-                          shadow-lg`}
-              placeholder="English..."
+            <InputData
               value={newWord.roman}
-              onChange={(e) =>
+              classValue="size-full"
+              placeholder="English..."
+              onChangeHandler={(e) =>
                 setNewWord({ ...newWord, roman: e.target.value })
               }
             />
-            <input
-              className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
-              type="text"
-              placeholder="Hiragana..."
+            <InputData
               value={newWord.hiragana}
-              onChange={(e) =>
+              classValue="size-full"
+              placeholder="Hiragana..."
+              onChangeHandler={(e) =>
                 setNewWord({
                   ...newWord,
                   hiragana: e.target.value,

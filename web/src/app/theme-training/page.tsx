@@ -10,6 +10,8 @@ import { formatWordList, Word } from "@/app/lib/wordRecord";
 import { Score } from "@/app/components/Score";
 import { SyllableService, WordService } from "@/api";
 import { Syllable } from "@/api/syllable";
+import { SyllabaryValue } from "@/app/components/SyllabaryValue";
+import {InputData} from "@/app/components/InputData";
 
 export default function ThemeTrainingPage() {
   const [themeData, setThemeData] = useState<[string?, string?]>([]);
@@ -85,6 +87,13 @@ export default function ThemeTrainingPage() {
     return array[0];
   }
 
+  function getSyllabaryValue(
+    li: [(string | undefined)?, (string | undefined)?],
+    isDisplay: boolean,
+  ) {
+    return Object.values(li)[isDisplay ? 0 : 1];
+  }
+
   const reloadTheme = useCallback(
     (trainingLength: number) => {
       if (wordList.length > 0) {
@@ -105,6 +114,11 @@ export default function ThemeTrainingPage() {
     return <div>Loading...</div>;
   }
 
+  const key = themeData[0];
+  const match = hiragana === themeData[1] && katakana !== themeData[1];
+  const displayValue = getSyllabaryValue(themeData, true);
+  const title = getSyllabaryValue(themeData, false);
+
   return (
     <div className="lg:flex size-full">
       <div className="lg:w-4/12 size-full flex justify-end">
@@ -115,31 +129,17 @@ export default function ThemeTrainingPage() {
       <div className="lg:w-6/12 size-full">
         <div className="flex gap-4">
           <ul className="flex flex-col gap-4 justify-center size-full">
-            <li className="flex items-center gap-5 size-full">
-              <div
-                title={themeData[1]}
-                className={`text-4xl 
-                            size-full
-                            text-center
-                            flex
-                            items-center
-                            justify-center
-                            w-80 
-                            h-10 
-                            rounded-lg 
-                            bg-gradient-to-b 
-                            shadow-lg
-                            ${hiragana !== themeData[1] && katakana !== themeData[1] ? "from-rose-500" : "from-indigo-500"}
-                            to-stone-800`}
-              >
-                {themeData[0]}
-              </div>
-              <input
-                className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
-                type="text"
+            <li className="flex items-center gap-5 size-full" key={key}>
+              <SyllabaryValue
+                match={match}
+                displayValue={displayValue}
+                title={title}
+                width={80}
+              ></SyllabaryValue>
+              <InputData
                 value={text}
-                onChange={handleInputChange}
-                placeholder="Type something..."
+                classValue="size-full"
+                onChangeHandler={handleInputChange}
               />
             </li>
             <li className="flex items-center gap-5 size-full">

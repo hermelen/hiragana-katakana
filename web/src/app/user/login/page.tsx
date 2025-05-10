@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import { UserService } from "@/api";
+import { InputData } from "@/app/components/InputData";
 
 export default function UserLoginPage() {
-  const [username_or_email, setUsername_or_email] = useState<string>("");
+  const [username_or_email, setUsernameOrEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const submitLogin = () => {
@@ -35,12 +36,11 @@ export default function UserLoginPage() {
               >
                 Username/Email
               </div>
-              <input
-                className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
-                type="text"
+              <InputData
                 value={username_or_email}
-                onChange={(e) => setUsername_or_email(e.target.value)}
-                placeholder="Type something..."
+                placeholder="Type username or email"
+                classValue="size-full"
+                onChangeHandler={(e) => setUsernameOrEmail(e.target.value)}
               />
             </li>
             <li className="flex items-center gap-5 size-full">
@@ -61,12 +61,11 @@ export default function UserLoginPage() {
               >
                 Password
               </div>
-              <input
-                className="h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl size-full"
-                type="text"
+              <InputData
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Type something..."
+                placeholder="Type password"
+                classValue="size-full"
+                onChangeHandler={(e) => setPassword(e.target.value)}
               />
             </li>
             <li className="flex items-center gap-5 size-full">
