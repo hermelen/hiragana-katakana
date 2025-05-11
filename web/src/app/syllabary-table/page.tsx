@@ -7,7 +7,11 @@ import { SyllableService } from "@/api";
 
 export default function SyllabaryTablePage() {
   type TableData = Record<string, [string, string]>[];
+  type BooleanDictionary = {
+    [key: string]: boolean;
+  };
   const [local, setLocal] = useState<boolean>(true);
+  const [faceDictionary, setFaceDictionary] = useState<BooleanDictionary>({});
   const [syllableList, setSyllableList] = useState<Syllable[]>([]);
   const [syllabaryRecordList, setSyllabaryRecordList] = useState<TableData[]>(
     [],
@@ -56,14 +60,26 @@ export default function SyllabaryTablePage() {
       if (currentArray.length > 0) {
         tableData.push(currentArray);
       }
-
       setSyllabaryRecordList(tableData);
     };
     formatSyllabaryRecordList();
+    initFaceDictionary(!local);
   }, [syllableList]);
+
+  const initFaceDictionary = (isLocal: boolean) => {
+    if (syllableList.length === 0) {
+      return;
+    }
+    const baseFaceDict: BooleanDictionary = {};
+    for (const syllable of syllableList) {
+      baseFaceDict[syllable.roman] = isLocal;
+    }
+    setFaceDictionary(baseFaceDict);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLocal(event.target.value === "true");
+    initFaceDictionary(local);
   };
 
   return (
@@ -94,26 +110,59 @@ export default function SyllabaryTablePage() {
             {ul.map((li, liIndex) => {
               const key = Object.keys(li)[0];
               const value = Object.values(li)[0];
+              const isChar = value[0] !== "" && value[1] !== "";
+              const isCharClasses = `flex
+                      flex-col
+                      items-center
+                      justify-center
+                      rounded-lg
+                      absolute
+                      transition-all
+                      duration-500
+                      transform-style-preserve-3d
+                      bg-gradient-to-b
+                      to-stone-800
+                      shadow-lg`;
+              const faceRotate = faceDictionary[key]
+                ? "rotateY(180deg)"
+                : "rotateY(0deg)";
+              const backRotate = faceDictionary[key]
+                ? "rotateY(0deg)"
+                : "rotateY(180deg)";
               return (
-                <li
-                  key={liIndex}
-                  className={`flex
-                              items-center
-                              justify-center
-                              w-20 
-                              h-20 
-                              rounded-lg 
-                              bg-gradient-to-b 
-                              from-indigo-500
-                              to-stone-800 
-                              shadow-lg 
-                              ${value[0] === noChar && "invisible"}`}
-                >
-                  <div key={key}>
-                    <div className="text-4xl text-center">
-                      {local ? value[0] : value[1]}
+                <li key={liIndex}>
+                  <div
+                    key={key}
+                    onClick={() => {
+                      initFaceDictionary(!local);
+                      setFaceDictionary((prevFaceList) => {
+                        const newFaceList = { ...prevFaceList };
+                        newFaceList[key] = !newFaceList[key];
+                        return newFaceList;
+                      });
+                    }}
+                    className="relative w-20 h-20 cursor-pointer"
+                  >
+                    <div
+                      style={{
+                        transform: faceRotate,
+                        backfaceVisibility: "hidden",
+                      }}
+                      className={`w-20 h-20 ${isChar && `${isCharClasses} from-indigo-500`}`}
+                    >
+                      <div className="text-4xl text-center">{value[0]}</div>
+                      <div className="text-l text-center">{isChar && key}</div>
                     </div>
-                    <div className="text-l text-center">{key}</div>
+                    <div
+                      style={{
+                        transform: backRotate,
+                        backfaceVisibility: "hidden",
+                      }}
+                      className={`w-20 h-20 ${isChar && `${isCharClasses} from-rose-500`}`}
+                    >
+                      <div className="text-4xl text-center">{value[1]}</div>
+                      <div className="text-l text-center">{isChar && key}</div>
+                    </div>
                   </div>
                 </li>
               );

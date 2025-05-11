@@ -21,7 +21,6 @@ export default function RootLayout({
     const fetchDeviceType = async () => {
       const userAgent = navigator.userAgent;
       const isMobileDevice = /android.+mobile|ip(hone|[oa]d)/i.test(userAgent);
-      console.log(isMobileDevice);
       setIsMobile(isMobileDevice);
     };
 
