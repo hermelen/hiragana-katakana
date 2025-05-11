@@ -6,7 +6,7 @@ import { WordService } from "@/api";
 import { InputText } from "@/app/components/InputText";
 import { BasicButton } from "@/app/components/BasicButton";
 import { DisplayValue } from "@/app/components/DisplayValue";
-import {Label} from "@/app/components/Label";
+import { Label } from "@/app/components/Label";
 
 export default function DictionaryPage() {
   const [translateData, setTranslateData] = useState<[string, string][]>([]);
@@ -94,7 +94,8 @@ export default function DictionaryPage() {
               >
                 <BasicButton
                   label="Edit"
-                  fromGradient="from-stone-600"
+                  fromGradient="from-stone-700"
+                  fromHoverGradient="hover:from-stone-600"
                   onClickHandler={() => console.log("To be implemented")}
                 />
                 <Label label={key} width={80} />
@@ -102,12 +103,15 @@ export default function DictionaryPage() {
               </li>
             );
           })}
-          <BasicButton
-            label="Add word"
-            fromGradient="from-stone-700"
-            fromHoverGradient="hover:from-stone-600"
-            onClickHandler={toggleEdit}
-          />
+          <li>
+            <BasicButton
+              label="Add word"
+              width={80}
+              fromGradient="from-stone-700"
+              fromHoverGradient="hover:from-stone-600"
+              onClickHandler={toggleEdit}
+            />
+          </li>
         </ul>
       </div>
       <div className={`flex gap-4 ${!edit && "hidden"}`}>
@@ -171,7 +175,7 @@ export default function DictionaryPage() {
             <BasicButton
               label="Cancel"
               fromGradient="from-stone-700"
-              fromHoverGradient="from-stone-600"
+              fromHoverGradient="hover:from-stone-600"
               onClickHandler={toggleEdit}
             />
             <BasicButton
@@ -180,6 +184,9 @@ export default function DictionaryPage() {
                 submitDisabled
                   ? "from-rose-500 disabled:opacity-75"
                   : "from-indigo-500"
+              }
+              fromHoverGradient={
+                submitDisabled ? undefined : "hover:from-indigo-400"
               }
               disabled={submitDisabled}
               onClickHandler={submit}

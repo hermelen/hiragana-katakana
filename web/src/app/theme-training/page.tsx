@@ -132,12 +132,7 @@ export default function ThemeTrainingPage() {
         <div className="flex gap-4">
           <ul className="flex flex-col gap-4 justify-center size-full">
             <li className="flex items-center gap-5 size-full" key={key}>
-              <Label
-                match={match}
-                label={displayValue}
-                title={title}
-                width={80}
-              />
+              <Label match={match} label={displayValue} title={title} />
               <InputText
                 value={text}
                 classValue="size-full"
@@ -166,7 +161,6 @@ export default function ThemeTrainingPage() {
             <li className="flex items-center gap-5 size-full">
               <Label
                 label="katakana"
-                width={80}
                 match={katakana === themeData[1]}
                 textSize="text-xl"
               />

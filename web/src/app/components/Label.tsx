@@ -1,20 +1,14 @@
 import React from "react";
 
-type GradientLabelKeyProps = {
+type LabelKeyProps = {
   match?: boolean;
   label?: string;
   title?: string;
-  width: number;
+  width?: number;
   textSize?: string;
 };
 
-export function Label({
-  match,
-  label,
-  title,
-  width,
-  textSize,
-}: GradientLabelKeyProps) {
+export function Label({ match, label, title, width, textSize }: LabelKeyProps) {
   match = match === false ? match : true;
   return (
     <div
@@ -24,7 +18,7 @@ export function Label({
         flex
         items-center
         justify-center
-        w-${width} 
+        w-${width ? width : "80"} 
         h-10 
         rounded-lg 
         bg-gradient-to-b  

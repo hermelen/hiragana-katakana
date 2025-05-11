@@ -7,6 +7,7 @@ type BasicButtonProps = {
   fromHoverGradient?: string;
   toGradient?: string;
   disabled?: boolean;
+  width?: number;
 };
 
 export function BasicButton({
@@ -16,6 +17,7 @@ export function BasicButton({
   onClickHandler,
   fromHoverGradient,
   disabled,
+  width,
 }: BasicButtonProps) {
   return (
     <button
@@ -25,8 +27,11 @@ export function BasicButton({
         flex-1
         text-xl
         text-center
+        w-${width ? width : "80"} 
         items-center
         justify-center
+        pr-1
+        pl-1
         rounded-lg
         shadow-lg
         bg-gradient-to-b
