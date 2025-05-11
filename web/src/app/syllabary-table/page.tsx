@@ -134,11 +134,14 @@ export default function SyllabaryTablePage() {
                   <div
                     key={key}
                     onClick={() => {
+                      const prevDictionary = { ...faceDictionary };
                       initFaceDictionary(!local);
-                      setFaceDictionary((prevFaceList) => {
-                        const newFaceList = { ...prevFaceList };
-                        newFaceList[key] = !newFaceList[key];
-                        return newFaceList;
+                      setFaceDictionary((initDictionary) => {
+                        const newDictionary = { ...initDictionary };
+                        newDictionary[key] = local === prevDictionary[key]
+                            ? !local
+                            : !newDictionary[key];
+                        return newDictionary;
                       });
                     }}
                     className="relative w-20 h-20 cursor-pointer"
