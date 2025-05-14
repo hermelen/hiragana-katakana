@@ -138,7 +138,8 @@ export default function SyllabaryTablePage() {
                       initFaceDictionary(!local);
                       setFaceDictionary((initDictionary) => {
                         const newDictionary = { ...initDictionary };
-                        newDictionary[key] = local === prevDictionary[key]
+                        newDictionary[key] =
+                          local === prevDictionary[key]
                             ? !local
                             : !newDictionary[key];
                         return newDictionary;

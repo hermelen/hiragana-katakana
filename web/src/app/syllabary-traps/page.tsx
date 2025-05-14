@@ -18,6 +18,7 @@ import { Syllable } from "@/api/syllable";
 import { Label } from "@/app/components/Label";
 import { InputText } from "@/app/components/InputText";
 import { BasicButton } from "@/app/components/BasicButton";
+import { getSyllabaryValue } from "@/app/services/utils";
 
 export default function TrapsPage() {
   const [trapData, setTrapData] = useState<SyllabaryRecord>({});
@@ -77,14 +78,6 @@ export default function TrapsPage() {
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
-  }
-
-  function getSyllabaryValue(
-    li: [string, [string, string]],
-    isLocal: boolean,
-    isDisplay: boolean,
-  ) {
-    return Object.values(li)[1][isLocal && isDisplay ? 0 : 1];
   }
 
   const handleLocalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
