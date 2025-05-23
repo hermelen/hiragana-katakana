@@ -14,11 +14,11 @@ export function Score({ score, trainingLength }: ScoreProps) {
                        mb-5
                        h-10
                        text-center
-                       rounded-sm
+                       rounded-xs
                        shadow-lg
                        text-white
                        text-xl
-                       bg-gradient-to-b 
+                       bg-linear-to-b 
                        to-stone-800
                        from-indigo-500"
     >

@@ -68,7 +68,7 @@ export function MobileNav({
   return (
     <nav className="relative h-20 w-full z-10">
       <div
-        className="absolute h-20 w-full bg-gradient-to-b from-indigo-400 flex items-center justify-between p-3"
+        className="absolute h-20 w-full bg-linear-to-b from-indigo-400 flex items-center justify-between p-3"
         onClick={() => setIsMainExpanded(true)}
       >
         <svg
@@ -104,9 +104,9 @@ export function MobileNav({
               h-20 
               pl-2 
               pr-2
-              rounded-sm 
+              rounded-xs 
               shadow-lg
-              bg-gradient-to-b 
+              bg-linear-to-b 
               to-stone-800
               ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
             `}
@@ -177,9 +177,9 @@ export function MobileNav({
                     h-20 
                     pl-2 
                     pr-2
-                    rounded-sm 
+                    rounded-xs 
                     shadow-lg
-                    bg-gradient-to-b 
+                    bg-linear-to-b 
                     ${childIndex === 0 ? "justify-between" : "justify-end"}
                     ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
                     to-stone-800

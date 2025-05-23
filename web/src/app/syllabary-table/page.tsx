@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Radio } from "@/app/components/Radio";
 import { Syllable } from "@/api/syllable";
 import { SyllableService } from "@/api";
+import { cn } from "@/app/services/utils";
 
 export default function SyllabaryTablePage() {
   type TableData = Record<string, [string, string]>[];
@@ -111,24 +112,6 @@ export default function SyllabaryTablePage() {
               const key = Object.keys(li)[0];
               const value = Object.values(li)[0];
               const isChar = value[0] !== "" && value[1] !== "";
-              const isCharClasses = `flex
-                      flex-col
-                      items-center
-                      justify-center
-                      rounded-lg
-                      absolute
-                      transition-all
-                      duration-500
-                      transform-style-preserve-3d
-                      bg-gradient-to-b
-                      to-stone-800
-                      shadow-lg`;
-              const faceRotate = faceDictionary[key]
-                ? "rotateY(180deg)"
-                : "rotateY(0deg)";
-              const backRotate = faceDictionary[key]
-                ? "rotateY(0deg)"
-                : "rotateY(180deg)";
               return (
                 <li key={liIndex}>
                   <div
@@ -148,21 +131,23 @@ export default function SyllabaryTablePage() {
                     className="relative w-20 h-20 cursor-pointer"
                   >
                     <div
-                      // style={{
-                      //   transform: faceRotate,
-                      //   backfaceVisibility: "hidden",
-                      // }}
-                      className={`w-20 h-20 ${isChar && `${isCharClasses} from-indigo-500`} transform rotate-y-180`}
+                      className={cn(
+                        "w-20 h-20",
+                        isChar &&
+                          "flex flex-col items-center justify-center rounded-lg absolute transition-all duration-1500 transform-style-preserve-3d bg-linear-to-b to-stone-800 shadow-lg backface-hidden from-indigo-500",
+                        faceDictionary[key] ? "rotate-y-180" : "rotate-y-0",
+                      )}
                     >
                       <div className="text-4xl text-center">{value[0]}</div>
                       <div className="text-l text-center">{isChar && key}</div>
                     </div>
                     <div
-                      style={{
-                        transform: backRotate,
-                        backfaceVisibility: "hidden",
-                      }}
-                      className={`w-20 h-20 ${isChar && `${isCharClasses} from-rose-500`}`}
+                      className={cn(
+                        "w-20 h-20",
+                        isChar &&
+                          "flex flex-col items-center justify-center rounded-lg absolute transition-all duration-1500 transform-style-preserve-3d bg-linear-to-b to-stone-800 shadow-lg backface-hidden from-rose-500",
+                        faceDictionary[key] ? "rotate-y-0" : "rotate-y-180",
+                      )}
                     >
                       <div className="text-4xl text-center">{value[1]}</div>
                       <div className="text-l text-center">{isChar && key}</div>

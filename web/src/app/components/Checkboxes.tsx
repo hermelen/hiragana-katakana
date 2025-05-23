@@ -33,7 +33,7 @@ export function Checkboxes({ checkedList, onChange }: CheckboxesProps) {
                           w-80 
                           h-10 
                           rounded-lg 
-                          bg-gradient-to-b 
+                          bg-linear-to-b 
                           shadow-lg
                           ${checkedList[index] ? "from-yellow-500 hover:from-yellow-400" : "from-rose-500"}
                           to-stone-800`}

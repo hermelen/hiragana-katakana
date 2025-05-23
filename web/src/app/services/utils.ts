@@ -1,3 +1,6 @@
+import { ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
 export function getSyllabaryValue(
   li: [string, [string, string]],
   isLocal: boolean,
@@ -19,4 +22,8 @@ export function getSyllabaryValue(
       return syllabaryArray[hiragana];
     }
   }
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
 }

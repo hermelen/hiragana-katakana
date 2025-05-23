@@ -68,9 +68,9 @@ export function DesktopNav({
               h-20 
               pl-2 
               pr-2
-              rounded-sm 
+              rounded-xs 
               shadow-lg
-              bg-gradient-to-b 
+              bg-linear-to-b 
               to-stone-800 
               ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
             `}
@@ -94,9 +94,9 @@ export function DesktopNav({
                      h-20 
                      pl-2 
                      pr-2
-                     rounded-sm 
+                     rounded-xs 
                      shadow-lg
-                     bg-gradient-to-b 
+                     bg-linear-to-b 
                      ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
                      to-stone-800
                    `}

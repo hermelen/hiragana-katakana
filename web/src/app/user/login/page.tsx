@@ -30,7 +30,7 @@ export default function UserLoginPage() {
                             w-80 
                             h-10 
                             rounded-lg 
-                            bg-gradient-to-b 
+                            bg-linear-to-b 
                             shadow-lg
                             from-indigo-500
                             to-stone-800`}
@@ -55,7 +55,7 @@ export default function UserLoginPage() {
                             w-80 
                             h-10 
                             rounded-lg 
-                            bg-gradient-to-b 
+                            bg-linear-to-b 
                             shadow-lg
                             to-stone-800 
                             from-indigo-500`}

@@ -34,7 +34,7 @@ export function BasicButton({
         pl-1
         rounded-lg
         shadow-lg
-        bg-gradient-to-b
+        bg-linear-to-b
         ${fromGradient ? fromGradient : "from-indigo-500"}
         ${fromHoverGradient && fromHoverGradient}
         ${toGradient ? toGradient : "to-stone-800"}

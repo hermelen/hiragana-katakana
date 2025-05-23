@@ -21,7 +21,7 @@ export function Label({ match, label, title, width, textSize }: LabelKeyProps) {
         w-${width ? width : "80"} 
         h-10 
         rounded-lg 
-        bg-gradient-to-b  
+        bg-linear-to-b  
         shadow-lg
         ${match ? "from-indigo-500" : "from-rose-500"}
         to-stone-800
