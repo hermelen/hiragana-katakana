@@ -94,20 +94,22 @@ export function MobileNav({
       >
         {tabList.map((tab: Tab, index: number) => (
           <li
-            className={`flex-auto
-                    cursor-pointer
-                    text-2xl 
-                    flex
-                    text-center
-                    items-center
-                    h-20 
-                    pl-2 
-                    pr-2
-                    rounded-sm 
-                    shadow-lg
-                    bg-gradient-to-b 
-                    to-stone-800
-                    ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}`}
+            className={`
+              flex-auto
+              cursor-pointer
+              text-2xl 
+              flex
+              text-center
+              items-center
+              h-20 
+              pl-2 
+              pr-2
+              rounded-sm 
+              shadow-lg
+              bg-gradient-to-b 
+              to-stone-800
+              ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
+            `}
             key={tab.key}
           >
             <span
@@ -165,21 +167,23 @@ export function MobileNav({
             >
               {tab.children.map((child, childIndex) => (
                 <li
-                  className={`flex-auto
-                            cursor-pointer
-                            text-2xl 
-                            text-center
-                            flex
-                            items-center
-                            h-20 
-                            pl-2 
-                            pr-2
-                            rounded-sm 
-                            shadow-lg
-                            bg-gradient-to-b 
-                            ${childIndex === 0 ? "justify-between" : "justify-end"}
-                            ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
-                            to-stone-800`}
+                  className={`
+                    flex-auto
+                    cursor-pointer
+                    text-2xl 
+                    text-center
+                    flex
+                    items-center
+                    h-20 
+                    pl-2 
+                    pr-2
+                    rounded-sm 
+                    shadow-lg
+                    bg-gradient-to-b 
+                    ${childIndex === 0 ? "justify-between" : "justify-end"}
+                    ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
+                    to-stone-800
+                  `}
                   key={child.key}
                 >
                   <span

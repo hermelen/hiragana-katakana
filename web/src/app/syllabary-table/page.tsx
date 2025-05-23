@@ -148,11 +148,11 @@ export default function SyllabaryTablePage() {
                     className="relative w-20 h-20 cursor-pointer"
                   >
                     <div
-                      style={{
-                        transform: faceRotate,
-                        backfaceVisibility: "hidden",
-                      }}
-                      className={`w-20 h-20 ${isChar && `${isCharClasses} from-indigo-500`}`}
+                      // style={{
+                      //   transform: faceRotate,
+                      //   backfaceVisibility: "hidden",
+                      // }}
+                      className={`w-20 h-20 ${isChar && `${isCharClasses} from-indigo-500`} transform rotate-y-180`}
                     >
                       <div className="text-4xl text-center">{value[0]}</div>
                       <div className="text-l text-center">{isChar && key}</div>

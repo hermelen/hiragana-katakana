@@ -56,22 +56,24 @@ export function DesktopNav({
       <ul className="flex flex-wrap gap-1 full-size justify-between">
         {tabList.map((tab: Tab, index: number) => (
           <li
-            className={`relative 
-                    flex-auto
-                    cursor-pointer
-                    text-2xl 
-                    text-center
-                    flex
-                    items-center
-                    justify-center
-                    h-20 
-                    pl-2 
-                    pr-2
-                    rounded-sm 
-                    shadow-lg
-                    bg-gradient-to-b 
-                    to-stone-800 
-                    ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}`}
+            className={`
+              relative 
+              flex-auto
+              cursor-pointer
+              text-2xl 
+              text-center
+              flex
+              items-center
+              justify-center
+              h-20 
+              pl-2 
+              pr-2
+              rounded-sm 
+              shadow-lg
+              bg-gradient-to-b 
+              to-stone-800 
+              ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
+            `}
             key={tab.key}
             onClick={(event) => tabClick(event, tab, index, false)}
           >
@@ -81,21 +83,23 @@ export function DesktopNav({
             >
               {tab.children.map((child) => (
                 <li
-                  className={`flex-auto
-                            cursor-pointer
-                            text-2xl 
-                            text-center
-                            flex
-                            items-center
-                            justify-center
-                            h-20 
-                            pl-2 
-                            pr-2
-                            rounded-sm 
-                            shadow-lg
-                            bg-gradient-to-b 
-                            ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
-                            to-stone-800`}
+                  className={`
+                     flex-auto
+                     cursor-pointer
+                     text-2xl 
+                     text-center
+                     flex
+                     items-center
+                     justify-center
+                     h-20 
+                     pl-2 
+                     pr-2
+                     rounded-sm 
+                     shadow-lg
+                     bg-gradient-to-b 
+                     ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
+                     to-stone-800
+                   `}
                   key={child.key}
                   onClick={(event) => tabClick(event, child, index, true)}
                 >

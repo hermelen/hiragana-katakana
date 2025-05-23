@@ -1,12 +1,12 @@
 import React from "react";
 
-type LabelKeyProps = {
+type DisplayValueProps = {
   label: string;
   width?: number;
   textSize?: string;
 };
 
-export function DisplayValue({ label, textSize, width }: LabelKeyProps) {
+export function DisplayValue({ label, textSize, width }: DisplayValueProps) {
   textSize = textSize ?? "text-2xl";
   return (
     <div
