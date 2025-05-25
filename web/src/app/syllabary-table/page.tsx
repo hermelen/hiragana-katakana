@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Radio } from "@/app/components/Radio";
 import { Syllable } from "@/api/syllable";
 import { SyllableService } from "@/api";
-import { cn } from "@/app/services/utils";
+import { cn } from "@/app/lib/utils";
 
 export default function SyllabaryTablePage() {
   type TableData = Record<string, [string, string]>[];
@@ -111,7 +111,22 @@ export default function SyllabaryTablePage() {
             {ul.map((li, liIndex) => {
               const key = Object.keys(li)[0];
               const value = Object.values(li)[0];
-              const isChar = value[0] !== "" && value[1] !== "";
+              const charIsDefined = value[0] !== "" && value[1] !== "";
+              const cardClass = `
+                flex
+                flex-col
+                items-center
+                justify-center
+                rounded-lg
+                absolute
+                transition-all
+                duration-500
+                transform-style-preserve-3d
+                bg-linear-to-b
+                to-stone-800
+                shadow-lg 
+                backface-hidden
+              `;
               return (
                 <li key={liIndex}>
                   <div
@@ -133,24 +148,26 @@ export default function SyllabaryTablePage() {
                     <div
                       className={cn(
                         "w-20 h-20",
-                        isChar &&
-                          "flex flex-col items-center justify-center rounded-lg absolute transition-all duration-1500 transform-style-preserve-3d bg-linear-to-b to-stone-800 shadow-lg backface-hidden from-indigo-500",
+                        charIsDefined && `${cardClass} from-indigo-500`,
                         faceDictionary[key] ? "rotate-y-180" : "rotate-y-0",
                       )}
                     >
                       <div className="text-4xl text-center">{value[0]}</div>
-                      <div className="text-l text-center">{isChar && key}</div>
+                      <div className="text-l text-center">
+                        {charIsDefined && key}
+                      </div>
                     </div>
                     <div
                       className={cn(
                         "w-20 h-20",
-                        isChar &&
-                          "flex flex-col items-center justify-center rounded-lg absolute transition-all duration-1500 transform-style-preserve-3d bg-linear-to-b to-stone-800 shadow-lg backface-hidden from-rose-500",
+                        charIsDefined && `${cardClass} from-rose-500`,
                         faceDictionary[key] ? "rotate-y-0" : "rotate-y-180",
                       )}
                     >
                       <div className="text-4xl text-center">{value[1]}</div>
-                      <div className="text-l text-center">{isChar && key}</div>
+                      <div className="text-l text-center">
+                        {charIsDefined && key}
+                      </div>
                     </div>
                   </div>
                 </li>

@@ -51,27 +51,30 @@ export function DesktopNav({
     return <div>Loading...</div>;
   }
 
+  const tabClass = `
+    flex-auto
+    cursor-pointer
+    text-2xl 
+    text-center
+    flex
+    items-center
+    justify-center
+    h-20 
+    pl-2 
+    pr-2
+    rounded-xs 
+    shadow-lg
+    bg-linear-to-b 
+    to-stone-800
+  `;
+
   return (
     <nav>
       <ul className="flex flex-wrap gap-1 full-size justify-between">
         {tabList.map((tab: Tab, index: number) => (
           <li
             className={`
-              relative 
-              flex-auto
-              cursor-pointer
-              text-2xl 
-              text-center
-              flex
-              items-center
-              justify-center
-              h-20 
-              pl-2 
-              pr-2
-              rounded-xs 
-              shadow-lg
-              bg-linear-to-b 
-              to-stone-800 
+              ${tabClass} 
               ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
             `}
             key={tab.key}
@@ -84,21 +87,8 @@ export function DesktopNav({
               {tab.children.map((child) => (
                 <li
                   className={`
-                     flex-auto
-                     cursor-pointer
-                     text-2xl 
-                     text-center
-                     flex
-                     items-center
-                     justify-center
-                     h-20 
-                     pl-2 
-                     pr-2
-                     rounded-xs 
-                     shadow-lg
-                     bg-linear-to-b 
+                     ${tabClass}
                      ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
-                     to-stone-800
                    `}
                   key={child.key}
                   onClick={(event) => tabClick(event, child, index, true)}

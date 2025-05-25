@@ -15,7 +15,7 @@ export function InputText({
 }: InputValueProps) {
   return (
     <input
-      className={`h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl ${classValue}`}
+      className={`h-10 flex-1 text-center rounded-lg shadow-lg text-black text-xl bg-amber-50 ${classValue}`}
       type="text"
       value={value}
       onChange={onChangeHandler}

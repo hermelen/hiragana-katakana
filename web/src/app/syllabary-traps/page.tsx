@@ -18,7 +18,7 @@ import { Syllable } from "@/api/syllable";
 import { Label } from "@/app/components/Label";
 import { InputText } from "@/app/components/InputText";
 import { BasicButton } from "@/app/components/BasicButton";
-import { getSyllabaryValue } from "@/app/services/utils";
+import { getSyllabaryValue } from "@/app/lib/utils";
 
 export default function TrapsPage() {
   const [trapData, setTrapData] = useState<SyllabaryRecord>({});

@@ -13,7 +13,7 @@ import { Syllable } from "@/api/syllable";
 import { Label } from "@/app/components/Label";
 import { InputText } from "@/app/components/InputText";
 import { BasicButton } from "@/app/components/BasicButton";
-import { getSyllabaryValue } from "@/app/services/utils";
+import { getSyllabaryValue } from "@/app/lib/utils";
 
 export default function SyllabaryTrainingPage() {
   const [syllabaryRecord, setSyllabaryRecord] = useState<SyllabaryRecord>({});

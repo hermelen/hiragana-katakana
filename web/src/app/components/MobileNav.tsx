@@ -65,6 +65,22 @@ export function MobileNav({
     return <div>Loading...</div>;
   }
 
+  const tabClass = `
+    flex-auto
+    cursor-pointer
+    text-2xl 
+    flex
+    text-center
+    items-center
+    h-20 
+    pl-2 
+    pr-2
+    rounded-xs 
+    shadow-lg
+    bg-linear-to-b 
+    to-stone-800
+  `;
+
   return (
     <nav className="relative h-20 w-full z-10">
       <div
@@ -95,19 +111,7 @@ export function MobileNav({
         {tabList.map((tab: Tab, index: number) => (
           <li
             className={`
-              flex-auto
-              cursor-pointer
-              text-2xl 
-              flex
-              text-center
-              items-center
-              h-20 
-              pl-2 
-              pr-2
-              rounded-xs 
-              shadow-lg
-              bg-linear-to-b 
-              to-stone-800
+              ${tabClass}
               ${isActive(tab.href) ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
             `}
             key={tab.key}
@@ -168,21 +172,9 @@ export function MobileNav({
               {tab.children.map((child, childIndex) => (
                 <li
                   className={`
-                    flex-auto
-                    cursor-pointer
-                    text-2xl 
-                    text-center
-                    flex
-                    items-center
-                    h-20 
-                    pl-2 
-                    pr-2
-                    rounded-xs 
-                    shadow-lg
-                    bg-linear-to-b 
+                    ${tabClass}
                     ${childIndex === 0 ? "justify-between" : "justify-end"}
                     ${child.href === pathname ? "from-yellow-500" : "from-indigo-500 hover:from-indigo-400"}
-                    to-stone-800
                   `}
                   key={child.key}
                 >

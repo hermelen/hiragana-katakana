@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { getJapanese } from "@/app/services/theme";
+import { getJapanese } from "@/app/lib/theme";
 import {
   getSyllableListToRecord,
   SyllabaryRecord,

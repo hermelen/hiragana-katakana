@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Radio } from "@/app/components/Radio";
-import { getJapanese, getPhonetic, getRoman } from "@/app/services/theme";
+import { getJapanese, getPhonetic, getRoman } from "@/app/lib/theme";
 import {
   getSyllableListToRecord,
   SyllabaryRecord,
