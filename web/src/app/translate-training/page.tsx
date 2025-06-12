@@ -89,7 +89,7 @@ export default function TranslateTrainingPage() {
 
   return (
     <div className="lg:flex size-full">
-      <div className="lg:w-4/12 size-full flex justify-end">
+      <div className="lg:w-3/12 size-full flex justify-end">
         <div className="lg:hidden flex">
           <Score score={score} trainingLength={trainingLength} />
         </div>
@@ -98,7 +98,12 @@ export default function TranslateTrainingPage() {
         <div className="flex gap-4">
           <ul className="flex flex-col gap-4 justify-center size-full">
             <li className="flex items-center gap-5 size-full" key={key}>
-              <Label match={match} label={displayValue} title={title} />
+              <Label
+                match={match}
+                label={displayValue}
+                title={title}
+                width="120"
+              />
               <InputText
                 value={text}
                 classValue="size-full"
@@ -117,7 +122,7 @@ export default function TranslateTrainingPage() {
           </ul>
         </div>
       </div>
-      <div className="lg:w-4/12 flex justify-end">
+      <div className="lg:w-3/12 flex justify-end">
         <div className="lg:flex hidden">
           <Score score={score} trainingLength={trainingLength} />
         </div>

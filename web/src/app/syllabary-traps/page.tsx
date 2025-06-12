@@ -113,12 +113,12 @@ export default function TrapsPage() {
 
   return (
     <div className="lg:flex size-full">
-      <div className="lg:w-4/12 size-full flex justify-end">
+      <div className="lg:w-3/12 size-full flex justify-end">
         <div className="lg:hidden flex">
           <Score score={score} trainingLength={trainingLength} />
         </div>
       </div>
-      <div className="lg:w-4/12 size-full">
+      <div className="lg:w-6/12 size-full">
         <div className="pt-4 pb-4 flex">
           <Radio
             className="flex-1"
@@ -152,9 +152,9 @@ export default function TrapsPage() {
                     match={match}
                     label={displayValue}
                     title={title}
-                    width={20}
                   ></Label>
                   <InputText
+                    classValue="size-full"
                     value={textList[index]}
                     onChangeHandler={(event) => handleInputChange(event, index)}
                   />
@@ -162,7 +162,7 @@ export default function TrapsPage() {
               );
             })}
             <li className="flex items-center gap-5">
-              <div className="w-20 h-10"></div>
+              <div className="w-80 h-10"></div>
               <BasicButton
                 label="Next"
                 onClickHandler={() => reLoadTraining(trainingLength)}
@@ -171,7 +171,7 @@ export default function TrapsPage() {
           </ul>
         </div>
       </div>
-      <div className="lg:w-4/12 flex justify-end">
+      <div className="lg:w-3/12 flex justify-end">
         <div className="lg:flex hidden">
           <Score score={score} trainingLength={trainingLength} />
         </div>

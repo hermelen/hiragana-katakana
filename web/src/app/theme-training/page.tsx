@@ -123,7 +123,7 @@ export default function ThemeTrainingPage() {
 
   return (
     <div className="lg:flex size-full">
-      <div className="lg:w-4/12 size-full flex justify-end">
+      <div className="lg:w-3/12 size-full flex justify-end">
         <div className="lg:hidden flex">
           <Score score={score} trainingLength={trainingLength} />
         </div>
@@ -162,12 +162,12 @@ export default function ThemeTrainingPage() {
               <Label
                 label="katakana"
                 match={katakana === themeData[1]}
-                textSize="text-xl"
+                textSize="text-3xl"
               />
               <DisplayValue label={katakana} />
             </li>
             <li className="flex items-center gap-5 size-full">
-              <div className="w-80 h-10"></div>
+              <div className="w-140 h-10"></div>
               <BasicButton
                 label="Next"
                 onClickHandler={() => reloadTheme(trainingLength)}
@@ -176,7 +176,7 @@ export default function ThemeTrainingPage() {
           </ul>
         </div>
       </div>
-      <div className="lg:w-4/12 flex justify-end">
+      <div className="lg:w-3/12 flex justify-end">
         <div className="lg:flex hidden">
           <Score score={score} trainingLength={trainingLength} />
         </div>

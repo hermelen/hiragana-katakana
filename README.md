@@ -28,19 +28,19 @@ https://www.youtube.com/watch?v=77RjzJtC_g4
 
 ### Postgres database
 From root project:  
-`rust-next-pg/`
+`hiragana-katakana/`
 ```bash
 docker compose up -d
 ```
 ### Rust app
 From Rust app  
-`rust-next-pg/backend/`
+`hiragana-katakana/api/`
 ```bash
 cargo run
 ```
 ### Nextjs app
 From NextJs app  
-`rust-next-pg/frontend/`
+`hiragana-katakana/web/`
 ```bash
-npm run dev
+yarn dev
 ```

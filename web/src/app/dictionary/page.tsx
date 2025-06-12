@@ -93,20 +93,21 @@ export default function DictionaryPage() {
                 key={key}
               >
                 <BasicButton
+                  width="80"
                   label="Edit"
                   fromGradient="from-stone-700"
                   fromHoverGradient="hover:from-stone-600"
                   onClickHandler={() => console.log("To be implemented")}
                 />
-                <Label label={key} width={80} />
+                <Label label={key} width="80" />
                 <DisplayValue label={value} />
               </li>
             );
           })}
           <li>
             <BasicButton
+              width="80"
               label="Add word"
-              width={80}
               fromGradient="from-stone-700"
               fromHoverGradient="hover:from-stone-600"
               onClickHandler={toggleEdit}
@@ -117,7 +118,7 @@ export default function DictionaryPage() {
       <div className={`flex gap-4 ${!edit && "hidden"}`}>
         <ul className="flex flex-col gap-4 justify-center size-full">
           <li className="flex items-center gap-5 size-full">
-            <div className="w-80"></div>
+            <div className="size-full"></div>
             <InputText
               value={newWord.kanji}
               classValue="size-full"
@@ -133,7 +134,7 @@ export default function DictionaryPage() {
             />
           </li>
           <li className="flex items-center gap-5 size-full">
-            <div className="w-80"></div>
+            <div className="size-full"></div>
             <InputText
               value={newWord.katakana}
               classValue="size-full"

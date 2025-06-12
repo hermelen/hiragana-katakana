@@ -4,7 +4,7 @@ type LabelKeyProps = {
   match?: boolean;
   label?: string;
   title?: string;
-  width?: number;
+  width?: string;
   textSize?: string;
 };
 

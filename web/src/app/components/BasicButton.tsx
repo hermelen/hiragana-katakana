@@ -7,7 +7,7 @@ type BasicButtonProps = {
   fromHoverGradient?: string;
   toGradient?: string;
   disabled?: boolean;
-  width?: number;
+  width?: string;
 };
 
 export function BasicButton({
@@ -24,10 +24,9 @@ export function BasicButton({
       className={`
         h-10
         flex
-        flex-1
-        text-xl
+        text-2xl
         text-center
-        w-${width ? width : "80"} 
+        w-${width ? width : "full"} 
         items-center
         justify-center
         pr-1

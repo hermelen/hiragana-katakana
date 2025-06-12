@@ -2,7 +2,7 @@ import React from "react";
 
 type DisplayValueProps = {
   label: string;
-  width?: number;
+  width?: string;
   textSize?: string;
 };
 

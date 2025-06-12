@@ -15,7 +15,7 @@ export default function UserLoginPage() {
 
   return (
     <div className="lg:flex size-full">
-      <div className="lg:w-4/12 size-full flex justify-end"></div>
+      <div className="lg:w-3/12 size-full flex justify-end"></div>
       <div className="lg:w-6/12 size-full">
         <div className="flex gap-4">
           <ul className="flex flex-col gap-4 justify-center size-full">
@@ -72,6 +72,7 @@ export default function UserLoginPage() {
             <li className="flex items-center gap-5 size-full">
               <div className="w-80 h-10"></div>
               <BasicButton
+                width="80"
                 label="Submit"
                 onClickHandler={() => submitLogin()}
               />
@@ -79,7 +80,7 @@ export default function UserLoginPage() {
           </ul>
         </div>
       </div>
-      <div className="lg:w-4/12 flex justify-end"></div>
+      <div className="lg:w-3/12 flex justify-end"></div>
     </div>
   );
 }
