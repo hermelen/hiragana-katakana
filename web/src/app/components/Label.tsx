@@ -18,7 +18,7 @@ export function Label({ match, label, title, width, textSize }: LabelKeyProps) {
         flex
         items-center
         justify-center
-        w-${width ? width : "80"} 
+        w-${width ? width : "full"} 
         h-10 
         rounded-lg 
         bg-linear-to-b  

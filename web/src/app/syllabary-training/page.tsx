@@ -177,16 +177,16 @@ export default function SyllabaryTrainingPage() {
                     match={match}
                     label={displayValue}
                     title={title}
+                    width="80"
                   ></Label>
                   <InputText
-                    classValue="size-full"
                     value={textList[index]}
                     onChangeHandler={(event) => handleInputChange(event, index)}
                   />
                 </li>
               );
             })}
-            <li className="flex items-center gap-5">
+            <li className="flex items-center gap-5 size-full">
               <div className="w-80 h-10"></div>
               <BasicButton
                 label="Other Try"

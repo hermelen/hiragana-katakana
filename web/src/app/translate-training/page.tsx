@@ -97,16 +97,10 @@ export default function TranslateTrainingPage() {
       <div className="lg:w-6/12 size-full">
         <div className="flex gap-4">
           <ul className="flex flex-col gap-4 justify-center size-full">
-            <li className="flex items-center gap-5 size-full" key={key}>
-              <Label
-                match={match}
-                label={displayValue}
-                title={title}
-                width="120"
-              />
+            <li className="flex items-center gap-5" key={key}>
+              <Label match={match} label={displayValue} title={title} />
               <InputText
                 value={text}
-                classValue="size-full"
                 onChangeHandler={(event: React.ChangeEvent<HTMLInputElement>) =>
                   handleInputChange(
                     event,
@@ -116,7 +110,7 @@ export default function TranslateTrainingPage() {
               />
             </li>
             <li className="flex items-center gap-5 size-full">
-              <div className="w-80 h-10"></div>
+              <div className="w-full"></div>
               <BasicButton label="Other Try" onClickHandler={loadData} />
             </li>
           </ul>

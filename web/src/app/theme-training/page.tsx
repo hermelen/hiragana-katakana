@@ -133,41 +133,18 @@ export default function ThemeTrainingPage() {
           <ul className="flex flex-col gap-4 justify-center size-full">
             <li className="flex items-center gap-5 size-full" key={key}>
               <Label match={match} label={displayValue} title={title} />
-              <InputText
-                value={text}
-                classValue="size-full"
-                onChangeHandler={handleInputChange}
-              />
+              <InputText value={text} onChangeHandler={handleInputChange} />
             </li>
             <li className="flex items-center gap-5 size-full">
-              <div
-                className={`text-xl 
-                            text-center
-                            flex
-                            items-center
-                            justify-center
-                            w-80 
-                            h-10 
-                            rounded-lg 
-                            shadow-lg
-                            bg-linear-to-b 
-                            to-stone-800 
-                            ${hiragana === themeData[1] ? "from-indigo-500" : "from-rose-500"}`}
-              >
-                hiragana
-              </div>
-              <DisplayValue label={hiragana} />
-            </li>
-            <li className="flex items-center gap-5 size-full">
-              <Label
-                label="katakana"
-                match={katakana === themeData[1]}
-                textSize="text-3xl"
-              />
+              <Label label="hiragana" match={hiragana === themeData[1]} />
               <DisplayValue label={katakana} />
             </li>
             <li className="flex items-center gap-5 size-full">
-              <div className="w-140 h-10"></div>
+              <Label label="katakana" match={katakana === themeData[1]} />
+              <DisplayValue label={katakana} />
+            </li>
+            <li className="flex items-center gap-5 size-full">
+              <div className="w-230 h-10"></div>
               <BasicButton
                 label="Next"
                 onClickHandler={() => reloadTheme(trainingLength)}

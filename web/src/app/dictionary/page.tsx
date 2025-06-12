@@ -93,20 +93,20 @@ export default function DictionaryPage() {
                 key={key}
               >
                 <BasicButton
-                  width="80"
+                  width="180"
                   label="Edit"
                   fromGradient="from-stone-700"
                   fromHoverGradient="hover:from-stone-600"
                   onClickHandler={() => console.log("To be implemented")}
                 />
-                <Label label={key} width="80" />
+                <Label label={key} width="180" />
                 <DisplayValue label={value} />
               </li>
             );
           })}
           <li>
             <BasicButton
-              width="80"
+              width="180"
               label="Add word"
               fromGradient="from-stone-700"
               fromHoverGradient="hover:from-stone-600"
@@ -121,7 +121,6 @@ export default function DictionaryPage() {
             <div className="size-full"></div>
             <InputText
               value={newWord.kanji}
-              classValue="size-full"
               placeholder="Kanji..."
               onChangeHandler={(e) =>
                 setNewWord({
@@ -137,7 +136,6 @@ export default function DictionaryPage() {
             <div className="size-full"></div>
             <InputText
               value={newWord.katakana}
-              classValue="size-full"
               placeholder="Katakana..."
               onChangeHandler={(e) =>
                 setNewWord({
@@ -152,7 +150,6 @@ export default function DictionaryPage() {
           <li className="flex items-center gap-5 size-full">
             <InputText
               value={newWord.roman}
-              classValue="size-full"
               placeholder="English..."
               onChangeHandler={(e) =>
                 setNewWord({ ...newWord, roman: e.target.value })
@@ -160,7 +157,6 @@ export default function DictionaryPage() {
             />
             <InputText
               value={newWord.hiragana}
-              classValue="size-full"
               placeholder="Hiragana..."
               onChangeHandler={(e) =>
                 setNewWord({

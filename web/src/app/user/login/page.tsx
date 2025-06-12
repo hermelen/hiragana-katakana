@@ -40,7 +40,6 @@ export default function UserLoginPage() {
               <InputText
                 value={username_or_email}
                 placeholder="Type username or email"
-                classValue="size-full"
                 onChangeHandler={(e) => setUsernameOrEmail(e.target.value)}
               />
             </li>
@@ -65,7 +64,6 @@ export default function UserLoginPage() {
               <InputText
                 value={password}
                 placeholder="Type password"
-                classValue="size-full"
                 onChangeHandler={(e) => setPassword(e.target.value)}
               />
             </li>

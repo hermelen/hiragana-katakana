@@ -152,9 +152,9 @@ export default function TrapsPage() {
                     match={match}
                     label={displayValue}
                     title={title}
+                    width="80"
                   ></Label>
                   <InputText
-                    classValue="size-full"
                     value={textList[index]}
                     onChangeHandler={(event) => handleInputChange(event, index)}
                   />
